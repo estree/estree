@@ -43,7 +43,7 @@ extend interface AssignmentExpression {
 
 ## ArrowExpression
 
-**FIXME:** This describes the SpiderMonkey behavior, which is not currently aligned with the Esprima behavior. See [SpiderMonkey bug 913617](https://bugzilla.mozilla.org/show_bug.cgi?id=913617).
+**FIXME:** This describes the SpiderMonkey behavior, which is not currently aligned with the Esprima and Acorn behaviors. See [SpiderMonkey bug 913617](https://bugzilla.mozilla.org/show_bug.cgi?id=913617).
 
 ```js
 interface ArrowExpression <: Function, Expression {
