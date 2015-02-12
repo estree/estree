@@ -1,3 +1,5 @@
+This document specifies the core ESTree AST node types that support the ES5 grammar.
+
 # Node objects
 
 ESTree AST nodes are represented as `Node` objects, which may have any prototype inheritance but which implement the following interface:
@@ -39,25 +41,34 @@ interface Program <: Node {
 }
 ```
 
+A complete program source tree.
+
+
 # Functions
 
 ```js
 interface Function <: Node {
     id: Identifier | null;
     params: [ Pattern ];
-    defaults: [ Expression ];
-    rest: Identifier | null;
-    body: BlockStatement | Expression;
-    generator: boolean;
-    expression: boolean;
+    defaults: [];
+    rest: null;
+    body: BlockStatement;
+    generator: false;
+    expression: false;
 }
 ```
+
+A function declaration or expression.
+
 
 # Statements
 
 ```js
 interface Statement <: Node { }
 ```
+
+Any statement.
+
 
 ## EmptyStatement
 
@@ -66,6 +77,9 @@ interface EmptyStatement <: Statement {
     type: "EmptyStatement";
 }
 ```
+
+An empty statement, i.e., a solitary semicolon.
+
 
 ## BlockStatement
 
@@ -76,6 +90,9 @@ interface BlockStatement <: Statement {
 }
 ```
 
+A block statement, i.e., a sequence of statements surrounded by braces.
+
+
 ## ExpressionStatement
 
 ```js
@@ -84,6 +101,9 @@ interface ExpressionStatement <: Statement {
     expression: Expression;
 }
 ```
+
+An expression statement, i.e., a statement consisting of a single expression.
+
 
 ## IfStatement
 
@@ -96,6 +116,9 @@ interface IfStatement <: Statement {
 }
 ```
 
+An `if` statement.
+
+
 ## LabeledStatement
 
 ```js
@@ -106,6 +129,9 @@ interface LabeledStatement <: Statement {
 }
 ```
 
+A labeled statement, i.e., a statement prefixed by a `break`/`continue` label.
+
+
 ## BreakStatement
 
 ```js
@@ -115,6 +141,9 @@ interface BreakStatement <: Statement {
 }
 ```
 
+A `break` statement.
+
+
 ## ContinueStatement
 
 ```js
@@ -123,6 +152,9 @@ interface ContinueStatement <: Statement {
     label: Identifier | null;
 }
 ```
+
+A `continue` statement.
+
 
 ## WithStatement
 
@@ -134,6 +166,9 @@ interface WithStatement <: Statement {
 }
 ```
 
+A `with` statement.
+
+
 ## SwitchStatement
 
 ```js
@@ -141,9 +176,12 @@ interface SwitchStatement <: Statement {
     type: "SwitchStatement";
     discriminant: Expression;
     cases: [ SwitchCase ];
-    lexical: boolean;
+    lexical: false;
 }
 ```
+
+A `switch` statement.
+
 
 ## ReturnStatement
 
@@ -154,6 +192,9 @@ interface ReturnStatement <: Statement {
 }
 ```
 
+A `return` statement.
+
+
 ## ThrowStatement
 
 ```js
@@ -163,17 +204,23 @@ interface ThrowStatement <: Statement {
 }
 ```
 
+A `throw` statement.
+
+
 ## TryStatement
 
 ```js
 interface TryStatement <: Statement {
     type: "TryStatement";
     block: BlockStatement;
-    handler: CatchClause | null;
-    guardedHandlers: [ CatchClause ];
+    handlers: [ CatchClause ];
+    guardedHandlers: [];
     finalizer: BlockStatement | null;
 }
 ```
+
+A `try` statement. The `length` of `handlers` is 0 or 1. If the `length` of `handlers` is 0 then `finalizer` must be a `BlockStatement`.
+
 
 ## WhileStatement
 
@@ -185,6 +232,9 @@ interface WhileStatement <: Statement {
 }
 ```
 
+A `while` statement.
+
+
 ## DoWhileStatement
 
 ```js
@@ -194,6 +244,9 @@ interface DoWhileStatement <: Statement {
     test: Expression;
 }
 ```
+
+A `do`/`while` statement.
+
 
 ## ForStatement
 
@@ -207,6 +260,9 @@ interface ForStatement <: Statement {
 }
 ```
 
+A `for` statement.
+
+
 ## ForInStatement
 
 ```js
@@ -219,16 +275,8 @@ interface ForInStatement <: Statement {
 }
 ```
 
-## ForOfStatement
+A `for`/`in` statement.
 
-```js
-interface ForOfStatement <: Statement {
-    type: "ForOfStatement";
-    left: VariableDeclaration |  Expression;
-    right: Expression;
-    body: Statement;
-}
-```
 
 ## DebuggerStatement
 
@@ -238,11 +286,17 @@ interface DebuggerStatement <: Statement {
 }
 ```
 
+A `debugger` statement.
+
+
 # Declarations
 
 ```js
 interface Declaration <: Statement { }
 ```
+
+Any declaration node. Note that declarations are considered statements; this is because declarations can appear in any statement context.
+
 
 ## FunctionDeclaration
 
@@ -250,14 +304,11 @@ interface Declaration <: Statement { }
 interface FunctionDeclaration <: Function, Declaration {
     type: "FunctionDeclaration";
     id: Identifier;
-    params: [ Pattern ];
-    defaults: [ Expression ];
-    rest: Identifier | null;
-    body: BlockStatement | Expression;
-    generator: boolean;
-    expression: boolean;
 }
 ```
+
+A function declaration. Note that unlike in the parent interface `Function`, the `id` cannot be `null`.
+
 
 ## VariableDeclaration
 
@@ -265,9 +316,12 @@ interface FunctionDeclaration <: Function, Declaration {
 interface VariableDeclaration <: Declaration {
     type: "VariableDeclaration";
     declarations: [ VariableDeclarator ];
-    kind: "var" | "let" | "const";
+    kind: "var";
 }
 ```
+
+A variable declaration.
+
 
 ## VariableDeclarator
 
@@ -279,11 +333,17 @@ interface VariableDeclarator <: Node {
 }
 ```
 
+A variable declarator.
+
+
 # Expressions
 
 ```js
-interface Expression <: Node, Pattern { }
+interface Expression <: Node { }
 ```
+
+Any expression node. Since the left-hand side of an assignment may be any expression in general, an expression can also be a pattern.
+
 
 ## ThisExpression
 
@@ -292,6 +352,9 @@ interface ThisExpression <: Expression {
     type: "ThisExpression";
 }
 ```
+
+A `this` expression.
+
 
 ## ArrayExpression
 
@@ -302,6 +365,9 @@ interface ArrayExpression <: Expression {
 }
 ```
 
+An array expression.
+
+
 ## ObjectExpression
 
 ```js
@@ -310,6 +376,9 @@ interface ObjectExpression <: Expression {
     properties: [ Property ];
 }
 ```
+
+An object expression.
+
 
 ## Property
 
@@ -322,20 +391,19 @@ interface Property <: Node {
 }
 ```
 
+A literal property in an object expression can have either a string or number as its `value`. Ordinary property initializers have a `kind` value `"init"`; getters and setters have the kind values `"get"` and `"set"`, respectively.
+
+
 ## FunctionExpression
 
 ```js
 interface FunctionExpression <: Function, Expression {
     type: "FunctionExpression";
-    id: Identifier | null;
-    params: [ Pattern ];
-    defaults: [ Expression ];
-    rest: Identifier | null;
-    body: BlockStatement | Expression;
-    generator: boolean;
-    expression: boolean;
 }
 ```
+
+A `function` expression.
+
 
 ## SequenceExpression
 
@@ -345,6 +413,9 @@ interface SequenceExpression <: Expression {
     expressions: [ Expression ];
 }
 ```
+
+A sequence expression, i.e., a comma-separated sequence of expressions.
+
 
 ## UnaryExpression
 
@@ -357,6 +428,9 @@ interface UnaryExpression <: Expression {
 }
 ```
 
+A unary operator expression.
+
+
 ## BinaryExpression
 
 ```js
@@ -368,16 +442,22 @@ interface BinaryExpression <: Expression {
 }
 ```
 
+A binary operator expression.
+
+
 ## AssignmentExpression
 
 ```js
 interface AssignmentExpression <: Expression {
     type: "AssignmentExpression";
     operator: AssignmentOperator;
-    left: Pattern;
+    left: Expression;
     right: Expression;
 }
 ```
+
+An assignment operator expression.
+
 
 ## UpdateExpression
 
@@ -390,6 +470,9 @@ interface UpdateExpression <: Expression {
 }
 ```
 
+An update (increment or decrement) operator expression.
+
+
 ## LogicalExpression
 
 ```js
@@ -400,6 +483,9 @@ interface LogicalExpression <: Expression {
     right: Expression;
 }
 ```
+
+A logical operator expression.
+
 
 ## ConditionalExpression
 
@@ -412,6 +498,9 @@ interface ConditionalExpression <: Expression {
 }
 ```
 
+A conditional expression, i.e., a ternary `?`/`:` expression.
+
+
 ## NewExpression
 
 ```js
@@ -422,6 +511,9 @@ interface NewExpression <: Expression {
 }
 ```
 
+A `new` expression.
+
+
 ## CallExpression
 
 ```js
@@ -431,6 +523,9 @@ interface CallExpression <: Expression {
     arguments: [ Expression ];
 }
 ```
+
+A function or method call expression.
+
 
 ## MemberExpression
 
@@ -443,36 +538,21 @@ interface MemberExpression <: Expression {
 }
 ```
 
-## YieldExpression
+A member expression. If `computed === true`, the node corresponds to a computed `e1[e2]` expression and property is an `Expression`. If `computed === false`, the node corresponds to a static `e1.x` expression and `property` is an `Identifier`.
 
-```js
-interface YieldExpression <: Expression {
-    type: "YieldExpression";
-    argument: Expression | null;
-}
-```
 
 # Patterns
+
+Destructuring binding and assignment are not part of ES6, but all binding positions accept `Pattern` to allow for destructuring in ES6. Nevertheless, for ES5, the only `Pattern` subtype is `Identifier`.
 
 ```js
 interface Pattern <: Node { }
 ```
 
-```js
-interface ObjectPattern <: Pattern {
-    type: "ObjectPattern";
-    properties: [ { key: Literal | Identifier, value: Pattern } ];
-}
-```
-
-```js
-interface ArrayPattern <: Pattern {
-    type: "ArrayPattern";
-    elements: [ Pattern | null ];
-}
-```
 
 # Clauses
+
+## SwitchCase
 
 ```js
 interface SwitchCase <: Node {
@@ -481,6 +561,11 @@ interface SwitchCase <: Node {
     consequent: [ Statement ];
 }
 ```
+
+A `case` (if `test` is an `Expression`) or `default` (if `test === null`) clause in the body of a `switch` statement.
+
+
+## CatchClause
 
 ```js
 interface CatchClause <: Node {
@@ -491,7 +576,12 @@ interface CatchClause <: Node {
 }
 ```
 
+A `catch` clause following a `try` block.
+
+
 # Miscellaneous
+
+## Identifier
 
 ```js
 interface Identifier <: Node, Expression, Pattern {
@@ -500,6 +590,11 @@ interface Identifier <: Node, Expression, Pattern {
 }
 ```
 
+An identifier. Note that an identifier may be an expression or a destructuring pattern.
+
+
+## Literal
+
 ```js
 interface Literal <: Node, Expression {
     type: "Literal";
@@ -507,11 +602,21 @@ interface Literal <: Node, Expression {
 }
 ```
 
+A literal token. Note that a literal can be an expression.
+
+
+## UnaryOperator
+
 ```js
 enum UnaryOperator {
     "-" | "+" | "!" | "~" | "typeof" | "void" | "delete"
 }
 ```
+
+A unary operator token.
+
+
+## BinaryOperator
 
 ```js
 enum BinaryOperator {
@@ -524,11 +629,21 @@ enum BinaryOperator {
 }
 ```
 
+A binary operator token.
+
+
+## LogicalOperator
+
 ```js
 enum LogicalOperator {
     "||" | "&&"
 }
 ```
+
+A logical operator token.
+
+
+## AssignmentOperator
 
 ```js
 enum AssignmentOperator {
@@ -538,8 +653,15 @@ enum AssignmentOperator {
 }
 ```
 
+An assignment operator token.
+
+
+## UpdateOperator
+
 ```js
 enum UpdateOperator {
     "++" | "--"
 }
 ```
+
+An update (increment or decrement) operator token.
