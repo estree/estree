@@ -59,11 +59,15 @@ interface Function <: Node {
 interface Statement <: Node { }
 ```
 
+## EmptyStatement
+
 ```js
 interface EmptyStatement <: Statement {
     type: "EmptyStatement";
 }
 ```
+
+## BlockStatement
 
 ```js
 interface BlockStatement <: Statement {
@@ -72,12 +76,16 @@ interface BlockStatement <: Statement {
 }
 ```
 
+## ExpressionStatement
+
 ```js
 interface ExpressionStatement <: Statement {
     type: "ExpressionStatement";
     expression: Expression;
 }
 ```
+
+## IfStatement
 
 ```js
 interface IfStatement <: Statement {
@@ -88,6 +96,8 @@ interface IfStatement <: Statement {
 }
 ```
 
+## LabeledStatement
+
 ```js
 interface LabeledStatement <: Statement {
     type: "LabeledStatement";
@@ -96,12 +106,16 @@ interface LabeledStatement <: Statement {
 }
 ```
 
+## BreakStatement
+
 ```js
 interface BreakStatement <: Statement {
     type: "BreakStatement";
     label: Identifier | null;
 }
 ```
+
+## ContinueStatement
 
 ```js
 interface ContinueStatement <: Statement {
@@ -110,6 +124,8 @@ interface ContinueStatement <: Statement {
 }
 ```
 
+## WithStatement
+
 ```js
 interface WithStatement <: Statement {
     type: "WithStatement";
@@ -117,6 +133,8 @@ interface WithStatement <: Statement {
     body: Statement;
 }
 ```
+
+## SwitchStatement
 
 ```js
 interface SwitchStatement <: Statement {
@@ -127,6 +145,8 @@ interface SwitchStatement <: Statement {
 }
 ```
 
+## ReturnStatement
+
 ```js
 interface ReturnStatement <: Statement {
     type: "ReturnStatement";
@@ -134,12 +154,16 @@ interface ReturnStatement <: Statement {
 }
 ```
 
+## ThrowStatement
+
 ```js
 interface ThrowStatement <: Statement {
     type: "ThrowStatement";
     argument: Expression;
 }
 ```
+
+## TryStatement
 
 ```js
 interface TryStatement <: Statement {
@@ -151,6 +175,8 @@ interface TryStatement <: Statement {
 }
 ```
 
+## WhileStatement
+
 ```js
 interface WhileStatement <: Statement {
     type: "WhileStatement";
@@ -159,6 +185,8 @@ interface WhileStatement <: Statement {
 }
 ```
 
+## DoWhileStatement
+
 ```js
 interface DoWhileStatement <: Statement {
     type: "DoWhileStatement";
@@ -166,6 +194,8 @@ interface DoWhileStatement <: Statement {
     test: Expression;
 }
 ```
+
+## ForStatement
 
 ```js
 interface ForStatement <: Statement {
@@ -177,15 +207,19 @@ interface ForStatement <: Statement {
 }
 ```
 
+## ForInStatement
+
 ```js
 interface ForInStatement <: Statement {
     type: "ForInStatement";
     left: VariableDeclaration |  Expression;
     right: Expression;
     body: Statement;
-    each: boolean;
+    each: false;
 }
 ```
+
+## ForOfStatement
 
 ```js
 interface ForOfStatement <: Statement {
@@ -196,13 +230,7 @@ interface ForOfStatement <: Statement {
 }
 ```
 
-```js
-interface LetStatement <: Statement {
-    type: "LetStatement";
-    head: [ VariableDeclarator ];
-    body: Statement;
-}
-```
+## DebuggerStatement
 
 ```js
 interface DebuggerStatement <: Statement {
@@ -215,6 +243,8 @@ interface DebuggerStatement <: Statement {
 ```js
 interface Declaration <: Statement { }
 ```
+
+## FunctionDeclaration
 
 ```js
 interface FunctionDeclaration <: Function, Declaration {
@@ -229,6 +259,8 @@ interface FunctionDeclaration <: Function, Declaration {
 }
 ```
 
+## VariableDeclaration
+
 ```js
 interface VariableDeclaration <: Declaration {
     type: "VariableDeclaration";
@@ -236,6 +268,8 @@ interface VariableDeclaration <: Declaration {
     kind: "var" | "let" | "const";
 }
 ```
+
+## VariableDeclarator
 
 ```js
 interface VariableDeclarator <: Node {
@@ -251,11 +285,15 @@ interface VariableDeclarator <: Node {
 interface Expression <: Node, Pattern { }
 ```
 
+## ThisExpression
+
 ```js
 interface ThisExpression <: Expression {
     type: "ThisExpression";
 }
 ```
+
+## ArrayExpression
 
 ```js
 interface ArrayExpression <: Expression {
@@ -264,12 +302,16 @@ interface ArrayExpression <: Expression {
 }
 ```
 
+## ObjectExpression
+
 ```js
 interface ObjectExpression <: Expression {
     type: "ObjectExpression";
     properties: [ Property ];
 }
 ```
+
+## Property
 
 ```js
 interface Property <: Node {
@@ -279,6 +321,8 @@ interface Property <: Node {
     kind: "init" | "get" | "set";
 }
 ```
+
+## FunctionExpression
 
 ```js
 interface FunctionExpression <: Function, Expression {
@@ -293,17 +337,7 @@ interface FunctionExpression <: Function, Expression {
 }
 ```
 
-```js
-interface ArrowExpression <: Function, Expression {
-    type: "ArrowExpression";
-    params: [ Pattern ];
-    defaults: [ Expression ];
-    rest: Identifier | null;
-    body: BlockStatement | Expression;
-    generator: boolean;
-    expression: boolean;
-}
-```
+## SequenceExpression
 
 ```js
 interface SequenceExpression <: Expression {
@@ -311,6 +345,8 @@ interface SequenceExpression <: Expression {
     expressions: [ Expression ];
 }
 ```
+
+## UnaryExpression
 
 ```js
 interface UnaryExpression <: Expression {
@@ -321,6 +357,8 @@ interface UnaryExpression <: Expression {
 }
 ```
 
+## BinaryExpression
+
 ```js
 interface BinaryExpression <: Expression {
     type: "BinaryExpression";
@@ -329,6 +367,8 @@ interface BinaryExpression <: Expression {
     right: Expression;
 }
 ```
+
+## AssignmentExpression
 
 ```js
 interface AssignmentExpression <: Expression {
@@ -339,6 +379,8 @@ interface AssignmentExpression <: Expression {
 }
 ```
 
+## UpdateExpression
+
 ```js
 interface UpdateExpression <: Expression {
     type: "UpdateExpression";
@@ -347,6 +389,8 @@ interface UpdateExpression <: Expression {
     prefix: boolean;
 }
 ```
+
+## LogicalExpression
 
 ```js
 interface LogicalExpression <: Expression {
@@ -357,6 +401,8 @@ interface LogicalExpression <: Expression {
 }
 ```
 
+## ConditionalExpression
+
 ```js
 interface ConditionalExpression <: Expression {
     type: "ConditionalExpression";
@@ -366,6 +412,8 @@ interface ConditionalExpression <: Expression {
 }
 ```
 
+## NewExpression
+
 ```js
 interface NewExpression <: Expression {
     type: "NewExpression";
@@ -374,6 +422,8 @@ interface NewExpression <: Expression {
 }
 ```
 
+## CallExpression
+
 ```js
 interface CallExpression <: Expression {
     type: "CallExpression";
@@ -381,6 +431,8 @@ interface CallExpression <: Expression {
     arguments: [ Expression ];
 }
 ```
+
+## MemberExpression
 
 ```js
 interface MemberExpression <: Expression {
@@ -391,28 +443,12 @@ interface MemberExpression <: Expression {
 }
 ```
 
+## YieldExpression
+
 ```js
 interface YieldExpression <: Expression {
     type: "YieldExpression";
     argument: Expression | null;
-}
-```
-
-```js
-interface ComprehensionExpression <: Expression {
-    type: "ComprehensionExpression";
-    body: Expression;
-    blocks: [ ComprehensionBlock ];
-    filter: Expression | null;
-}
-```
-
-```js
-interface GeneratorExpression <: Expression {
-    type: "GeneratorExpression";
-    body: Expression;
-    blocks: [ ComprehensionBlock ];
-    filter: Expression | null;
 }
 ```
 
@@ -450,17 +486,8 @@ interface SwitchCase <: Node {
 interface CatchClause <: Node {
     type: "CatchClause";
     param: Pattern;
-    guard: Expression | null;
+    guard: null;
     body: BlockStatement;
-}
-```
-
-```js
-interface ComprehensionBlock <: Node {
-    type: "ComprehensionBlock";
-    left: Pattern;
-    right: Expression;
-    each: boolean;
 }
 ```
 
