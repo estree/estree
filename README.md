@@ -7,3 +7,11 @@ Meanwhile JavaScript is evolving, notably with the upcoming release of ES6. This
 # Discussion
 
 We've started the process of bringing together various communities using this format to move it forward into the ES6 era and beyond. Feel free to join us! We'll be discussing in the issue tracker and in `#esprima` on Freenode.
+
+# Participating Members
+
+* Dave Herman (Mozilla)
+* Ingvar Stepanyan ([Acorn](https://github.com/marijnh/acorn))
+* Mike Sherov ([Esprima](https://github.com/jquery/esprima))
+* Michael Ficarra ([@michaelficarra](https://github.com/michaelficarra))
+* Sebastian McKenzie ([6to5](https://github.com/6to5/6to5))
