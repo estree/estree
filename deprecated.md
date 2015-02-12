@@ -22,6 +22,9 @@ extend interface ForInStatement {
 }
 ```
 
+If `each` is true, a `for each`/`in` statement.
+
+
 ## LetStatement
 
 ```js
@@ -32,6 +35,9 @@ interface LetStatement <: Statement {
 }
 ```
 
+A `let` statement.
+
+
 ## SwitchStatement
 
 ```js
@@ -41,6 +47,7 @@ extend interface SwitchStatement {
 ```
 
 The `lexical` flag is metadata indicating whether the `switch` statement contains any unnested `let` declarations (and therefore introduces a new lexical scope).
+
 
 ## TryStatement
 
@@ -147,6 +154,7 @@ interface ComprehensionBlock <: Node {
 ```
 
 A `for` or `for each` block in an array comprehension or generator expression.
+
 
 # Miscellaneous
 
