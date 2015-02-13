@@ -213,13 +213,13 @@ A `throw` statement.
 interface TryStatement <: Statement {
     type: "TryStatement";
     block: BlockStatement;
-    handlers: [ CatchClause ];
+    handler: CatchClause | null;
     guardedHandlers: [];
     finalizer: BlockStatement | null;
 }
 ```
 
-A `try` statement. The `length` of `handlers` is 0 or 1. If the `length` of `handlers` is 0 then `finalizer` must be a `BlockStatement`.
+A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockStatement`.
 
 
 ## WhileStatement
