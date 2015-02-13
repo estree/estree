@@ -214,7 +214,6 @@ interface TryStatement <: Statement {
     type: "TryStatement";
     block: BlockStatement;
     handler: CatchClause | null;
-    guardedHandlers: [];
     finalizer: BlockStatement | null;
 }
 ```
