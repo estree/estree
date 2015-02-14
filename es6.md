@@ -89,3 +89,52 @@ interface ArrayPattern <: Pattern {
     elements: [ Pattern | null ];
 }
 ```
+
+# Classes
+
+```js
+interface Class <: Node {
+    id: Identifier | null;
+    superClass: Expression;
+    body: ClassBody;
+}
+```
+
+## ClassBody
+
+```js
+interface ClassBody <: Node {
+    type: "ClassBody";
+    body: [ MethodDefinition ];
+}
+```
+
+## MethodDefinition
+
+```js
+interface MethodDefinition <: Node {
+    type: "MethodDefinition";
+    key: Identifier;
+    value: FunctionExpression;
+    kind: "" | "get" | "set";
+    computed: boolean;
+    static: boolean;
+}
+```
+
+## ClassDeclaration
+
+```js
+interface ClassDeclaration <: Class, Declaration {
+    type: "ClassDeclaration";
+    id: Identifier;
+}
+```
+
+## ClassExpression
+
+```js
+interface ClassExpression <: Class, Expression {
+    type: "ClassExpression";
+}
+```
