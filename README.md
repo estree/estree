@@ -14,4 +14,4 @@ We've started the process of bringing together various communities using this fo
 * Ingvar Stepanyan ([Acorn](https://github.com/marijnh/acorn))
 * Mike Sherov ([Esprima](https://github.com/jquery/esprima))
 * Michael Ficarra ([@michaelficarra](https://github.com/michaelficarra))
-* Sebastian McKenzie ([6to5](https://github.com/6to5/6to5))
+* Sebastian McKenzie ([Babel](https://github.com/babel/babel))
