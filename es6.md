@@ -39,6 +39,13 @@ extend interface VariableDeclaration {
 extend interface AssignmentExpression {
     left: Pattern | Expression;
 }
+
+extend interface Property {
+    key: Expression;
+    method: boolean;
+    shorthand: boolean;
+    computed: boolean;
+}
 ```
 
 ## ArrowExpression
@@ -75,9 +82,16 @@ A `yield` expression.
 ## ObjectPattern
 
 ```js
+interface PatternProperty <: Property {
+    type: "Property"; // inherited
+    value: Pattern;
+    kind: "init";
+    method: false;
+}
+
 interface ObjectPattern <: Pattern {
     type: "ObjectPattern";
-    properties: [ { key: Literal | Identifier, value: Pattern } ];
+    properties: [ PatternProperty ];
 }
 ```
 
