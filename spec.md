@@ -271,7 +271,6 @@ interface ForInStatement <: Statement {
     left: VariableDeclaration |  Expression;
     right: Expression;
     body: Statement;
-    each: false;
 }
 ```
 
