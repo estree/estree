@@ -48,11 +48,7 @@ extend interface AssignmentExpression {
 ```js
 interface ArrowExpression <: Function, Expression {
     type: "ArrowExpression";
-    params: [ Pattern ];
-    defaults: [ Expression ];
-    rest: Identifier | null;
     body: BlockStatement | Expression;
-    generator: boolean;
     expression: boolean;
 }
 ```
