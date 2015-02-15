@@ -15,11 +15,8 @@ extend interface Function {
 ## ForOfStatement
 
 ```js
-interface ForOfStatement <: Statement {
+interface ForOfStatement <: ForInStatement {
     type: "ForOfStatement";
-    left: VariableDeclaration |  Expression;
-    right: Expression;
-    body: Statement;
 }
 ```
 
