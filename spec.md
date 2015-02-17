@@ -603,6 +603,20 @@ interface Literal <: Node, Expression {
 
 A literal token. Note that a literal can be an expression.
 
+### RegexLiteral
+
+```js
+interface RegexLiteral <: Literal {
+  regex: {
+    pattern: string;
+    flags: string;
+  };
+}
+```
+
+The `regex` property allows regexes to be represented in environments that don’t
+support certain flags such as `y` or `u`. In environments that don't support
+these flags `value` will be `null` as the regex can't be represented natively.
 
 ## UnaryOperator
 
