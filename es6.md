@@ -37,7 +37,7 @@ extend interface VariableDeclaration {
 
 ```js
 extend interface AssignmentExpression {
-    left: Pattern | MemberExpression;
+    left: Pattern | Expression;
 }
 ```
 
