@@ -82,7 +82,7 @@ A `yield` expression.
 ## ObjectPattern
 
 ```js
-interface PatternProperty <: Property {
+interface AssignmentProperty <: Property {
     type: "Property"; // inherited
     value: Pattern;
     kind: "init";
@@ -91,7 +91,7 @@ interface PatternProperty <: Property {
 
 interface ObjectPattern <: Pattern {
     type: "ObjectPattern";
-    properties: [ PatternProperty ];
+    properties: [ AssignmentProperty ];
 }
 ```
 
