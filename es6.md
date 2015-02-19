@@ -126,7 +126,7 @@ interface MethodDefinition <: Node {
     type: "MethodDefinition";
     key: Identifier;
     value: FunctionExpression;
-    kind: "" | "get" | "set";
+    kind: "constructor" | "method" | "get" | "set";
     computed: boolean;
     static: boolean;
 }
