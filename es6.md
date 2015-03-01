@@ -150,12 +150,10 @@ interface ClassExpression <: Class, Expression {
 
 ## ImportDeclaration
 
-**FIXME:** Esprima's behavior differs from Acorn's and SpiderMonkey's behavior in that `source` is of type `ModuleSpecifier`, which is otherwise identical to a `Literal`. See [Esprima bug 1077](https://github.com/jquery/esprima/issues/1077).
-
 ```js
 interface ImportDeclaration <: Declaration {
     specifiers: [ ImportSpecifier ];
-    source: Literal; // Or ModuleSpecifier? (Esprima deviation)
+    source: Literal;
 }
 ```
 
