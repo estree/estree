@@ -50,8 +50,6 @@ A complete program source tree.
 interface Function <: Node {
     id: Identifier | null;
     params: [ Pattern ];
-    defaults: [];
-    rest: null;
     body: BlockStatement;
     generator: false;
     expression: false;
