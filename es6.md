@@ -145,3 +145,35 @@ interface ClassExpression <: Class, Expression {
     type: "ClassExpression";
 }
 ```
+
+## ExportDeclaration
+
+```js
+interface ExportDeclaration <: Node {
+    default: boolean;
+    declaration: VariableDeclaration | Declaration | Expression | null;
+    specifiers: [ ExportSpecifier | ExportBatchSpecifier ];
+    source: Literal | null;
+}
+```
+
+An export declaration, e.g., `export {foo} from "mod";` or `export default foo;`.
+
+## ExportSpecifier
+
+```js
+interface ExportSpecifier {
+    exported: Identifier;
+    local: Identifier;
+}
+```
+
+An exported variable binding, e.g., `{foo}` in `export {foo}` or `{bar as foo}` in `export {bar as foo}`. The `exported` field refers to the name exported in the module. The `local` field refers to the binding into the local module scope. If it is a basic named export, such as in `export {foo}`, both `exported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased export, such as in `export {bar as foo}`, the `exported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
+
+## ExportBatchSpecifier
+
+```js
+interface ExportBatchSpecifier {}
+```
+
+A batch export specifier, e.g., `*` in `export * from "mod"`.
