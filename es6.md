@@ -195,7 +195,7 @@ A namespace import specifier, e.g., `* as foo` in `import * as foo from "mod.js"
 ```js
 interface ExportDeclaration <: Node {
     default: boolean;
-    declaration: VariableDeclaration | Declaration | Expression | null;
+    declaration: Declaration | Expression | null;
     specifiers: [ ExportSpecifier | ExportBatchSpecifier ];
     source: Literal | null;
 }
