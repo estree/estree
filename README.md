@@ -15,3 +15,4 @@ We've started the process of bringing together various communities using this fo
 * Mike Sherov ([Esprima](https://github.com/jquery/esprima))
 * Michael Ficarra ([@michaelficarra](https://github.com/michaelficarra))
 * Sebastian McKenzie ([Babel](https://github.com/babel/babel))
+* Kyle Simpson ([@getify](https://github.com/getify))
