@@ -145,3 +145,47 @@ interface ClassExpression <: Class, Expression {
     type: "ClassExpression";
 }
 ```
+
+# Modules
+
+## ImportDeclaration
+
+```js
+interface ImportDeclaration <: Declaration {
+    specifiers: [ ImportSpecifier ];
+    source: Literal;
+}
+```
+
+An import declaration, e.g., `import foo from "mod";`.
+
+## ImportSpecifier
+
+```js
+interface ImportSpecifier {
+    imported: Identifier;
+    local: Identifier;
+}
+```
+
+An imported variable binding, e.g., `{foo}` in `import {foo} from "mod"` or `{foo as bar}` in `import {foo as bar} from "mod"`. The `imported` field refers to the name of the export imported from the module. The `local` field refers to the binding imported into the local module scope. If it is a basic named import, such as in `import {foo} from "mod"`, both `imported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased import, such as in `import {foo as bar} from "mod"`, the `imported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
+
+## ImportDefaultSpecifier
+
+```js
+interface ImportDefaultSpecifier {
+    local: Identifier;
+}
+```
+
+A default import specifier, e.g., `foo` in `import foo from "mod.js"`.
+
+## ImportNamespaceSpecifier
+
+```js
+interface ImportNamespaceSpecifier {
+    local: Identifier;
+}
+```
+
+A namespace import specifier, e.g., `* as foo` in `import * as foo from "mod.js"`.
