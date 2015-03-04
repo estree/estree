@@ -70,6 +70,41 @@ interface YieldExpression <: Expression {
 
 A `yield` expression.
 
+# Template Literals
+
+## TemplateLiteral
+
+```js
+interface TemplateLiteral <: Expression {
+    type: "TemplateLiteral";
+    quasis: [ TemplateElement ];
+    expressions: [ Expression ];
+}
+```
+
+## TaggedTemplateExpression
+
+```js
+interface TaggedTemplateExpression <: Expression {
+    type: "TaggedTemplateExpression";
+    tag: Expression;
+    quasi: TemplateLiteral;
+}
+```
+
+## TemplateElement
+
+```js
+interface TemplateElement <: Node {
+    type: "TemplateElement";
+    tail: boolean;
+    value: {
+        cooked: string;
+        value: string;
+    }
+}
+```
+
 # Patterns
 
 ## ObjectPattern
