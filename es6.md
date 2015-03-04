@@ -225,10 +225,10 @@ interface ExportDefaultDeclaration <: Node {
 
 An export default declaration, e.g., `export default function () {};` or `export default 1;`.
 
-## ExportBatchDeclaration
+## ExportAllDeclaration
 
 ```js
-interface ExportBatchDeclaration <: Node {
+interface ExportAllDeclaration <: Node {
     source: Literal;
 }
 ```
