@@ -190,18 +190,19 @@ interface ImportNamespaceSpecifier {
 
 A namespace import specifier, e.g., `* as foo` in `import * as foo from "mod.js"`.
 
-## ExportDeclaration
+## ExportNamedDeclaration
 
 ```js
-interface ExportDeclaration <: Node {
-    default: boolean;
-    declaration: Declaration | Expression | null;
-    specifiers: [ ExportSpecifier | ExportBatchSpecifier ];
+interface ExportNamedDeclaration <: Node {
+    declaration: Declaration | null;
+    specifiers: [ ExportSpecifier ];
     source: Literal | null;
 }
 ```
 
-An export declaration, e.g., `export {foo} from "mod";` or `export default foo;`.
+An export named declaration, e.g., `export {foo, bar};`, `export {foo} from "mod";` or `export var foo = 1;`.
+
+_Note: Having `declaration` populated with non-empty `specifiers` or non-null `source` results in an invalid state._
 
 ## ExportSpecifier
 
@@ -214,10 +215,22 @@ interface ExportSpecifier {
 
 An exported variable binding, e.g., `{foo}` in `export {foo}` or `{bar as foo}` in `export {bar as foo}`. The `exported` field refers to the name exported in the module. The `local` field refers to the binding into the local module scope. If it is a basic named export, such as in `export {foo}`, both `exported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased export, such as in `export {bar as foo}`, the `exported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
 
-## ExportBatchSpecifier
+## ExportDefaultDeclaration
 
 ```js
-interface ExportBatchSpecifier {}
+interface ExportDefaultDeclaration <: Node {
+    declaration: Declaration | Expression;
+}
 ```
 
-A batch export specifier, e.g., `*` in `export * from "mod"`.
+An export default declaration, e.g., `export default function () {};` or `export default 1;`.
+
+## ExportBatchDeclaration
+
+```js
+interface ExportBatchDeclaration <: Node {
+    source: Literal;
+}
+```
+
+An export batch declaration, e.g., `export * from "mod";`.
