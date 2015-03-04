@@ -151,7 +151,7 @@ interface ClassExpression <: Class, Expression {
 ## ImportDeclaration
 
 ```js
-interface ImportDeclaration <: Declaration {
+interface ImportDeclaration <: Node {
     specifiers: [ ImportSpecifier ];
     source: Literal;
 }
