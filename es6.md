@@ -4,8 +4,6 @@ This document specifies the extensions to the core ESTree AST types to support t
 
 ```js
 extend interface Function {
-    defaults: [ Expression ];
-    rest: Identifier | null;
     generator: boolean;
 }
 ```
@@ -129,6 +127,23 @@ interface ObjectPattern <: Pattern {
 interface ArrayPattern <: Pattern {
     type: "ArrayPattern";
     elements: [ Pattern | null ];
+}
+```
+
+## RestElement
+
+```js
+interface RestElement <: Pattern {
+    argument: Pattern
+}
+```
+
+## AssignmentPattern
+
+```js
+interface AssignmentPattern <: Pattern {
+    left: Pattern,
+    right: Expression
 }
 ```
 
