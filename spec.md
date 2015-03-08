@@ -498,19 +498,6 @@ interface ConditionalExpression <: Expression {
 A conditional expression, i.e., a ternary `?`/`:` expression.
 
 
-## NewExpression
-
-```js
-interface NewExpression <: Expression {
-    type: "NewExpression";
-    callee: Expression;
-    arguments: [ Expression ];
-}
-```
-
-A `new` expression.
-
-
 ## CallExpression
 
 ```js
@@ -522,6 +509,17 @@ interface CallExpression <: Expression {
 ```
 
 A function or method call expression.
+
+
+## NewExpression
+
+```js
+interface NewExpression <: CallExpression {
+    type: "NewExpression";
+}
+```
+
+A `new` expression.
 
 
 ## MemberExpression
