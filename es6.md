@@ -31,6 +31,23 @@ extend interface VariableDeclaration {
 # Expressions
 
 ```js
+interface SpreadElement <: Node {
+    type: "SpreadElement";
+    argument: Expression;
+}
+
+extend interface ArrayExpression {
+    elements: [ Expression | SpreadElement | null ];
+}
+
+extend interface CallExpression {
+    arguments: [ Expression | SpreadElement ];
+}
+```
+
+Spread expression, e.g., `[head, ...iter, tail]`, `f(head, ...iter, ...tail)`.
+
+```js
 extend interface AssignmentExpression {
     left: Pattern | Expression;
 }
