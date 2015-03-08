@@ -134,7 +134,7 @@ interface ArrayPattern <: Pattern {
 
 ```js
 interface RestElement <: Pattern {
-    argument: Pattern
+    argument: Pattern;
 }
 ```
 
@@ -142,8 +142,8 @@ interface RestElement <: Pattern {
 
 ```js
 interface AssignmentPattern <: Pattern {
-    left: Pattern,
-    right: Expression
+    left: Pattern;
+    right: Expression;
 }
 ```
 
