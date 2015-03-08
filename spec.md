@@ -447,7 +447,7 @@ A binary operator expression.
 interface AssignmentExpression <: Expression {
     type: "AssignmentExpression";
     operator: AssignmentOperator;
-    left: Expression;
+    left: Pattern | Expression;
     right: Expression;
 }
 ```
