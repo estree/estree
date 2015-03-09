@@ -32,9 +32,13 @@ extend interface VariableDeclaration {
 
 ```js
 extend interface AssignmentExpression {
-    left: Pattern | Expression;
+    left: Pattern | MemberExpression;
 }
+```
 
+Note that pre-ES6 code was allowed [to pass references around](https://github.com/estree/estree/pull/20#issuecomment-74584758) and so `left` was much more liberal; an implementation might choose to continue using [old definition](https://github.com/estree/estree/blob/master/spec.md#assignmentexpression) if it needs to support such legacy code.
+
+```
 extend interface Property {
     key: Expression;
     method: boolean;
