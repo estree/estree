@@ -47,6 +47,8 @@ extend interface CallExpression {
 
 Spread expression, e.g., `[head, ...iter, tail]`, `f(head, ...iter, ...tail)`.
 
+**FIXME:** This describes the Esprima and Acorn behaviors, which is not currently aligned with the SpiderMonkey behavior.
+
 ```js
 extend interface AssignmentExpression {
     left: Pattern | Expression;
