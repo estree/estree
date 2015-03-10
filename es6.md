@@ -38,7 +38,7 @@ extend interface AssignmentExpression {
 
 Note that pre-ES6 code was allowed [to pass references around](https://github.com/estree/estree/pull/20#issuecomment-74584758) and so `left` was much more liberal; an implementation might choose to continue using [old definition](https://github.com/estree/estree/blob/master/spec.md#assignmentexpression) if it needs to support such legacy code.
 
-```
+```js
 extend interface Property {
     key: Expression;
     method: boolean;
@@ -208,6 +208,7 @@ interface ClassExpression <: Class, Expression {
 
 ```js
 interface ImportDeclaration <: Node {
+    type: "ImportDeclaration";
     specifiers: [ ImportSpecifier ];
     source: Literal;
 }
@@ -219,6 +220,7 @@ An import declaration, e.g., `import foo from "mod";`.
 
 ```js
 interface ImportSpecifier {
+    type: "ImportSpecifier";
     imported: Identifier;
     local: Identifier;
 }
@@ -230,6 +232,7 @@ An imported variable binding, e.g., `{foo}` in `import {foo} from "mod"` or `{fo
 
 ```js
 interface ImportDefaultSpecifier {
+    type: "ImportDefaultSpecifier";
     local: Identifier;
 }
 ```
@@ -240,6 +243,7 @@ A default import specifier, e.g., `foo` in `import foo from "mod.js"`.
 
 ```js
 interface ImportNamespaceSpecifier {
+    type: "ImportNamespaceSpecifier";
     local: Identifier;
 }
 ```
@@ -250,6 +254,7 @@ A namespace import specifier, e.g., `* as foo` in `import * as foo from "mod.js"
 
 ```js
 interface ExportNamedDeclaration <: Node {
+    type: "ExportNamedDeclaration";
     declaration: Declaration | null;
     specifiers: [ ExportSpecifier ];
     source: Literal | null;
@@ -264,6 +269,7 @@ _Note: Having `declaration` populated with non-empty `specifiers` or non-null `s
 
 ```js
 interface ExportSpecifier {
+    type: "ExportSpecifier";
     exported: Identifier;
     local: Identifier;
 }
@@ -275,6 +281,7 @@ An exported variable binding, e.g., `{foo}` in `export {foo}` or `{bar as foo}` 
 
 ```js
 interface ExportDefaultDeclaration <: Node {
+    type: "ExportDefaultDeclaration";
     declaration: Declaration | Expression;
 }
 ```
@@ -285,6 +292,7 @@ An export default declaration, e.g., `export default function () {};` or `export
 
 ```js
 interface ExportAllDeclaration <: Node {
+    type: "ExportAllDeclaration";
     source: Literal;
 }
 ```
