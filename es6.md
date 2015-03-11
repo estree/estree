@@ -31,6 +31,25 @@ extend interface VariableDeclaration {
 # Expressions
 
 ```js
+interface SpreadElement <: Node {
+    type: "SpreadElement";
+    argument: Expression;
+}
+
+extend interface ArrayExpression {
+    elements: [ Expression | SpreadElement | null ];
+}
+
+extend interface CallExpression {
+    arguments: [ Expression | SpreadElement ];
+}
+```
+
+Spread expression, e.g., `[head, ...iter, tail]`, `f(head, ...iter, ...tail)`.
+
+**FIXME:** This describes the Esprima and Acorn behaviors, which is not currently aligned with the SpiderMonkey behavior.
+
+```js
 extend interface AssignmentExpression {
     left: Pattern | MemberExpression;
 }
