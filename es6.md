@@ -31,6 +31,12 @@ extend interface VariableDeclaration {
 # Expressions
 
 ```js
+interface SuperExpression <: Expression {
+    type: "SuperExpression";
+}
+
+A `super` expression.
+
 interface SpreadElement <: Node {
     type: "SpreadElement";
     argument: Expression;
