@@ -1,5 +1,15 @@
 This document specifies the extensions to the core ESTree AST types to support the ES6 grammar.
 
+# Programs
+
+```js
+extend interface Program {
+    sourceType: "script" | "module";
+}
+```
+
+Parsers must specify `sourceType` as `"module"` if the source has been parsed as an ES6 module. Otherwise, `sourceType` must be `"script"`.
+
 # Functions
 
 ```js
