@@ -524,10 +524,10 @@ A `new` expression.
 ## MemberExpression
 
 ```js
-interface MemberExpression <: Expression {
+interface MemberExpression <: Expression, Pattern {
     type: "MemberExpression";
     object: Expression;
-    property: Identifier | Expression;
+    property: Expression;
     computed: boolean;
 }
 ```
