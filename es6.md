@@ -68,8 +68,6 @@ extend interface Property {
 
 ## ArrowFunctionExpression
 
-**FIXME:** This describes the Esprima and Acorn behaviors, which is not currently aligned with the SpiderMonkey behavior. See [SpiderMonkey bug 913617](https://bugzilla.mozilla.org/show_bug.cgi?id=913617).
-
 ```js
 interface ArrowFunctionExpression <: Function, Expression {
     type: "ArrowFunctionExpression";
