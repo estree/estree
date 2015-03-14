@@ -593,10 +593,11 @@ An identifier. Note that an identifier may be an expression or a destructuring p
 interface Literal <: Node, Expression {
     type: "Literal";
     value: string | boolean | null | number | RegExp;
+    kind: "string" | "boolean" | "null" | "number" | "regexp";
 }
 ```
 
-A literal token. Note that a literal can be an expression.
+A literal token. Note that a literal can be an expression. `kind` represents the type of `value`. Examples include `kind === "string"` if `value === "str"` or `kind === "number"` if `value === 2`.
 
 ### RegexLiteral
 
