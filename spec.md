@@ -593,7 +593,7 @@ An identifier. Note that an identifier may be an expression or a destructuring p
 interface Literal <: Node, Expression {
     type: "Literal";
     value: string | boolean | null | number | RegExp;
-    kind: "string" | "boolean" | "null" | "number" | "regexp";
+    kind: "string" | "boolean" | "null" | "number" | "regex";
 }
 ```
 
