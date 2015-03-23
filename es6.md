@@ -31,7 +31,7 @@ extend interface VariableDeclaration {
 # Expressions
 
 ```js
-interface Super {
+interface Super <: Node {
     type: "Super";
 }
 
