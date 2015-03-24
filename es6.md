@@ -31,8 +31,16 @@ extend interface VariableDeclaration {
 # Expressions
 
 ```js
-interface Super <: Expression {
+interface Super <: Node {
     type: "Super";
+}
+
+extend interface CallExpression {
+    callee: Expression | Super;
+}
+
+extend interface MemberExpression {
+    object: Expression | Super;
 }
 ```
 
