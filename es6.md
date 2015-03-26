@@ -235,6 +235,16 @@ interface ClassExpression <: Class, Expression {
 }
 ```
 
+## MetaProperty
+
+```js
+interface MetaProperty <: Expression {
+    type: "MetaProperty";
+    meta: Identifier;
+    property: Identifier;
+}
+```
+
 # Modules
 
 ## ImportDeclaration
