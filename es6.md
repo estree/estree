@@ -262,7 +262,7 @@ interface MetaProperty <: Expression {
 ```js
 interface ImportDeclaration <: Node {
     type: "ImportDeclaration";
-    specifiers: [ ImportSpecifier ];
+    specifiers: [ ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier ];
     source: Literal;
 }
 ```
