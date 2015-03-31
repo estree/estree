@@ -51,8 +51,6 @@ interface Function <: Node {
     id: Identifier | null;
     params: [ Pattern ];
     body: BlockStatement;
-    generator: false;
-    expression: false;
 }
 ```
 
