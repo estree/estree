@@ -27,8 +27,8 @@ Each `Position` object consists of a `line` number (1-indexed) and a `column` nu
 
 ```js
 interface Position {
-    line: uint32 >= 1;
-    column: uint32 >= 0;
+    line: number; // >= 1
+    column: number; // >= 0
 }
 ```
 
