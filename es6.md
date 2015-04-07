@@ -272,7 +272,7 @@ An import declaration, e.g., `import foo from "mod";`.
 ## ImportSpecifier
 
 ```js
-interface ImportSpecifier {
+interface ImportSpecifier <: Node {
     type: "ImportSpecifier";
     imported: Identifier;
     local: Identifier;
@@ -284,7 +284,7 @@ An imported variable binding, e.g., `{foo}` in `import {foo} from "mod"` or `{fo
 ## ImportDefaultSpecifier
 
 ```js
-interface ImportDefaultSpecifier {
+interface ImportDefaultSpecifier <: Node {
     type: "ImportDefaultSpecifier";
     local: Identifier;
 }
@@ -295,7 +295,7 @@ A default import specifier, e.g., `foo` in `import foo from "mod.js"`.
 ## ImportNamespaceSpecifier
 
 ```js
-interface ImportNamespaceSpecifier {
+interface ImportNamespaceSpecifier <: Node {
     type: "ImportNamespaceSpecifier";
     local: Identifier;
 }
@@ -321,7 +321,7 @@ _Note: Having `declaration` populated with non-empty `specifiers` or non-null `s
 ## ExportSpecifier
 
 ```js
-interface ExportSpecifier {
+interface ExportSpecifier <: Node {
     type: "ExportSpecifier";
     exported: Identifier;
     local: Identifier;
