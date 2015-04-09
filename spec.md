@@ -596,10 +596,10 @@ interface Literal <: Node, Expression {
 
 A literal token. Note that a literal can be an expression.
 
-### RegexLiteral
+### RegExpLiteral
 
 ```js
-interface RegexLiteral <: Literal {
+interface RegExpLiteral <: Literal {
   regex: {
     pattern: string;
     flags: string;
