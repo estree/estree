@@ -257,10 +257,10 @@ interface MetaProperty <: Expression {
 
 # Modules
 
-## Specifier
+## ModuleSpecifier
 
 ```js
-interface Specifier <: Node {
+interface ModuleSpecifier <: Node {
     local: Identifier;
 }
 ```
@@ -282,7 +282,7 @@ An import declaration, e.g., `import foo from "mod";`.
 ## ImportSpecifier
 
 ```js
-interface ImportSpecifier <: Specifier {
+interface ImportSpecifier <: ModuleSpecifier {
     type: "ImportSpecifier";
     imported: Identifier;
 }
@@ -293,7 +293,7 @@ An imported variable binding, e.g., `{foo}` in `import {foo} from "mod"` or `{fo
 ## ImportDefaultSpecifier
 
 ```js
-interface ImportDefaultSpecifier <: Specifier {
+interface ImportDefaultSpecifier <: ModuleSpecifier {
     type: "ImportDefaultSpecifier";
 }
 ```
@@ -303,7 +303,7 @@ A default import specifier, e.g., `foo` in `import foo from "mod.js"`.
 ## ImportNamespaceSpecifier
 
 ```js
-interface ImportNamespaceSpecifier <: Specifier {
+interface ImportNamespaceSpecifier <: ModuleSpecifier {
     type: "ImportNamespaceSpecifier";
 }
 ```
@@ -328,7 +328,7 @@ _Note: Having `declaration` populated with non-empty `specifiers` or non-null `s
 ## ExportSpecifier
 
 ```js
-interface ExportSpecifier <: Specifier {
+interface ExportSpecifier <: ModuleSpecifier {
     type: "ExportSpecifier";
     exported: Identifier;
 }
