@@ -5,6 +5,7 @@ This document specifies the extensions to the core ESTree AST types to support t
 ```js
 extend interface Program {
     sourceType: "script" | "module";
+    body: [ Statement | ModuleDeclaration ];
 }
 ```
 
@@ -257,6 +258,14 @@ interface MetaProperty <: Expression {
 
 # Modules
 
+## ModuleDeclaration
+
+```js
+interface ModuleDeclaration <: Node { }
+```
+
+A module `import` or `export` declaration.
+
 ## ModuleSpecifier
 
 ```js
@@ -270,7 +279,7 @@ A specifier in an import or export declaration.
 ## ImportDeclaration
 
 ```js
-interface ImportDeclaration <: Node {
+interface ImportDeclaration <: ModuleDeclaration {
     type: "ImportDeclaration";
     specifiers: [ ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier ];
     source: Literal;
@@ -313,7 +322,7 @@ A namespace import specifier, e.g., `* as foo` in `import * as foo from "mod.js"
 ## ExportNamedDeclaration
 
 ```js
-interface ExportNamedDeclaration <: Node {
+interface ExportNamedDeclaration <: ModuleDeclaration {
     type: "ExportNamedDeclaration";
     declaration: Declaration | null;
     specifiers: [ ExportSpecifier ];
@@ -339,7 +348,7 @@ An exported variable binding, e.g., `{foo}` in `export {foo}` or `{bar as foo}` 
 ## ExportDefaultDeclaration
 
 ```js
-interface ExportDefaultDeclaration <: Node {
+interface ExportDefaultDeclaration <: ModuleDeclaration {
     type: "ExportDefaultDeclaration";
     declaration: Declaration | Expression;
 }
@@ -350,7 +359,7 @@ An export default declaration, e.g., `export default function () {};` or `export
 ## ExportAllDeclaration
 
 ```js
-interface ExportAllDeclaration <: Node {
+interface ExportAllDeclaration <: ModuleDeclaration {
     type: "ExportAllDeclaration";
     source: Literal;
 }
