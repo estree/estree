@@ -220,7 +220,7 @@ interface ClassBody <: Node {
 ```js
 interface MethodDefinition <: Node {
     type: "MethodDefinition";
-    key: Identifier;
+    key: Expression;
     value: FunctionExpression;
     kind: "constructor" | "method" | "get" | "set";
     computed: boolean;
