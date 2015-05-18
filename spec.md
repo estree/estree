@@ -530,7 +530,7 @@ interface MemberExpression <: Expression, Pattern {
 }
 ```
 
-A member expression. If `computed === true`, the node corresponds to a computed `e1[e2]` expression and `property` is an `Expression`. If `computed === false`, the node corresponds to a static `e1.x` expression and `property` is an `Identifier`.
+A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier`.
 
 
 # Patterns
