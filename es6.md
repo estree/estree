@@ -110,6 +110,7 @@ A fat arrow function expression, e.g., `let foo = (bar) => { /* body */ }`.
 interface YieldExpression <: Expression {
     type: "YieldExpression";
     argument: Expression | null;
+    delegate: boolean;
 }
 ```
 
