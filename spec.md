@@ -562,7 +562,6 @@ A `case` (if `test` is an `Expression`) or `default` (if `test === null`) clause
 interface CatchClause <: Node {
     type: "CatchClause";
     param: Pattern;
-    guard: null;
     body: BlockStatement;
 }
 ```
