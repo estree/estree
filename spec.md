@@ -172,7 +172,6 @@ interface SwitchStatement <: Statement {
     type: "SwitchStatement";
     discriminant: Expression;
     cases: [ SwitchCase ];
-    lexical: false;
 }
 ```
 
