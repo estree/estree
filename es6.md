@@ -147,7 +147,7 @@ interface TemplateElement <: Node {
     tail: boolean;
     value: {
         cooked: string;
-        value: string;
+        raw: string;
     };
 }
 ```
