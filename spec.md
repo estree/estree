@@ -37,7 +37,7 @@ interface Position {
 ```js
 interface Program <: Node {
     type: "Program";
-    body: [Directive, ..., Statement ];
+    body: [Directive | Statement ];
 }
 ```
 
@@ -93,11 +93,11 @@ A block statement, i.e., a sequence of statements surrounded by braces.
 ```js
 interface FunctionBody <: BlockStatement {
     type: "BlockStatement";
-    body: [ Directive, ..., Statement ];
+    body: [ Directive | Statement ];
 }
 ```
 
-The body of a function, which is a block statement that may contain a directive prologue.
+The body of a function, which is a block statement that may begin with directives.
 
 ## ExpressionStatement
 
@@ -120,7 +120,7 @@ interface Directive <: ExpressionStatement {
 
 A directive from the directive prologue of a script or function.
 The `directive` property is the raw string source of the directive.
-This source includes single or double wrapping quotes and may not contain an EscapeSequence or LineContinuation..
+This value includes single or double wrapping quotes.
 
 
 ## IfStatement
