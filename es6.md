@@ -295,6 +295,7 @@ An import declaration, e.g., `import foo from "mod";`.
 interface ImportSpecifier <: ModuleSpecifier {
     type: "ImportSpecifier";
     imported: Identifier;
+    local: Identifier;
 }
 ```
 
