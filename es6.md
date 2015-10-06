@@ -203,7 +203,7 @@ interface AssignmentPattern <: Pattern {
 ```js
 interface Class <: Node {
     id: Identifier | null;
-    superClass: Expression;
+    superClass: Expression | null;
     body: ClassBody;
 }
 ```
