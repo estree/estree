@@ -14,6 +14,5 @@ extend interface Function {
 interface AwaitExpression <: Expression {
     type: "AwaitExpression";
     argument: Expression | null;
-    all: boolean;
 }
 ```
