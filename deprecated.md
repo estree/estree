@@ -1,4 +1,48 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 This document specifies deprecated extensions to the ESTree API that were at one point supported in Mozilla's SpiderMonkey JavaScript engine for features that were experimental or came from defunct standards.
+
+- [Functions](#functions)
+- [Statements](#statements)
+  - [ForInStatement](#forinstatement)
+  - [LetStatement](#letstatement)
+  - [SwitchStatement](#switchstatement)
+  - [TryStatement](#trystatement)
+- [Expressions](#expressions)
+  - [ComprehensionExpression](#comprehensionexpression)
+  - [GeneratorExpression](#generatorexpression)
+  - [GraphExpression](#graphexpression)
+  - [GraphIndexExpression](#graphindexexpression)
+  - [LetExpression](#letexpression)
+- [Clauses](#clauses)
+  - [CatchClause](#catchclause)
+  - [ComprehensionBlock](#comprehensionblock)
+- [Miscellaneous](#miscellaneous)
+  - [BinaryOperator](#binaryoperator)
+- [E4X](#e4x)
+  - [Declarations](#declarations)
+    - [XMLDefaultDeclaration](#xmldefaultdeclaration)
+  - [Expressions](#expressions-1)
+    - [XMLAnyName](#xmlanyname)
+    - [XMLQualifiedIdentifier](#xmlqualifiedidentifier)
+    - [XMLFunctionQualifiedIdentifier](#xmlfunctionqualifiedidentifier)
+    - [XMLAttributeSelector](#xmlattributeselector)
+    - [XMLFilterExpression](#xmlfilterexpression)
+    - [XMLElement](#xmlelement)
+    - [XMLList](#xmllist)
+  - [XML](#xml)
+    - [XMLEscape](#xmlescape)
+    - [XMLText](#xmltext)
+    - [XMLStartTag](#xmlstarttag)
+    - [XMLEndTag](#xmlendtag)
+    - [XMLPointTag](#xmlpointtag)
+    - [XMLName](#xmlname)
+    - [XMLAttribute](#xmlattribute)
+    - [XMLCdata](#xmlcdata)
+    - [XMLComment](#xmlcomment)
+    - [XMLProcessingInstruction](#xmlprocessinginstruction)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Functions
 

@@ -1,4 +1,44 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 This document specifies the extensions to the core ESTree AST types to support the ES6 grammar.
+
+- [Programs](#programs)
+- [Functions](#functions)
+- [Statements](#statements)
+  - [ForOfStatement](#forofstatement)
+- [Declarations](#declarations)
+  - [VariableDeclaration](#variabledeclaration)
+- [Expressions](#expressions)
+  - [ArrowFunctionExpression](#arrowfunctionexpression)
+  - [YieldExpression](#yieldexpression)
+- [Template Literals](#template-literals)
+  - [TemplateLiteral](#templateliteral)
+  - [TaggedTemplateExpression](#taggedtemplateexpression)
+  - [TemplateElement](#templateelement)
+- [Patterns](#patterns)
+  - [ObjectPattern](#objectpattern)
+  - [ArrayPattern](#arraypattern)
+  - [RestElement](#restelement)
+  - [AssignmentPattern](#assignmentpattern)
+- [Classes](#classes)
+  - [ClassBody](#classbody)
+  - [MethodDefinition](#methoddefinition)
+  - [ClassDeclaration](#classdeclaration)
+  - [ClassExpression](#classexpression)
+  - [MetaProperty](#metaproperty)
+- [Modules](#modules)
+  - [ModuleDeclaration](#moduledeclaration)
+  - [ModuleSpecifier](#modulespecifier)
+  - [ImportDeclaration](#importdeclaration)
+  - [ImportSpecifier](#importspecifier)
+  - [ImportDefaultSpecifier](#importdefaultspecifier)
+  - [ImportNamespaceSpecifier](#importnamespacespecifier)
+  - [ExportNamedDeclaration](#exportnameddeclaration)
+  - [ExportSpecifier](#exportspecifier)
+  - [ExportDefaultDeclaration](#exportdefaultdeclaration)
+  - [ExportAllDeclaration](#exportalldeclaration)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Programs
 
