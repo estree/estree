@@ -22,9 +22,11 @@ This document specifies the core ESTree AST node types that support the ES5 gram
   - [Choice](#choice)
     - [IfStatement](#ifstatement)
     - [SwitchStatement](#switchstatement)
+      - [SwitchCase](#switchcase)
   - [Exceptions](#exceptions)
     - [ThrowStatement](#throwstatement)
     - [TryStatement](#trystatement)
+      - [CatchClause](#catchclause)
   - [Loops](#loops)
     - [WhileStatement](#whilestatement)
     - [DoWhileStatement](#dowhilestatement)
@@ -58,9 +60,6 @@ This document specifies the core ESTree AST node types that support the ES5 gram
   - [NewExpression](#newexpression)
   - [SequenceExpression](#sequenceexpression)
 - [Patterns](#patterns)
-- [Clauses](#clauses)
-  - [SwitchCase](#switchcase)
-  - [CatchClause](#catchclause)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -292,6 +291,18 @@ interface SwitchStatement <: Statement {
 
 A `switch` statement.
 
+#### SwitchCase
+
+```js
+interface SwitchCase <: Node {
+    type: "SwitchCase";
+    test: Expression | null;
+    consequent: [ Statement ];
+}
+```
+
+A `case` (if `test` is an `Expression`) or `default` (if `test === null`) clause in the body of a `switch` statement.
+
 ## Exceptions
 
 ### ThrowStatement
@@ -317,6 +328,18 @@ interface TryStatement <: Statement {
 ```
 
 A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockStatement`.
+
+#### CatchClause
+
+```js
+interface CatchClause <: Node {
+    type: "CatchClause";
+    param: Pattern;
+    body: BlockStatement;
+}
+```
+
+A `catch` clause following a `try` block.
 
 ## Loops
 
@@ -669,29 +692,3 @@ Destructuring binding and assignment are not part of ES6, but all binding positi
 ```js
 interface Pattern <: Node { }
 ```
-
-# Clauses
-
-## SwitchCase
-
-```js
-interface SwitchCase <: Node {
-    type: "SwitchCase";
-    test: Expression | null;
-    consequent: [ Statement ];
-}
-```
-
-A `case` (if `test` is an `Expression`) or `default` (if `test === null`) clause in the body of a `switch` statement.
-
-## CatchClause
-
-```js
-interface CatchClause <: Node {
-    type: "CatchClause";
-    param: Pattern;
-    body: BlockStatement;
-}
-```
-
-A `catch` clause following a `try` block.
