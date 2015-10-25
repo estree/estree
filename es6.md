@@ -29,14 +29,16 @@ This document specifies the extensions to the core ESTree AST types to support t
 - [Modules](#modules)
   - [ModuleDeclaration](#moduledeclaration)
   - [ModuleSpecifier](#modulespecifier)
-  - [ImportDeclaration](#importdeclaration)
-  - [ImportSpecifier](#importspecifier)
-  - [ImportDefaultSpecifier](#importdefaultspecifier)
-  - [ImportNamespaceSpecifier](#importnamespacespecifier)
-  - [ExportNamedDeclaration](#exportnameddeclaration)
-  - [ExportSpecifier](#exportspecifier)
-  - [ExportDefaultDeclaration](#exportdefaultdeclaration)
-  - [ExportAllDeclaration](#exportalldeclaration)
+  - [Imports](#imports)
+    - [ImportDeclaration](#importdeclaration)
+    - [ImportSpecifier](#importspecifier)
+    - [ImportDefaultSpecifier](#importdefaultspecifier)
+    - [ImportNamespaceSpecifier](#importnamespacespecifier)
+  - [Exports](#exports)
+    - [ExportNamedDeclaration](#exportnameddeclaration)
+    - [ExportSpecifier](#exportspecifier)
+    - [ExportDefaultDeclaration](#exportdefaultdeclaration)
+    - [ExportAllDeclaration](#exportalldeclaration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -317,7 +319,9 @@ interface ModuleSpecifier <: Node {
 
 A specifier in an import or export declaration.
 
-## ImportDeclaration
+## Imports
+
+### ImportDeclaration
 
 ```js
 interface ImportDeclaration <: ModuleDeclaration {
@@ -329,7 +333,7 @@ interface ImportDeclaration <: ModuleDeclaration {
 
 An import declaration, e.g., `import foo from "mod";`.
 
-## ImportSpecifier
+### ImportSpecifier
 
 ```js
 interface ImportSpecifier <: ModuleSpecifier {
@@ -340,7 +344,7 @@ interface ImportSpecifier <: ModuleSpecifier {
 
 An imported variable binding, e.g., `{foo}` in `import {foo} from "mod"` or `{foo as bar}` in `import {foo as bar} from "mod"`. The `imported` field refers to the name of the export imported from the module. The `local` field refers to the binding imported into the local module scope. If it is a basic named import, such as in `import {foo} from "mod"`, both `imported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased import, such as in `import {foo as bar} from "mod"`, the `imported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
 
-## ImportDefaultSpecifier
+### ImportDefaultSpecifier
 
 ```js
 interface ImportDefaultSpecifier <: ModuleSpecifier {
@@ -350,7 +354,7 @@ interface ImportDefaultSpecifier <: ModuleSpecifier {
 
 A default import specifier, e.g., `foo` in `import foo from "mod.js"`.
 
-## ImportNamespaceSpecifier
+### ImportNamespaceSpecifier
 
 ```js
 interface ImportNamespaceSpecifier <: ModuleSpecifier {
@@ -360,7 +364,9 @@ interface ImportNamespaceSpecifier <: ModuleSpecifier {
 
 A namespace import specifier, e.g., `* as foo` in `import * as foo from "mod.js"`.
 
-## ExportNamedDeclaration
+## Exports
+
+### ExportNamedDeclaration
 
 ```js
 interface ExportNamedDeclaration <: ModuleDeclaration {
@@ -375,7 +381,7 @@ An export named declaration, e.g., `export {foo, bar};`, `export {foo} from "mod
 
 _Note: Having `declaration` populated with non-empty `specifiers` or non-null `source` results in an invalid state._
 
-## ExportSpecifier
+### ExportSpecifier
 
 ```js
 interface ExportSpecifier <: ModuleSpecifier {
@@ -386,7 +392,7 @@ interface ExportSpecifier <: ModuleSpecifier {
 
 An exported variable binding, e.g., `{foo}` in `export {foo}` or `{bar as foo}` in `export {bar as foo}`. The `exported` field refers to the name exported in the module. The `local` field refers to the binding into the local module scope. If it is a basic named export, such as in `export {foo}`, both `exported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased export, such as in `export {bar as foo}`, the `exported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
 
-## ExportDefaultDeclaration
+### ExportDefaultDeclaration
 
 ```js
 interface ExportDefaultDeclaration <: ModuleDeclaration {
@@ -397,7 +403,7 @@ interface ExportDefaultDeclaration <: ModuleDeclaration {
 
 An export default declaration, e.g., `export default function () {};` or `export default 1;`.
 
-## ExportAllDeclaration
+### ExportAllDeclaration
 
 ```js
 interface ExportAllDeclaration <: ModuleDeclaration {

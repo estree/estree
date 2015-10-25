@@ -6,23 +6,27 @@ This document specifies the core ESTree AST node types that support the ES5 gram
 - [Programs](#programs)
 - [Functions](#functions)
 - [Statements](#statements)
-  - [EmptyStatement](#emptystatement)
-  - [BlockStatement](#blockstatement)
   - [ExpressionStatement](#expressionstatement)
-  - [IfStatement](#ifstatement)
-  - [LabeledStatement](#labeledstatement)
-  - [BreakStatement](#breakstatement)
-  - [ContinueStatement](#continuestatement)
-  - [WithStatement](#withstatement)
-  - [SwitchStatement](#switchstatement)
-  - [ReturnStatement](#returnstatement)
-  - [ThrowStatement](#throwstatement)
-  - [TryStatement](#trystatement)
-  - [WhileStatement](#whilestatement)
-  - [DoWhileStatement](#dowhilestatement)
-  - [ForStatement](#forstatement)
-  - [ForInStatement](#forinstatement)
+  - [BlockStatement](#blockstatement)
+  - [EmptyStatement](#emptystatement)
   - [DebuggerStatement](#debuggerstatement)
+  - [WithStatement](#withstatement)
+  - [Control flow](#control-flow)
+    - [ReturnStatement](#returnstatement)
+    - [LabeledStatement](#labeledstatement)
+    - [BreakStatement](#breakstatement)
+    - [ContinueStatement](#continuestatement)
+  - [Choice](#choice)
+    - [IfStatement](#ifstatement)
+    - [SwitchStatement](#switchstatement)
+  - [Exceptions](#exceptions)
+    - [ThrowStatement](#throwstatement)
+    - [TryStatement](#trystatement)
+  - [Loops](#loops)
+    - [WhileStatement](#whilestatement)
+    - [DoWhileStatement](#dowhilestatement)
+    - [ForStatement](#forstatement)
+    - [ForInStatement](#forinstatement)
 - [Declarations](#declarations)
   - [FunctionDeclaration](#functiondeclaration)
   - [VariableDeclaration](#variabledeclaration)
@@ -31,18 +35,20 @@ This document specifies the core ESTree AST node types that support the ES5 gram
   - [ThisExpression](#thisexpression)
   - [ArrayExpression](#arrayexpression)
   - [ObjectExpression](#objectexpression)
-  - [Property](#property)
+    - [Property](#property)
   - [FunctionExpression](#functionexpression)
-  - [SequenceExpression](#sequenceexpression)
-  - [UnaryExpression](#unaryexpression)
-  - [BinaryExpression](#binaryexpression)
-  - [AssignmentExpression](#assignmentexpression)
-  - [UpdateExpression](#updateexpression)
-  - [LogicalExpression](#logicalexpression)
+  - [Unary operations](#unary-operations)
+    - [UnaryExpression](#unaryexpression)
+    - [UpdateExpression](#updateexpression)
+  - [Binary operations](#binary-operations)
+    - [BinaryExpression](#binaryexpression)
+    - [AssignmentExpression](#assignmentexpression)
+    - [LogicalExpression](#logicalexpression)
+    - [MemberExpression](#memberexpression)
   - [ConditionalExpression](#conditionalexpression)
   - [CallExpression](#callexpression)
   - [NewExpression](#newexpression)
-  - [MemberExpression](#memberexpression)
+  - [SequenceExpression](#sequenceexpression)
 - [Patterns](#patterns)
 - [Clauses](#clauses)
   - [SwitchCase](#switchcase)
@@ -102,7 +108,6 @@ interface Program <: Node {
 
 A complete program source tree.
 
-
 # Functions
 
 ```js
@@ -115,7 +120,6 @@ interface Function <: Node {
 
 A function declaration or expression.
 
-
 # Statements
 
 ```js
@@ -123,30 +127,6 @@ interface Statement <: Node { }
 ```
 
 Any statement.
-
-
-## EmptyStatement
-
-```js
-interface EmptyStatement <: Statement {
-    type: "EmptyStatement";
-}
-```
-
-An empty statement, i.e., a solitary semicolon.
-
-
-## BlockStatement
-
-```js
-interface BlockStatement <: Statement {
-    type: "BlockStatement";
-    body: [ Statement ];
-}
-```
-
-A block statement, i.e., a sequence of statements surrounded by braces.
-
 
 ## ExpressionStatement
 
@@ -159,57 +139,36 @@ interface ExpressionStatement <: Statement {
 
 An expression statement, i.e., a statement consisting of a single expression.
 
-
-## IfStatement
+## BlockStatement
 
 ```js
-interface IfStatement <: Statement {
-    type: "IfStatement";
-    test: Expression;
-    consequent: Statement;
-    alternate: Statement | null;
+interface BlockStatement <: Statement {
+    type: "BlockStatement";
+    body: [ Statement ];
 }
 ```
 
-An `if` statement.
+A block statement, i.e., a sequence of statements surrounded by braces.
 
-
-## LabeledStatement
+## EmptyStatement
 
 ```js
-interface LabeledStatement <: Statement {
-    type: "LabeledStatement";
-    label: Identifier;
-    body: Statement;
+interface EmptyStatement <: Statement {
+    type: "EmptyStatement";
 }
 ```
 
-A labeled statement, i.e., a statement prefixed by a `break`/`continue` label.
+An empty statement, i.e., a solitary semicolon.
 
-
-## BreakStatement
+## DebuggerStatement
 
 ```js
-interface BreakStatement <: Statement {
-    type: "BreakStatement";
-    label: Identifier | null;
+interface DebuggerStatement <: Statement {
+    type: "DebuggerStatement";
 }
 ```
 
-A `break` statement.
-
-
-## ContinueStatement
-
-```js
-interface ContinueStatement <: Statement {
-    type: "ContinueStatement";
-    label: Identifier | null;
-}
-```
-
-A `continue` statement.
-
+A `debugger` statement.
 
 ## WithStatement
 
@@ -223,8 +182,69 @@ interface WithStatement <: Statement {
 
 A `with` statement.
 
+## Control flow
 
-## SwitchStatement
+### ReturnStatement
+
+```js
+interface ReturnStatement <: Statement {
+    type: "ReturnStatement";
+    argument: Expression | null;
+}
+```
+
+A `return` statement.
+
+### LabeledStatement
+
+```js
+interface LabeledStatement <: Statement {
+    type: "LabeledStatement";
+    label: Identifier;
+    body: Statement;
+}
+```
+
+A labeled statement, i.e., a statement prefixed by a `break`/`continue` label.
+
+### BreakStatement
+
+```js
+interface BreakStatement <: Statement {
+    type: "BreakStatement";
+    label: Identifier | null;
+}
+```
+
+A `break` statement.
+
+### ContinueStatement
+
+```js
+interface ContinueStatement <: Statement {
+    type: "ContinueStatement";
+    label: Identifier | null;
+}
+```
+
+A `continue` statement.
+
+## Choice
+
+### IfStatement
+
+```js
+interface IfStatement <: Statement {
+    type: "IfStatement";
+    test: Expression;
+    consequent: Statement;
+    alternate: Statement | null;
+}
+```
+
+An `if` statement.
+
+### SwitchStatement
 
 ```js
 interface SwitchStatement <: Statement {
@@ -236,20 +256,9 @@ interface SwitchStatement <: Statement {
 
 A `switch` statement.
 
+## Exceptions
 
-## ReturnStatement
-
-```js
-interface ReturnStatement <: Statement {
-    type: "ReturnStatement";
-    argument: Expression | null;
-}
-```
-
-A `return` statement.
-
-
-## ThrowStatement
+### ThrowStatement
 
 ```js
 interface ThrowStatement <: Statement {
@@ -260,8 +269,7 @@ interface ThrowStatement <: Statement {
 
 A `throw` statement.
 
-
-## TryStatement
+### TryStatement
 
 ```js
 interface TryStatement <: Statement {
@@ -274,8 +282,9 @@ interface TryStatement <: Statement {
 
 A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockStatement`.
 
+## Loops
 
-## WhileStatement
+### WhileStatement
 
 ```js
 interface WhileStatement <: Statement {
@@ -287,8 +296,7 @@ interface WhileStatement <: Statement {
 
 A `while` statement.
 
-
-## DoWhileStatement
+### DoWhileStatement
 
 ```js
 interface DoWhileStatement <: Statement {
@@ -300,8 +308,7 @@ interface DoWhileStatement <: Statement {
 
 A `do`/`while` statement.
 
-
-## ForStatement
+### ForStatement
 
 ```js
 interface ForStatement <: Statement {
@@ -315,8 +322,7 @@ interface ForStatement <: Statement {
 
 A `for` statement.
 
-
-## ForInStatement
+### ForInStatement
 
 ```js
 interface ForInStatement <: Statement {
@@ -329,18 +335,6 @@ interface ForInStatement <: Statement {
 
 A `for`/`in` statement.
 
-
-## DebuggerStatement
-
-```js
-interface DebuggerStatement <: Statement {
-    type: "DebuggerStatement";
-}
-```
-
-A `debugger` statement.
-
-
 # Declarations
 
 ```js
@@ -348,7 +342,6 @@ interface Declaration <: Statement { }
 ```
 
 Any declaration node. Note that declarations are considered statements; this is because declarations can appear in any statement context.
-
 
 ## FunctionDeclaration
 
@@ -360,7 +353,6 @@ interface FunctionDeclaration <: Function, Declaration {
 ```
 
 A function declaration. Note that unlike in the parent interface `Function`, the `id` cannot be `null`.
-
 
 ## VariableDeclaration
 
@@ -374,7 +366,6 @@ interface VariableDeclaration <: Declaration {
 
 A variable declaration.
 
-
 ## VariableDeclarator
 
 ```js
@@ -387,7 +378,6 @@ interface VariableDeclarator <: Node {
 
 A variable declarator.
 
-
 # Expressions
 
 ```js
@@ -395,7 +385,6 @@ interface Expression <: Node { }
 ```
 
 Any expression node. Since the left-hand side of an assignment may be any expression in general, an expression can also be a pattern.
-
 
 ## ThisExpression
 
@@ -406,7 +395,6 @@ interface ThisExpression <: Expression {
 ```
 
 A `this` expression.
-
 
 ## ArrayExpression
 
@@ -419,7 +407,6 @@ interface ArrayExpression <: Expression {
 
 An array expression.
 
-
 ## ObjectExpression
 
 ```js
@@ -431,8 +418,7 @@ interface ObjectExpression <: Expression {
 
 An object expression.
 
-
-## Property
+### Property
 
 ```js
 interface Property <: Node {
@@ -445,7 +431,6 @@ interface Property <: Node {
 
 A literal property in an object expression can have either a string or number as its `value`. Ordinary property initializers have a `kind` value `"init"`; getters and setters have the kind values `"get"` and `"set"`, respectively.
 
-
 ## FunctionExpression
 
 ```js
@@ -456,20 +441,9 @@ interface FunctionExpression <: Function, Expression {
 
 A `function` expression.
 
+## Unary operations
 
-## SequenceExpression
-
-```js
-interface SequenceExpression <: Expression {
-    type: "SequenceExpression";
-    expressions: [ Expression ];
-}
-```
-
-A sequence expression, i.e., a comma-separated sequence of expressions.
-
-
-## UnaryExpression
+### UnaryExpression
 
 ```js
 interface UnaryExpression <: Expression {
@@ -482,36 +456,7 @@ interface UnaryExpression <: Expression {
 
 A unary operator expression.
 
-
-## BinaryExpression
-
-```js
-interface BinaryExpression <: Expression {
-    type: "BinaryExpression";
-    operator: BinaryOperator;
-    left: Expression;
-    right: Expression;
-}
-```
-
-A binary operator expression.
-
-
-## AssignmentExpression
-
-```js
-interface AssignmentExpression <: Expression {
-    type: "AssignmentExpression";
-    operator: AssignmentOperator;
-    left: Pattern | Expression;
-    right: Expression;
-}
-```
-
-An assignment operator expression.
-
-
-## UpdateExpression
+### UpdateExpression
 
 ```js
 interface UpdateExpression <: Expression {
@@ -524,8 +469,35 @@ interface UpdateExpression <: Expression {
 
 An update (increment or decrement) operator expression.
 
+## Binary operations
 
-## LogicalExpression
+### BinaryExpression
+
+```js
+interface BinaryExpression <: Expression {
+    type: "BinaryExpression";
+    operator: BinaryOperator;
+    left: Expression;
+    right: Expression;
+}
+```
+
+A binary operator expression.
+
+### AssignmentExpression
+
+```js
+interface AssignmentExpression <: Expression {
+    type: "AssignmentExpression";
+    operator: AssignmentOperator;
+    left: Pattern | Expression;
+    right: Expression;
+}
+```
+
+An assignment operator expression.
+
+### LogicalExpression
 
 ```js
 interface LogicalExpression <: Expression {
@@ -538,6 +510,18 @@ interface LogicalExpression <: Expression {
 
 A logical operator expression.
 
+### MemberExpression
+
+```js
+interface MemberExpression <: Expression, Pattern {
+    type: "MemberExpression";
+    object: Expression;
+    property: Expression;
+    computed: boolean;
+}
+```
+
+A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier`.
 
 ## ConditionalExpression
 
@@ -552,7 +536,6 @@ interface ConditionalExpression <: Expression {
 
 A conditional expression, i.e., a ternary `?`/`:` expression.
 
-
 ## CallExpression
 
 ```js
@@ -565,7 +548,6 @@ interface CallExpression <: Expression {
 
 A function or method call expression.
 
-
 ## NewExpression
 
 ```js
@@ -576,20 +558,16 @@ interface NewExpression <: CallExpression {
 
 A `new` expression.
 
-
-## MemberExpression
+## SequenceExpression
 
 ```js
-interface MemberExpression <: Expression, Pattern {
-    type: "MemberExpression";
-    object: Expression;
-    property: Expression;
-    computed: boolean;
+interface SequenceExpression <: Expression {
+    type: "SequenceExpression";
+    expressions: [ Expression ];
 }
 ```
 
-A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier`.
-
+A sequence expression, i.e., a comma-separated sequence of expressions.
 
 # Patterns
 
@@ -598,7 +576,6 @@ Destructuring binding and assignment are not part of ES6, but all binding positi
 ```js
 interface Pattern <: Node { }
 ```
-
 
 # Clauses
 
@@ -614,7 +591,6 @@ interface SwitchCase <: Node {
 
 A `case` (if `test` is an `Expression`) or `default` (if `test === null`) clause in the body of a `switch` statement.
 
-
 ## CatchClause
 
 ```js
@@ -626,7 +602,6 @@ interface CatchClause <: Node {
 ```
 
 A `catch` clause following a `try` block.
-
 
 # Miscellaneous
 
@@ -640,7 +615,6 @@ interface Identifier <: Node, Expression, Pattern {
 ```
 
 An identifier. Note that an identifier may be an expression or a destructuring pattern.
-
 
 ## Literal
 
@@ -678,7 +652,6 @@ enum UnaryOperator {
 
 A unary operator token.
 
-
 ## BinaryOperator
 
 ```js
@@ -694,7 +667,6 @@ enum BinaryOperator {
 
 A binary operator token.
 
-
 ## LogicalOperator
 
 ```js
@@ -704,7 +676,6 @@ enum LogicalOperator {
 ```
 
 A logical operator token.
-
 
 ## AssignmentOperator
 
@@ -717,7 +688,6 @@ enum AssignmentOperator {
 ```
 
 An assignment operator token.
-
 
 ## UpdateOperator
 

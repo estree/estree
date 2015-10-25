@@ -57,7 +57,6 @@ If the `expression` flag is true, the function is an [expression closure](https:
 
 # Statements
 
-
 ## ForInStatement
 
 ```js
@@ -67,7 +66,6 @@ extend interface ForInStatement {
 ```
 
 If `each` is true, a `for each`/`in` statement.
-
 
 ## LetStatement
 
@@ -81,7 +79,6 @@ interface LetStatement <: Statement {
 
 A `let` statement.
 
-
 ## SwitchStatement
 
 ```js
@@ -91,7 +88,6 @@ extend interface SwitchStatement {
 ```
 
 The `lexical` flag is metadata indicating whether the `switch` statement contains any unnested `let` declarations (and therefore introduces a new lexical scope).
-
 
 ## TryStatement
 
@@ -103,7 +99,6 @@ extend interface TryStatement {
 ```
 
 The `length` of `handlers` may be any non-negative integer.
-
 
 # Expressions
 
@@ -120,7 +115,6 @@ interface ComprehensionExpression <: Expression {
 
 An array comprehension. The `blocks` array corresponds to the sequence of `for` and `for each` blocks. The optional `filter` expression corresponds to the final `if` clause, if present.
 
-
 ## GeneratorExpression
 
 ```js
@@ -134,7 +128,6 @@ interface GeneratorExpression <: Expression {
 
 A generator expression. As with array comprehensions, the `blocks` array corresponds to the sequence of `for` and `for each` blocks, and the optional `filter` expression corresponds to the final `if` clause, if present.
 
-
 ## GraphExpression
 
 ```js
@@ -147,7 +140,6 @@ interface GraphExpression <: Expression {
 
 A graph expression, aka "sharp literal," such as `#1={ self: #1# }`.
 
-
 ## GraphIndexExpression
 
 ```js
@@ -158,7 +150,6 @@ interface GraphIndexExpression <: Expression {
 ```
 
 A graph index expression, aka "sharp variable," such as `#1#`.
-
 
 ## LetExpression
 
@@ -172,7 +163,6 @@ interface LetExpression <: Expression {
 
 A `let` expression.
 
-
 # Clauses
 
 ## CatchClause
@@ -184,7 +174,6 @@ extend interface CatchClause {
 ```
 
 The optional `guard` property corresponds to the optional expression guard on the bound variable.
-
 
 ## ComprehensionBlock
 
@@ -199,7 +188,6 @@ interface ComprehensionBlock <: Node {
 
 A `for` or `for each` block in an array comprehension or generator expression.
 
-
 # Miscellaneous
 
 ## BinaryOperator
@@ -212,13 +200,11 @@ extend enum BinaryOperator {
 
 The `".."` token is E4X-specific.
 
-
 # E4X
 
 E4X was specified by [ECMA-357](http://www.ecma-international.org/publications/standards/Ecma-357.htm) but has become a defunct standard. It was implemented for several years in SpiderMonkey but was [removed starting in Firefox 21](https://bugzilla.mozilla.org/show_bug.cgi?id=788293).
 
 ## Declarations
-
 
 ### XMLDefaultDeclaration
 
@@ -231,7 +217,6 @@ interface XMLDefaultDeclaration <: Declaration {
 
 A `default xml namespace` declaration.
 
-
 ## Expressions
 
 ### XMLAnyName
@@ -243,7 +228,6 @@ interface XMLAnyName <: Expression {
 ```
 
 The special E4X wildcard pseudo-identifier `*`.
-
 
 ### XMLQualifiedIdentifier
 
@@ -258,7 +242,6 @@ interface XMLQualifiedIdentifier <: Expression {
 
 An E4X qualified identifier, i.e., a pseudo-identifier using the namespace separator `::`. If the qualified identifier has a computed name (i.e., the `id::[expr]` form), then `computed` is `true` and the `right` property is an expression.
 
-
 ### XMLFunctionQualifiedIdentifier
 
 ```js
@@ -271,7 +254,6 @@ interface XMLFunctionQualifiedIdentifier <: Expression {
 
 An E4X identifier qualified by the `function` keyword, e.g., `function::id`. (This functionality was a non-standard SpiderMonkey extension.)
 
-
 ### XMLAttributeSelector
 
 ```js
@@ -282,7 +264,6 @@ interface XMLAttributeSelector <: Expression {
 ```
 
 An E4X attribute selector expression, i.e., an `@` expression.
-
 
 ### XMLFilterExpression
 
@@ -296,7 +277,6 @@ interface XMLFilterExpression <: Expression {
 
 An E4X list filter expression, i.e., an expression of the form `expr.(expr)`.
 
-
 ### XMLElement
 
 ```js
@@ -307,7 +287,6 @@ interface XMLElement <: XML, Expression {
 ```
 
 An E4X literal representing a single XML element.
-
 
 ### XMLList
 
@@ -320,7 +299,6 @@ interface XMLList <: XML, Expression {
 
 An E4X literal representing a list of XML elements.
 
-
 ## XML
 
 ```js
@@ -328,7 +306,6 @@ interface XML <: Node { }
 ```
 
 XML data.
-
 
 ### XMLEscape
 
@@ -341,7 +318,6 @@ interface XMLEscape <: XML {
 
 XML data with an escaped JavaScript expression.
 
-
 ### XMLText
 
 ```js
@@ -352,7 +328,6 @@ interface XMLText <: XML {
 ```
 
 Literal XML text.
-
 
 ### XMLStartTag
 
@@ -365,7 +340,6 @@ interface XMLStartTag <: XML {
 
 An XML start tag.
 
-
 ### XMLEndTag
 
 ```js
@@ -376,7 +350,6 @@ interface XMLEndTag <: XML {
 ```
 
 An XML end tag.
-
 
 ### XMLPointTag
 
@@ -389,7 +362,6 @@ interface XMLPointTag <: XML {
 
 An XML point tag.
 
-
 ### XMLName
 
 ```js
@@ -400,7 +372,6 @@ interface XMLName <: XML {
 ```
 
 An XML name.
-
 
 ### XMLAttribute
 
@@ -413,7 +384,6 @@ interface XMLAttribute <: XML {
 
 An XML attribute value.
 
-
 ### XMLCdata
 
 ```js
@@ -425,7 +395,6 @@ interface XMLCdata <: XML {
 
 An XML CDATA node.
 
-
 ### XMLComment
 
 ```js
@@ -436,7 +405,6 @@ interface XMLComment <: XML {
 ```
 
 An XML comment.
-
 
 ### XMLProcessingInstruction
 
