@@ -39,11 +39,16 @@ This document specifies the core ESTree AST node types that support the ES5 gram
   - [FunctionExpression](#functionexpression)
   - [Unary operations](#unary-operations)
     - [UnaryExpression](#unaryexpression)
+      - [UnaryOperator](#unaryoperator)
     - [UpdateExpression](#updateexpression)
+      - [UpdateOperator](#updateoperator)
   - [Binary operations](#binary-operations)
     - [BinaryExpression](#binaryexpression)
+      - [BinaryOperator](#binaryoperator)
     - [AssignmentExpression](#assignmentexpression)
+      - [AssignmentOperator](#assignmentoperator)
     - [LogicalExpression](#logicalexpression)
+      - [LogicalOperator](#logicaloperator)
     - [MemberExpression](#memberexpression)
   - [ConditionalExpression](#conditionalexpression)
   - [CallExpression](#callexpression)
@@ -57,11 +62,6 @@ This document specifies the core ESTree AST node types that support the ES5 gram
   - [Identifier](#identifier)
   - [Literal](#literal)
     - [RegExpLiteral](#regexpliteral)
-  - [UnaryOperator](#unaryoperator)
-  - [BinaryOperator](#binaryoperator)
-  - [LogicalOperator](#logicaloperator)
-  - [AssignmentOperator](#assignmentoperator)
-  - [UpdateOperator](#updateoperator)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -456,6 +456,16 @@ interface UnaryExpression <: Expression {
 
 A unary operator expression.
 
+#### UnaryOperator
+
+```js
+enum UnaryOperator {
+    "-" | "+" | "!" | "~" | "typeof" | "void" | "delete"
+}
+```
+
+A unary operator token.
+
 ### UpdateExpression
 
 ```js
@@ -468,6 +478,16 @@ interface UpdateExpression <: Expression {
 ```
 
 An update (increment or decrement) operator expression.
+
+#### UpdateOperator
+
+```js
+enum UpdateOperator {
+    "++" | "--"
+}
+```
+
+An update (increment or decrement) operator token.
 
 ## Binary operations
 
@@ -484,6 +504,21 @@ interface BinaryExpression <: Expression {
 
 A binary operator expression.
 
+#### BinaryOperator
+
+```js
+enum BinaryOperator {
+    "==" | "!=" | "===" | "!=="
+         | "<" | "<=" | ">" | ">="
+         | "<<" | ">>" | ">>>"
+         | "+" | "-" | "*" | "/" | "%"
+         | "|" | "^" | "&" | "in"
+         | "instanceof"
+}
+```
+
+A binary operator token.
+
 ### AssignmentExpression
 
 ```js
@@ -497,6 +532,18 @@ interface AssignmentExpression <: Expression {
 
 An assignment operator expression.
 
+#### AssignmentOperator
+
+```js
+enum AssignmentOperator {
+    "=" | "+=" | "-=" | "*=" | "/=" | "%="
+        | "<<=" | ">>=" | ">>>="
+        | "|=" | "^=" | "&="
+}
+```
+
+An assignment operator token.
+
 ### LogicalExpression
 
 ```js
@@ -509,6 +556,16 @@ interface LogicalExpression <: Expression {
 ```
 
 A logical operator expression.
+
+#### LogicalOperator
+
+```js
+enum LogicalOperator {
+    "||" | "&&"
+}
+```
+
+A logical operator token.
 
 ### MemberExpression
 
@@ -641,60 +698,3 @@ interface RegExpLiteral <: Literal {
 The `regex` property allows regexes to be represented in environments that don’t
 support certain flags such as `y` or `u`. In environments that don't support
 these flags `value` will be `null` as the regex can't be represented natively.
-
-## UnaryOperator
-
-```js
-enum UnaryOperator {
-    "-" | "+" | "!" | "~" | "typeof" | "void" | "delete"
-}
-```
-
-A unary operator token.
-
-## BinaryOperator
-
-```js
-enum BinaryOperator {
-    "==" | "!=" | "===" | "!=="
-         | "<" | "<=" | ">" | ">="
-         | "<<" | ">>" | ">>>"
-         | "+" | "-" | "*" | "/" | "%"
-         | "|" | "^" | "&" | "in"
-         | "instanceof"
-}
-```
-
-A binary operator token.
-
-## LogicalOperator
-
-```js
-enum LogicalOperator {
-    "||" | "&&"
-}
-```
-
-A logical operator token.
-
-## AssignmentOperator
-
-```js
-enum AssignmentOperator {
-    "=" | "+=" | "-=" | "*=" | "/=" | "%="
-        | "<<=" | ">>=" | ">>>="
-        | "|=" | "^=" | "&="
-}
-```
-
-An assignment operator token.
-
-## UpdateOperator
-
-```js
-enum UpdateOperator {
-    "++" | "--"
-}
-```
-
-An update (increment or decrement) operator token.
