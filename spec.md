@@ -118,7 +118,7 @@ interface Function <: Node {
 }
 ```
 
-A function declaration or expression.
+A function [declaration](#functiondeclaration) or [expression](#functionexpression).
 
 # Statements
 
@@ -571,7 +571,7 @@ A sequence expression, i.e., a comma-separated sequence of expressions.
 
 # Patterns
 
-Destructuring binding and assignment are not part of ES6, but all binding positions accept `Pattern` to allow for destructuring in ES6. Nevertheless, for ES5, the only `Pattern` subtype is `Identifier`.
+Destructuring binding and assignment are not part of ES6, but all binding positions accept `Pattern` to allow for destructuring in ES6. Nevertheless, for ES5, the only `Pattern` subtype is [`Identifier`](#identifier).
 
 ```js
 interface Pattern <: Node { }
