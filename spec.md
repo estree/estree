@@ -3,6 +3,9 @@
 This document specifies the core ESTree AST node types that support the ES5 grammar.
 
 - [Node objects](#node-objects)
+- [Identifier](#identifier)
+- [Literal](#literal)
+  - [RegExpLiteral](#regexpliteral)
 - [Programs](#programs)
 - [Functions](#functions)
 - [Statements](#statements)
@@ -30,7 +33,7 @@ This document specifies the core ESTree AST node types that support the ES5 gram
 - [Declarations](#declarations)
   - [FunctionDeclaration](#functiondeclaration)
   - [VariableDeclaration](#variabledeclaration)
-  - [VariableDeclarator](#variabledeclarator)
+    - [VariableDeclarator](#variabledeclarator)
 - [Expressions](#expressions)
   - [ThisExpression](#thisexpression)
   - [ArrayExpression](#arrayexpression)
@@ -58,10 +61,6 @@ This document specifies the core ESTree AST node types that support the ES5 gram
 - [Clauses](#clauses)
   - [SwitchCase](#switchcase)
   - [CatchClause](#catchclause)
-- [Miscellaneous](#miscellaneous)
-  - [Identifier](#identifier)
-  - [Literal](#literal)
-    - [RegExpLiteral](#regexpliteral)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -96,6 +95,43 @@ interface Position {
     column: number; // >= 0
 }
 ```
+
+# Identifier
+
+```js
+interface Identifier <: Node, Expression, Pattern {
+    type: "Identifier";
+    name: string;
+}
+```
+
+An identifier. Note that an identifier may be an expression or a destructuring pattern.
+
+# Literal
+
+```js
+interface Literal <: Node, Expression {
+    type: "Literal";
+    value: string | boolean | null | number | RegExp;
+}
+```
+
+A literal token. Note that a literal can be an expression.
+
+## RegExpLiteral
+
+```js
+interface RegExpLiteral <: Literal {
+  regex: {
+    pattern: string;
+    flags: string;
+  };
+}
+```
+
+The `regex` property allows regexes to be represented in environments that don’t
+support certain flags such as `y` or `u`. In environments that don't support
+these flags `value` will be `null` as the regex can't be represented natively.
 
 # Programs
 
@@ -366,7 +402,7 @@ interface VariableDeclaration <: Declaration {
 
 A variable declaration.
 
-## VariableDeclarator
+### VariableDeclarator
 
 ```js
 interface VariableDeclarator <: Node {
@@ -659,42 +695,3 @@ interface CatchClause <: Node {
 ```
 
 A `catch` clause following a `try` block.
-
-# Miscellaneous
-
-## Identifier
-
-```js
-interface Identifier <: Node, Expression, Pattern {
-    type: "Identifier";
-    name: string;
-}
-```
-
-An identifier. Note that an identifier may be an expression or a destructuring pattern.
-
-## Literal
-
-```js
-interface Literal <: Node, Expression {
-    type: "Literal";
-    value: string | boolean | null | number | RegExp;
-}
-```
-
-A literal token. Note that a literal can be an expression.
-
-### RegExpLiteral
-
-```js
-interface RegExpLiteral <: Literal {
-  regex: {
-    pattern: string;
-    flags: string;
-  };
-}
-```
-
-The `regex` property allows regexes to be represented in environments that don’t
-support certain flags such as `y` or `u`. In environments that don't support
-these flags `value` will be `null` as the regex can't be represented natively.
