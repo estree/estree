@@ -1,0 +1,35 @@
+{
+  "name": "estree",
+  "version": "1.0.0-pre",
+  "description": "ECMAScript syntax representation format",
+  "main": "spec.md",
+  "dependencies": {},
+  "devDependencies": {
+    "doctoc": "^0.15.0"
+  },
+  "scripts": {
+    "render": "doctoc *.md",
+    "start": "npm run render"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/estree/estree.git"
+  },
+  "keywords": [
+    "estree",
+    "ecmascript",
+    "javascript",
+    "ast",
+    "cst",
+    "es3",
+    "es5",
+    "es6",
+    "es2015",
+    "es7"
+  ],
+  "author": "ESTree team",
+  "bugs": {
+    "url": "https://github.com/estree/estree/issues"
+  },
+  "homepage": "https://github.com/estree/estree#readme"
+}
