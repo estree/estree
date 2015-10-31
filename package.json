@@ -2,14 +2,12 @@
   "name": "estree",
   "version": "1.0.0-pre",
   "description": "ECMAScript syntax representation format",
-  "main": "spec.md",
   "dependencies": {},
   "devDependencies": {
     "doctoc": "^0.15.0"
   },
   "scripts": {
     "render": "doctoc *.md",
-    "start": "npm run render"
   },
   "repository": {
     "type": "git",
