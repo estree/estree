@@ -1,4 +1,13 @@
 # The ESTree Spec
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Discussion](#discussion)
+- [Participating Members](#participating-members)
+- [Philosophy](#philosophy)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 Once upon a time, an [unsuspecting Mozilla engineer](http://calculist.org) created an API in Firefox that exposed the SpiderMonkey engine's JavaScript parser as a JavaScript API. Said engineer [documented the format it produced](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API), and this format caught on as a lingua franca for tools that manipulate JavaScript source code.
 
