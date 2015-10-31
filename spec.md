@@ -1,6 +1,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-This document specifies the core ESTree AST node types that support the ES5 grammar.
+This document specifies the core ESTree AST and CST node types that support the ES5 grammar.
 
 - [Node objects](#node-objects)
 - [Identifier](#identifier)
@@ -60,6 +60,10 @@ This document specifies the core ESTree AST node types that support the ES5 gram
   - [NewExpression](#newexpression)
   - [SequenceExpression](#sequenceexpression)
 - [Patterns](#patterns)
+- [Concrete syntax](#concrete-syntax)
+  - [Child-node reference](#child-node-reference)
+  - [Token](#token)
+  - [Nontoken](#nontoken)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -692,3 +696,52 @@ Destructuring binding and assignment are not part of ES6, but all binding positi
 ```js
 interface Pattern <: Node { }
 ```
+
+# Concrete syntax
+
+Whitespace, comments, and the exact character sequences comprising Literal nodes are part of the lexical grammar, but not part of the _abstract_ syntax. Their representation is completely optional.
+
+```js
+interface ConcreteNode <: Node {
+    sourceElements: [ ChildReference | Token | Nontoken ];
+}
+```
+
+The `sourceElements` field is a list of input elements and references to child nodes. Any (sub)tree in which `sourceElements` is complete on every node (i.e., there are no unreferenced child nodes and all necessary whitespace and punctuation is included) can be rendered by depth-first concatenation (with respect to references).
+
+## Child-node reference
+
+```js
+interface ChildReference {
+    reference: string;
+}
+```
+
+`reference` names the property identifying a referenced child (e.g., `expression` for ChildReferences on ExpressionStatement nodes), optionally followed by `#next` when identifying the next unreferenced member of a list-valued property (e.g., `body#next` for ChildReferences on BlockStatement nodes).
+
+## Token
+
+```js
+interface Token <: ChildReference {
+    element: string;
+    reference: string | null;
+    value: string | null;
+}
+```
+
+Tokens are relevant to abstract syntax. The `element` field is a string identifying input element type ("Keyword", "Identifier", "Punctuator", "StringLiteral", etc.).
+
+The `reference` field is optional (being useful only when there is already a field matching the input token, e.g. `operator` on BinaryExpression nodes), and if absent must be replaced by a `value` of the exact character(s) corresponding to the token (e.g., `function`, `(`, `0xCAFE`).
+
+## Nontoken
+
+```js
+interface Nontoken {
+    element: string;
+    value: string;
+}
+```
+
+Nontokens are not relevant to abstract syntax. The `element` field is a string identifying type (one of "WhiteSpace", "LineTerminator", "CommentHead", "CommentBody", "CommentTail").
+
+The `value` field is identical to the same field on Nontoken elements—a string of the exact character(s) corresponding to it.
