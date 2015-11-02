@@ -74,11 +74,14 @@ ESTree AST nodes are represented as `Node` objects, which may have any prototype
 ```js
 interface Node {
     type: string;
+    sourceElements: [ ChildReference | Token | Nontoken ] | null;
     loc: SourceLocation | null;
 }
 ```
 
 The `type` field is a string representing the AST variant type. Each subtype of `Node` is documented below with the specific string of its `type` field. You can use this field to determine which interface a node implements.
+
+The `sourceElements` field represents the "[concrete syntax](#concrete-syntax)" of the node. If the node contains no information about the source, the field is `null`; otherwise it is a list of source input elements and references to child nodes. Any (sub)tree in which `sourceElements` is complete on every node (i.e., there are no unreferenced child nodes and all necessary whitespace and punctuation is included) can be rendered by depth-first concatenation (with respect to references).
 
 The `loc` field represents the source location information of the node. If the node contains no information about the source location, the field is `null`; otherwise it is an object consisting of a start position (the position of the first character of the parsed source region) and an end position (the position of the first character after the parsed source region):
 
@@ -700,14 +703,6 @@ interface Pattern <: Node { }
 # Concrete syntax
 
 Whitespace, comments, and the exact character sequences comprising Literal nodes are part of the lexical grammar, but not part of the _abstract_ syntax. Their representation is completely optional.
-
-```js
-interface ConcreteNode <: Node {
-    sourceElements: [ ChildReference | Token | Nontoken ];
-}
-```
-
-The `sourceElements` field is a list of input elements and references to child nodes. Any (sub)tree in which `sourceElements` is complete on every node (i.e., there are no unreferenced child nodes and all necessary whitespace and punctuation is included) can be rendered by depth-first concatenation (with respect to references).
 
 ## Child-node reference
 
