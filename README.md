@@ -11,7 +11,7 @@ We've started the process of bringing together various communities using this fo
 # Participating Members
 
 * Dave Herman (Mozilla)
-* Ingvar Stepanyan ([Acorn](https://github.com/marijnh/acorn))
+* Ingvar Stepanyan ([Acorn](https://github.com/ternjs/acorn))
 * Mike Sherov ([Esprima](https://github.com/jquery/esprima))
 * Michael Ficarra ([@michaelficarra](https://github.com/michaelficarra))
 * Sebastian McKenzie ([Babel](https://github.com/babel/babel))
