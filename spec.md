@@ -98,7 +98,7 @@ interface Position {
 # Identifier
 
 ```js
-interface Identifier <: Node, Expression, Pattern {
+interface Identifier <: Expression, Pattern {
     type: "Identifier";
     name: string;
 }
@@ -109,7 +109,7 @@ An identifier. Note that an identifier may be an expression or a destructuring p
 # Literal
 
 ```js
-interface Literal <: Node, Expression {
+interface Literal <: Expression {
     type: "Literal";
     value: string | boolean | null | number | RegExp;
 }
