@@ -632,7 +632,7 @@ A logical operator token.
 interface MemberExpression <: Expression, Pattern {
     type: "MemberExpression";
     object: Expression;
-    property: Expression;
+    property: Expression | Identifier;
     computed: boolean;
 }
 ```
