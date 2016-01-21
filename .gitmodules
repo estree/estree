@@ -1,0 +1,4 @@
+[submodule "experimental/ecmascript-more-export-from"]
+	path = experimental/ecmascript-more-export-from
+	url = git@github.com:leebyron/ecmascript-more-export-from.git
+	branch = master
