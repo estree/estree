@@ -120,7 +120,7 @@ Spread expression, e.g., `[head, ...iter, tail]`, `f(head, ...iter, ...tail)`.
 
 ```js
 extend interface AssignmentExpression {
-    left: Pattern | MemberExpression;
+    left: Pattern;
 }
 ```
 
