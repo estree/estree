@@ -21,13 +21,11 @@ interface SpreadProperty <: Node {
 ## Used
 
 ```js
-extend interface ObjectPattern <: Pattern {
-    type: "ObjectPattern";
+extend interface ObjectPattern {
     properties: [ AssignmentProperty | RestProperty ];
 }
 
-extend interface ObjectExpression <: Expression {
-    type: "ObjectExpression";
+extend interface ObjectExpression {
     properties: [ Property | SpreadProperty ];
 }
 ```
