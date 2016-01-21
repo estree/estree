@@ -508,7 +508,6 @@ A `function` expression.
 interface UnaryExpression <: Expression {
     type: "UnaryExpression";
     operator: UnaryOperator;
-    prefix: boolean;
     argument: Expression;
 }
 ```
