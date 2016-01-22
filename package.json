@@ -2,6 +2,7 @@
   "name": "estree",
   "version": "1.0.0-pre",
   "description": "ECMAScript syntax representation format",
+  "private": true,
   "dependencies": {},
   "devDependencies": {
     "doctoc": "^0.15.0"
