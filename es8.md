@@ -1,10 +1,10 @@
-# [Async Functions](https://github.com/lukehoban/ecmascript-asyncawait)
+This document specifies the extensions to the core ESTree AST types to support the ES8/ES2017 grammar.
 
 ## Function
 
 ```js
 extend interface Function {
-    async: false;
+    async: boolean;
 }
 ```
 
@@ -13,6 +13,6 @@ extend interface Function {
 ```js
 interface AwaitExpression <: Expression {
     type: "AwaitExpression";
-    argument: Expression | null;
+    argument: Expression;
 }
 ```
