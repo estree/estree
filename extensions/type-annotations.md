@@ -1,6 +1,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-This document specifies the extensions to the [core ESTree AST types](spec.md) to support type annotations.
+This document specifies the extensions to the [core ESTree AST types](es5.md) to support type annotations.
 
 - [Type Annotations](#typeannotations)
 - [Identifier](#identifier)
