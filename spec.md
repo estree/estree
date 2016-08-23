@@ -1,6 +1,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-This document specifies the core ESTree AST node types that support the ES5 grammar.
+This document specifies the core ESTree AST and CST node types that support the ES5 grammar.
 
 - [Node objects](#node-objects)
 - [Identifier](#identifier)
@@ -60,6 +60,10 @@ This document specifies the core ESTree AST node types that support the ES5 gram
   - [NewExpression](#newexpression)
   - [SequenceExpression](#sequenceexpression)
 - [Patterns](#patterns)
+- [Concrete syntax](#concrete-syntax)
+  - [Child-node reference](#child-node-reference)
+  - [Token](#token)
+  - [Nontoken](#nontoken)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -70,11 +74,14 @@ ESTree AST nodes are represented as `Node` objects, which may have any prototype
 ```js
 interface Node {
     type: string;
+    sourceElements: [ ChildReference | Token | Nontoken ] | null;
     loc: SourceLocation | null;
 }
 ```
 
 The `type` field is a string representing the AST variant type. Each subtype of `Node` is documented below with the specific string of its `type` field. You can use this field to determine which interface a node implements.
+
+The `sourceElements` field represents the "[concrete syntax](#concrete-syntax)" of the node. If the node contains no information about the source, the field is `null`; otherwise it is a list of source input elements and references to child nodes. Any (sub)tree in which `sourceElements` is complete on every node (i.e., there are no unreferenced child nodes and all necessary whitespace and punctuation is included) can be rendered by depth-first concatenation (with respect to references).
 
 The `loc` field represents the source location information of the node. If the node contains no information about the source location, the field is `null`; otherwise it is an object consisting of a start position (the position of the first character of the parsed source region) and an end position (the position of the first character after the parsed source region):
 
@@ -692,3 +699,44 @@ Destructuring binding and assignment are not part of ES5, but all binding positi
 ```js
 interface Pattern <: Node { }
 ```
+
+# Concrete syntax
+
+Whitespace, comments, and the exact character sequences comprising Literal nodes are part of the lexical grammar, but not part of the _abstract_ syntax. Their representation is completely optional.
+
+## Child-node reference
+
+```js
+interface ChildReference {
+    reference: string;
+}
+```
+
+`reference` names the property identifying a referenced child (e.g., `expression` for ChildReferences on ExpressionStatement nodes), optionally followed by `#next` when identifying the next unreferenced member of a list-valued property (e.g., `body#next` for ChildReferences on BlockStatement nodes).
+
+## Token
+
+```js
+interface Token <: ChildReference {
+    element: string;
+    reference: string | null;
+    value: string | null;
+}
+```
+
+Tokens are relevant to abstract syntax. The `element` field is a string identifying input element type ("Keyword", "Identifier", "Punctuator", "StringLiteral", etc.).
+
+The `reference` field is optional (being useful only when there is already a field matching the input token, e.g. `operator` on BinaryExpression nodes), and if absent must be replaced by a `value` of the exact character(s) corresponding to the token (e.g., `function`, `(`, `0xCAFE`).
+
+## Nontoken
+
+```js
+interface Nontoken {
+    element: string;
+    value: string;
+}
+```
+
+Nontokens are not relevant to abstract syntax. The `element` field is a string identifying type (one of "WhiteSpace", "LineTerminator", "CommentHead", "CommentBody", "CommentTail").
+
+The `value` field is identical to the same field on Nontoken elements—a string of the exact character(s) corresponding to it.
