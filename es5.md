@@ -531,7 +531,7 @@ A unary operator token.
 interface UpdateExpression <: Expression {
     type: "UpdateExpression";
     operator: UpdateOperator;
-    argument: Expression;
+    argument: Pattern;
     prefix: boolean;
 }
 ```
