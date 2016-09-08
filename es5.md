@@ -531,7 +531,7 @@ A unary operator token.
 interface UpdateExpression <: Expression {
     type: "UpdateExpression";
     operator: UpdateOperator;
-    argument: Expression;
+    argument: Pattern | CallExpression;
     prefix: boolean;
 }
 ```
@@ -584,7 +584,7 @@ A binary operator token.
 interface AssignmentExpression <: Expression {
     type: "AssignmentExpression";
     operator: AssignmentOperator;
-    left: Pattern | Expression;
+    left: Pattern | CallExpression;
     right: Expression;
 }
 ```
