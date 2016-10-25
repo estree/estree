@@ -667,8 +667,10 @@ A function or method call expression.
 ## NewExpression
 
 ```js
-interface NewExpression <: CallExpression {
+interface NewExpression <: Expression {
     type: "NewExpression";
+    callee: Expression;
+    arguments: [ Expression ];
 }
 ```
 
