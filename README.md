@@ -14,8 +14,12 @@ We've started the process of bringing together various communities using this fo
 * Ingvar Stepanyan ([Acorn](https://github.com/ternjs/acorn))
 * Mike Sherov ([Esprima](https://github.com/jquery/esprima))
 * Michael Ficarra ([@michaelficarra](https://github.com/michaelficarra))
-* Sebastian McKenzie ([Babel](https://github.com/babel/babel))
 * Kyle Simpson ([@getify](https://github.com/getify))
+* Henry Zhu, Logan Smyth, Daniel Tschinder ([Babel](https://github.com/babel))
+
+# Inactive Members
+
+* Sebastian McKenzie ([Babel](https://github.com/babel/babel))
 
 # Philosophy
 
