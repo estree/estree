@@ -15,7 +15,7 @@ We've started the process of bringing together various communities using this fo
 * Mike Sherov ([Esprima](https://github.com/jquery/esprima))
 * Michael Ficarra ([@michaelficarra](https://github.com/michaelficarra))
 * Kyle Simpson ([@getify](https://github.com/getify))
-* Henry Zhu, Logan Smyth, Daniel Tschinder ([Babel](https://github.com/babel))
+* [Henry Zhu](https://github.com/hzoo), [Logan Smyth](https://github.com/loganfsmyth), [Daniel Tschinder](https://github.com/danez) ([Babel](https://github.com/babel))
 
 # Inactive Members
 
