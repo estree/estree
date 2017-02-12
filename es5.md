@@ -137,7 +137,7 @@ these flags `value` will be `null` as the regex can't be represented natively.
 ```js
 interface Program <: Node {
     type: "Program";
-    body: [ Statement ];
+    body: [ Directive | Statement ];
 }
 ```
 
@@ -149,7 +149,7 @@ A complete program source tree.
 interface Function <: Node {
     id: Identifier | null;
     params: [ Pattern ];
-    body: BlockStatement;
+    body: FunctionBody;
 }
 ```
 
@@ -174,6 +174,17 @@ interface ExpressionStatement <: Statement {
 
 An expression statement, i.e., a statement consisting of a single expression.
 
+## Directive
+
+```js
+interface Directive <: ExpressionStatement {
+    directive: string;
+}
+```
+
+A directive from the directive prologue of a script or function.
+The `directive` property is the raw string source of the directive without quotes.
+
 ## BlockStatement
 
 ```js
@@ -184,6 +195,16 @@ interface BlockStatement <: Statement {
 ```
 
 A block statement, i.e., a sequence of statements surrounded by braces.
+
+## FunctionBody
+
+```js
+interface FunctionBody <: BlockStatement {
+    body: [ Directive | Statement ];
+}
+```
+
+The body of a function, which is a block statement that may begin with directives.
 
 ## EmptyStatement
 
