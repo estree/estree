@@ -1,9 +1,9 @@
 # [Async Iteration](https://github.com/tc39/proposal-async-iteration)
 
-## ForAwaitStatement
+## ForOfStatement
 
 ```js
-interface ForAwaitStatement <: ForInStatement {
-  type: "ForAwaitStatement";
+extend interface ForOfStatement {
+  await: boolean;
 }
 ```
