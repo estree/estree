@@ -8,6 +8,22 @@ Meanwhile JavaScript is evolving, notably with the upcoming release of ES2015. T
 
 We've started the process of bringing together various communities using this format to move it forward into the ES2015 era and beyond. Feel free to join us! We'll be discussing in the issue tracker and in `#esprima` on Freenode.
 
+# AST Descriptor Syntax
+
+The spec uses a custom syntax to describe its structures.  For example, at the
+time of writing, 'es2015.md' contained a description of `Program` as seen below
+
+```js
+extend interface Program {
+    sourceType: "script" | "module";
+    body: [ Statement | ModuleDeclaration ];
+}
+```
+
+There is no formal definition of this syntax so questions about it can be raised
+as github issues.
+
+
 # Participating Members
 
 * Dave Herman (Mozilla)
