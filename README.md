@@ -20,10 +20,6 @@ extend interface Program {
 }
 ```
 
-There is no formal definition of this syntax so questions about it can be raised
-as github issues.
-
-
 # Participating Members
 
 * Dave Herman (Mozilla)
