@@ -111,7 +111,7 @@ An identifier. Note that an identifier may be an expression or a destructuring p
 ```js
 interface Literal <: Expression {
     type: "Literal";
-    value: string | boolean | null | number | RegExp;
+    value: string | boolean | null | number | RegExp | undefined;
 }
 ```
 
