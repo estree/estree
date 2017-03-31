@@ -629,7 +629,7 @@ A logical operator token.
 ### MemberExpression
 
 ```js
-interface MemberExpression <: Expression, Pattern {
+interface MemberExpression <: Expression {
     type: "MemberExpression";
     object: Expression;
     property: Expression;
