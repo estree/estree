@@ -386,7 +386,7 @@ A `for` statement.
 ```js
 interface ForInStatement <: Statement {
     type: "ForInStatement";
-    left: VariableDeclaration |  Pattern;
+    left: VariableDeclaration | Pattern | Expression;
     right: Expression;
     body: Statement;
 }
