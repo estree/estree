@@ -386,7 +386,7 @@ A `for` statement.
 ```js
 interface ForInStatement <: Statement {
     type: "ForInStatement";
-    left: VariableDeclaration |  Pattern;
+    left: VariableDeclaration |  Expression;
     right: Expression;
     body: Statement;
 }
@@ -629,7 +629,7 @@ A logical operator token.
 ### MemberExpression
 
 ```js
-interface MemberExpression <: Expression, Pattern {
+interface MemberExpression <: Expression {
     type: "MemberExpression";
     object: Expression;
     property: Expression;
