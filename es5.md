@@ -137,7 +137,7 @@ these flags `value` will be `null` as the regex can't be represented natively.
 ```js
 interface Program <: Node {
     type: "Program";
-    body: [ Directive | Statement ];
+    body: [ Statement ];
 }
 ```
 
