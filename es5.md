@@ -179,7 +179,7 @@ An expression statement, i.e., a statement consisting of a single expression.
 ```js
 interface Directive <: Node {
     type: "ExpressionStatement";
-    expression: Expression;
+    expression: Literal;
     directive: string;
 }
 ```
