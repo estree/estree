@@ -25,7 +25,7 @@ extend interface Program {
 * Dave Herman (Mozilla)
 * Ingvar Stepanyan ([Acorn](https://github.com/ternjs/acorn))
 * [Nicholas C. Zakas](https://github.com/nzakas) ([ESLint](https://github.com/eslint))
-* [Mike Sherov](https://github.com/mikesherov),  [Ariya Hidayat](https://github.com/ariya) ([Esprima](https://github.com/jquery/esprima))
+* [Ariya Hidayat](https://github.com/ariya) ([Esprima](https://github.com/jquery/esprima))
 * Michael Ficarra ([@michaelficarra](https://github.com/michaelficarra))
 * [Henry Zhu](https://github.com/hzoo), [Logan Smyth](https://github.com/loganfsmyth), [Daniel Tschinder](https://github.com/danez) ([Babel](https://github.com/babel))
 
@@ -33,6 +33,7 @@ extend interface Program {
 
 * Sebastian McKenzie ([Babel](https://github.com/babel/babel))
 * Kyle Simpson ([@getify](https://github.com/getify))
+* [Mike Sherov](https://github.com/mikesherov) ([Esprima](https://github.com/jquery/esprima))
 
 # Philosophy
 
