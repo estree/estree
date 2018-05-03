@@ -38,7 +38,7 @@ extend interface Program {
 
 Suggested additions and modifications must follow these guidelines:
 
-1. **Backwards compatible:** Non-additive modifications to existing constructs will not be considered unless immense support is in favor of such changes. ([eg. #65](https://github.com/estree/estree/issues/65))
+1. **Backwards compatible:** Non-additive modifications to existing constructs will not be considered unless immense support is in favor of such changes. (eg. [#65](https://github.com/estree/estree/issues/65))
 2. **Contextless:** Nodes should not retain any information about their parent. ie. a `FunctionExpression` should not be aware of if it's a concise method. (eg. [#5](https://github.com/estree/estree/issues/5))
 3. **Unique:** Information should not be duplicated. ie. a `kind` property should not be present on `Literal` if the type can be discerned from the `value`. (eg. [#61](https://github.com/estree/estree/issues/61))
 4. **Extensible:** New nodes should be specced to easily allow future spec additions. This means expanding the coverage of node types. ie. `MetaProperty` over `NewTarget` to cover future meta properties. (eg. [#32](https://github.com/estree/estree/pull/32))
