@@ -23,7 +23,7 @@ extend interface Program {
 # Participating Members
 
 * Dave Herman (Mozilla)
-* Ingvar Stepanyan ([Acorn](https://github.com/ternjs/acorn))
+* Ingvar Stepanyan, Adrian Heine ([Acorn](https://github.com/acornjs/acorn))
 * [Nicholas C. Zakas](https://github.com/nzakas) ([ESLint](https://github.com/eslint))
 * [Ariya Hidayat](https://github.com/ariya) ([Esprima](https://github.com/jquery/esprima))
 * Michael Ficarra ([@michaelficarra](https://github.com/michaelficarra))
