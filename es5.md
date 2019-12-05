@@ -487,7 +487,7 @@ interface ArrayExpression <: Expression {
 }
 ```
 
-An array expression. An element might be `null` if it is sparse. E.g. `[,,,]`.
+An array expression. An element might be `null` if it represents a hole in a sparse array. E.g. `[1,,2]`.
 
 ## ObjectExpression
 
