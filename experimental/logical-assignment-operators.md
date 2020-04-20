@@ -8,7 +8,7 @@
 interface LogicalAssignmentExpression <: Expression {
     type: "LogicalAssignmentExpression";
     operator: LogicalAssignmentOperator;
-    left: Pattern | Expression;
+    left: Identifier | MemberExpression;
     right: Expression;
 }
 ```
