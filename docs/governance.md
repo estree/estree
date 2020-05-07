@@ -1,6 +1,6 @@
 # Governance
 
-ESTree is an open source project that depends on contributions from the community. Anyone may contribute to the project at any time by submitting code, participating in discussions, making suggestions, or any other contribution they see fit. This document describes how various types of contributors work within the ESTree project.
+ESTree is a speficiation that depends on contributions from the community. Anyone may contribute to the project at any time by submitting code, participating in discussions, making suggestions, or any other contribution they see fit. This document describes how various types of contributors work within the ESTree project.
 
 ## Roles and Responsibilities
 
