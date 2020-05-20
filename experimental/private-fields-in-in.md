@@ -5,7 +5,7 @@
 ### BinaryExpression
 
 ```js
-interface BinaryExpression <: Expression {
+extend interface BinaryExpression <: Expression {
     left: Expression | PrivateName;
 }
 ```
