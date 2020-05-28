@@ -7,13 +7,22 @@
 ```js
 interface RecordExpression <: Expression {
     type: "RecordExpression";
-    properties: [ Property | SpreadElement ];
+    properties: [ RecordProperty | SpreadElement ];
 }
 ```
 
 A record expression defines an immutable object, e.g. `#{a: 1}`.
 
-For each element _p_ of `properties`, if _p_ is a `Property`, `p.method` must be `false` and  `p.kind` must be `"init"`.
+#### RecordProperty
+```js
+interface RecordProperty <: Node {
+    type: "RecordProperty";
+    key: Expression;
+    value: Expression;
+    shorthand: boolean;
+    computed: boolean;
+}
+```
 
 ### TupleExpression
 ```js
