@@ -46,8 +46,7 @@ The ESC follows a
 
 When a decision has appeared to reach a consensus, an ESC member will ask "Does anyone object?" as a final call for dissent from the consensus.
 
-If a decision cannot reach a consensus, an ESC member can call for either a closing vote or a vote to table the issue to the next meeting. The call for a vote must be approved by a majority of the ESC
-or else the discussion will continue. Simple majority wins.
+If a decision cannot reach a consensus, an ESC member can call for either a closing vote or a vote to table the issue to the next meeting. The call for a vote must be approved by a majority of the ESC or else the discussion will continue. Simple majority wins.
 ----
 
 This work is a derivative of [YUI Contributor Model](https://github.com/yui/yui3/wiki/Contributor-Model) and the [Node.js Project Governance Model](https://github.com/nodejs/node/blob/master/GOVERNANCE.md).
