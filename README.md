@@ -4,10 +4,6 @@ Once upon a time, an [unsuspecting Mozilla engineer](http://calculist.org) creat
 
 Meanwhile JavaScript is evolving, notably with the upcoming release of ES2015. This site will serve as a community standard for people involved in building and using these tools to help evolve this format to keep up with the evolution of the JavaScript language.
 
-# Discussion
-
-We've started the process of bringing together various communities using this format to move it forward into the ES2015 era and beyond. Feel free to join us! We'll be discussing in the issue tracker.
-
 # AST Descriptor Syntax
 
 The spec uses a custom syntax to describe its structures.  For example, at the
