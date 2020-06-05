@@ -46,7 +46,7 @@ extend interface MethodDefinition <: Node {
 ```js
 interface PrivateName <: Node {
     type: "PrivateName";
-    id: Identifier;
+    name: string;
 }
 ```
 
@@ -57,7 +57,7 @@ extend interface MemberExpression <: ChainElement {
 }
 ```
 
-A private name refers to private class elements. For a private name `#a`, its `id.name` is `a`.
+A private name refers to private class elements. For a private name `#a`, its `name` is `a`.
 
 - When `private` is `true`, `property` must be a `PrivateName`, `computed` must be `false`.
 - When `object` is a `Super`, `private` must be `false`.
