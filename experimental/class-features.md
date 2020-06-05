@@ -31,7 +31,7 @@ interface PropertyDefinition <: Node {
 ## MethodDefinition
 
 ```js
-extend interface MethodDefinition <: Node {
+extend interface MethodDefinition {
     key: Expression | PrivateName;
     static: boolean;
     private: boolean;
