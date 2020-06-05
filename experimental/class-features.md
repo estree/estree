@@ -38,8 +38,9 @@ extend interface MethodDefinition <: Node {
 }
 ```
 
-- When `private` is `true`, `computed` must be `false`, `key` must be a `PrivateName`, `kind` can not be `constructor`.
+- When `private` is `true`, `computed` must be `false`, `key` must be a `PrivateName`, `kind` can not be `"constructor"`.
 - When `private` is `false`, `key` must be an `Expression` and can not be a `PrivateName`.
+- When `static` is `true`, `kind` can not be `"constructor"`.
 
 ### PrivateName
 
@@ -50,6 +51,8 @@ interface PrivateName <: Node {
 }
 ```
 
+A private name refers to private class elements. For a private name `#a`, its `name` is `a`.
+
 ```js
 extend interface MemberExpression <: ChainElement {
     private: boolean;
@@ -57,9 +60,8 @@ extend interface MemberExpression <: ChainElement {
 }
 ```
 
-A private name refers to private class elements. For a private name `#a`, its `name` is `a`.
-
 - When `private` is `true`, `property` must be a `PrivateName`, `computed` must be `false`.
+- When `private` is `false`, `property` must be an `Expression` and can not be a `PrivateName`.
 - When `object` is a `Super`, `private` must be `false`.
 
 [Class Fields]: https://github.com/tc39/proposal-class-fields
