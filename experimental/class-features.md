@@ -18,7 +18,7 @@ extend interface ClassBody <: Node {
 interface PropertyDefinition <: Node {
     type: "PropertyDefinition";
     key: Expression | PrivateName;
-    value: Expression;
+    value: Expression | null;
     computed: boolean;
     static: boolean;
     private: boolean;
