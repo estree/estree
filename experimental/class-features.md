@@ -48,15 +48,19 @@ interface PrivateName <: Node {
     type: "PrivateName";
     id: Identifier;
 }
+```
 
-extend interface MemberExpression {
-    property: Expression | PrivateName
+```js
+extend interface MemberExpression <: ChainElement {
+    private: boolean;
+    property: Expression | PrivateName;
 }
 ```
 
 A private name refers to private class elements. For a private name `#a`, its `id.name` is `a`.
 
-When the `property` of a `MemberExpression` is a `PrivateName`, `computed` is always `false`.
+- When `private` is `true`, `property` must be a `PrivateName`, `computed` must be `false`.
+- When `object` is a `Super`, `private` must be `false`.
 
 [Class Fields]: https://github.com/tc39/proposal-class-fields
 [Static Class Features]: https://github.com/tc39/proposal-static-class-features/
