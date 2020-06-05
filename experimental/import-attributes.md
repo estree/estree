@@ -1,4 +1,4 @@
-# [Module Attributes][proposal-module-attributes]
+# [Import Attributes][proposal-import-attributes]
 
 ## Imports
 
@@ -35,7 +35,7 @@ extend interface ImportExpression {
 }
 ```
 
-The `attributes` property contains an `Expression` when module attributes presents, e.g., `import(jsonModuleName, { type: "json" })`.
+The `attributes` property contains an `Expression` when import attributes presents, e.g., `import(jsonModuleName, { type: "json" })`.
 
-[proposal-module-attributes]: https://github.com/tc39/proposal-module-attributes
+[proposal-import-attributes]: https://github.com/tc39/proposal-import-attributes
 
