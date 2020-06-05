@@ -7,7 +7,7 @@ This experimental extension covers three class features proposals:
 ## ClassBody
 
 ```js
-extend interface ClassBody <: Node {
+extend interface ClassBody {
     body: [ MethodDefinition | PropertyDefinition ];
 }
 ```
@@ -33,14 +33,12 @@ interface PropertyDefinition <: Node {
 ```js
 extend interface MethodDefinition {
     key: Expression | PrivateName;
-    static: boolean;
     private: boolean;
 }
 ```
 
 - When `private` is `true`, `computed` must be `false`, `key` must be a `PrivateName`, `kind` can not be `"constructor"`.
 - When `private` is `false`, `key` must be an `Expression` and can not be a `PrivateName`.
-- When `static` is `true`, `kind` can not be `"constructor"`.
 
 ### PrivateName
 
@@ -54,7 +52,7 @@ interface PrivateName <: Node {
 A private name refers to private class elements. For a private name `#a`, its `name` is `a`.
 
 ```js
-extend interface MemberExpression <: ChainElement {
+extend interface MemberExpression {
     private: boolean;
     property: Expression | PrivateName;
 }
