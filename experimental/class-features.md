@@ -4,40 +4,42 @@
 This experimental extension covers three class features proposals: 
 [Class Fields], [Static Class Features] and [Private Methods].
 
+## ClassBody
+
+```js
+extend interface ClassBody <: Node {
+    body: [ MethodDefinition | PropertyDefinition ];
+}
+```
+
 ## PropertyDefinition
 
 ```js
 interface PropertyDefinition <: Node {
     type: "PropertyDefinition";
-    key: Expression;
+    key: Expression | PrivateName;
     value: Expression;
     computed: boolean;
     static: boolean;
+    private: boolean;
 }
 ```
 
-## PrivatePropertyDefinition
+- When `private` is `true`, `computed` must be `false` and `key` must be a `PrivateName`.
+- When `private` is `false`, `key` must be an `Expression` and can not be a `PrivateName`.
+
+## MethodDefinition
 
 ```js
-interface PrivatePropertyDefinition <: Node {
-    type: "PrivatePropertyDefinition";
-    key: PrivateName;
-    value: Expression;
+extend interface MethodDefinition <: Node {
+    key: Expression | PrivateName;
     static: boolean;
+    private: boolean;
 }
 ```
 
-## PrivateMethodDefinition
-
-```js
-interface PrivateMethodDefinition <: Node {
-    type: "PrivateMethodDefinition";
-    key: PrivateName;
-    value: FunctionExpression;
-    kind: "method" | "get" | "set";
-    static: boolean;
-}
-```
+- When `private` is `true`, `computed` must be `false`, `key` must be a `PrivateName`, `kind` can not be `constructor`.
+- When `private` is `false`, `key` must be an `Expression` and can not be a `PrivateName`.
 
 ### PrivateName
 
@@ -54,7 +56,7 @@ extend interface MemberExpression {
 
 A private name refers to private class elements. For a private name `#a`, its `id.name` is `a`.
 
-When the property of a member expression is a private name, its `computed` is always `false`.
+When the `property` of a `MemberExpression` is a `PrivateName`, `computed` is always `false`.
 
 [Class Fields]: https://github.com/tc39/proposal-class-fields
 [Static Class Features]: https://github.com/tc39/proposal-static-class-features/
