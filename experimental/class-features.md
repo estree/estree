@@ -17,7 +17,7 @@ extend interface ClassBody {
 ```js
 interface PropertyDefinition <: Node {
     type: "PropertyDefinition";
-    key: Expression | PrivateName;
+    key: Expression | PrivateIdentifier;
     value: Expression | null;
     computed: boolean;
     static: boolean;
@@ -25,26 +25,26 @@ interface PropertyDefinition <: Node {
 }
 ```
 
-- When `private` is `true`, `computed` must be `false` and `key` must be a `PrivateName`.
-- When `private` is `false`, `key` must be an `Expression` and can not be a `PrivateName`.
+- When `private` is `true`, `computed` must be `false` and `key` must be a `PrivateIdentifier`.
+- When `private` is `false`, `key` must be an `Expression` and can not be a `PrivateIdentifier`.
 
 ## MethodDefinition
 
 ```js
 extend interface MethodDefinition {
-    key: Expression | PrivateName;
+    key: Expression | PrivateIdentifier;
     private: boolean;
 }
 ```
 
-- When `private` is `true`, `computed` must be `false`, `key` must be a `PrivateName`, `kind` can not be `"constructor"`.
-- When `private` is `false`, `key` must be an `Expression` and can not be a `PrivateName`.
+- When `private` is `true`, `computed` must be `false`, `key` must be a `PrivateIdentifier`, `kind` can not be `"constructor"`.
+- When `private` is `false`, `key` must be an `Expression` and can not be a `PrivateIdentifier`.
 
-### PrivateName
+### PrivateIdentifier
 
 ```js
-interface PrivateName <: Node {
-    type: "PrivateName";
+interface PrivateIdentifier <: Node {
+    type: "PrivateIdentifier";
     name: string;
 }
 ```
@@ -54,12 +54,12 @@ A private name refers to private class elements. For a private name `#a`, its `n
 ```js
 extend interface MemberExpression {
     private: boolean;
-    property: Expression | PrivateName;
+    property: Expression | PrivateIdentifier;
 }
 ```
 
-- When `private` is `true`, `property` must be a `PrivateName`, `computed` must be `false`.
-- When `private` is `false`, `property` must be an `Expression` and can not be a `PrivateName`.
+- When `private` is `true`, `property` must be a `PrivateIdentifier`, `computed` must be `false`.
+- When `private` is `false`, `property` must be an `Expression` and can not be a `PrivateIdentifier`.
 - When `object` is a `Super`, `private` must be `false`.
 
 [Class Fields]: https://github.com/tc39/proposal-class-fields
