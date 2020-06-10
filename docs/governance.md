@@ -24,7 +24,7 @@ Member Projects are projects that implement the ESTree specification and have do
 
 ### ESTree Steering Committee (ESC)
 
-The ESLint project is jointly governed by the ESTree Steering Committee (ESC) which is responsible for high-level guidance of the project. The ESC is made up of one representative from each Member Project, and that one representative represents their Member Project's vote in any decision. It's the responsibility of the Member Project representative to drive consensus within the Member Project when decisions about the ESTree project are being made. 
+The ESTree project is jointly governed by the ESTree Steering Committee (ESC) which is responsible for high-level guidance of the project. The ESC is made up of one representative from each Member Project, and that one representative represents their Member Project's vote in any decision. It's the responsibility of the Member Project representative to drive consensus within the Member Project when decisions about the ESTree project are being made. 
 
 The ESC has final authority over this project including:
 
