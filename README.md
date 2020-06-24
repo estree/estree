@@ -22,6 +22,12 @@ extend interface Program {
 * [Ingvar Stepanyan](https://github.com/rreverser) ([Acorn](https://github.com/acornjs/acorn))
 * [Junliang Huang](https://github.com/JLHwung) ([Babel](https://github.com/babel))
 
+# Copyright and License
+
+Copyright Mozilla Contributors and ESTree Contributors.
+
+Licensed under [Creative Commons Sharealike](https://creativecommons.org/licenses/by-sa/2.5/).
+
 # Philosophy
 
 Suggested additions and modifications must follow these guidelines:
