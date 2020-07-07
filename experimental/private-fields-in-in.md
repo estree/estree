@@ -6,10 +6,10 @@
 
 ```js
 extend interface BinaryExpression <: Expression {
-    left: Expression | PrivateName;
+    left: Expression | PrivateIdentifier;
 }
 ```
 
-- `left` can be a private name (e.g. `#foo`) when `operator` is `"in"`.
+- `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
 
 [proposal-private-fields-in-in]: https://github.com/tc39/proposal-private-fields-in-in
