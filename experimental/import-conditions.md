@@ -12,20 +12,13 @@ extend interface ImportDeclaration {
 
 The `conditions` is non-empty when import conditions present, e.g., `import foo from "./foo.json" if { type: "json" }`
 
-### ModuleAttribute
-
-```js
-interface ModuleAttribute <: Node {
-    key: Identifier;
-    value: Literal;
-}
-```
-
 ### ImportAttribute
 
 ```js
-interface ImportAttribute <: ModuleAttribute {
+interface ImportAttribute <: Node {
     type: "ImportAttribute";
+    key: Identifier;
+    value: Literal;
 }
 ```
 
@@ -37,7 +30,7 @@ An import attribute is an object-like key value pair, e.g. `type: "json"` in `im
 
 ```js
 extend interface ExportNamedDeclaration {
-    conditions: [ ExportAttribute ];
+    conditions: [ ImportAttribute ];
 }
 ```
 - `conditions` must be an empty array when `source` is `null`.
@@ -46,20 +39,10 @@ extend interface ExportNamedDeclaration {
 
 ```js
 extend interface ExportAllDeclaration {
-    conditions: [ ExportAttribute ];
+    conditions: [ ImportAttribute ];
 }
 ```
 - `conditions` must be an empty array when `source` is `null`.
-
-### ExportAttribute
-
-```js
-interface ExportAttribute <: ModuleAttribute {
-    type: "ExportAttribute";
-}
-```
-
-An export attirbute is similar to import attribute, e.g. `type: "json"` in `export { version } from "./package.json" if { type: "json" }`.
 
 ## Expressions
 
