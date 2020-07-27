@@ -502,6 +502,173 @@ interface Expression <: Node { }
 
 Any expression node. Since the left-hand side of an assignment may be any expression in general, an expression can also be a pattern.
 
+## ChainExpression
+
+```js
+interface ChainExpression <: Expression {
+  type: "ChainExpression"
+  expression: ChainElement
+}
+interface ChainElement <: Node {
+  optional: boolean
+}
+extend interface CallExpression <: ChainElement {}
+extend interface MemberExpression <: ChainElement {}
+```
+
+- The `ChainExpression` node is the root of optional chaining.
+- The `ChainExpression` node contains one or more `ChainElement` nodes that are `optional:true`. On the other hand, `ChainElement` nodes that are `optional:true` belong to a `ChainExpression` node.
+- For backward compatibility, if all `ChainElement` nodes of a chain are `optional:false`, the `ChainExpression` node isn't inserted as the root of the chain.
+- Evaluation:
+  - The `ChainExpression` node is evaluated to the result of the `expression` property's node.
+  - If the `callee|object` property is evaluated to nullish and the `optional` property is `true`, then the node and ancestor nodes are skipped until the closest `ChainExpression` node, and the result of the `ChainExpression` node becomes `undefined`.
+
+<details><summary>For Examples:</summary>
+
+```jsonc
+// obj.aaa.bbb
+{
+  "type": "MemberExpression",
+  "optional": false,
+  "object": {
+    "type": "MemberExpression",
+    "optional": false,
+    "object": { "type": "Identifier", "name": "obj" },
+    "property": { "type": "Identifier", "name": "aaa" }
+  },
+  "property": { "type": "Identifier", "name": "bbb" }
+}
+```
+
+```jsonc
+// obj.aaa?.bbb
+{
+  "type": "ChainExpression",
+  "expression": {
+    "type": "MemberExpression",
+    "optional": true,
+    "object": {
+      "type": "MemberExpression",
+      "optional": false,
+      "object": { "type": "Identifier", "name": "obj" },
+      "property": { "type": "Identifier", "name": "aaa" }
+    },
+    "property": { "type": "Identifier", "name": "bbb" }
+  }
+}
+```
+
+```jsonc
+// obj?.aaa.bbb
+{
+  "type": "ChainExpression",
+  "expression": {
+    "type": "MemberExpression",
+    "optional": false,
+    "object": {
+      "type": "MemberExpression",
+      "optional": true,
+      "object": { "type": "Identifier", "name": "obj" },
+      "property": { "type": "Identifier", "name": "aaa" }
+    },
+    "property": { "type": "Identifier", "name": "bbb" }
+  }
+}
+```
+
+```jsonc
+// obj?.aaa?.bbb
+{
+  "type": "ChainExpression",
+  "expression": {
+    "type": "MemberExpression",
+    "optional": true,
+    "object": {
+      "type": "MemberExpression",
+      "optional": true,
+      "object": { "type": "Identifier", "name": "obj" },
+      "property": { "type": "Identifier", "name": "aaa" }
+    },
+    "property": { "type": "Identifier", "name": "bbb" }
+  }
+}
+```
+
+```jsonc
+// (obj.aaa).bbb
+{
+  "type": "MemberExpression",
+  "optional": false,
+  "object": {
+    "type": "MemberExpression",
+    "optional": false,
+    "object": { "type": "Identifier", "name": "obj" },
+    "property": { "type": "Identifier", "name": "aaa" }
+  },
+  "property": { "type": "Identifier", "name": "bbb" }
+}
+```
+
+```jsonc
+// (obj.aaa)?.bbb
+{
+  "type": "ChainExpression",
+  "expression": {
+    "type": "MemberExpression",
+    "optional": true,
+    "object": {
+      "type": "MemberExpression",
+      "optional": false,
+      "object": { "type": "Identifier", "name": "obj" },
+      "property": { "type": "Identifier", "name": "aaa" }
+    },
+    "property": { "type": "Identifier", "name": "bbb" }
+  }
+}
+```
+
+```jsonc
+// (obj?.aaa).bbb
+{
+  "type": "MemberExpression",
+  "optional": false,
+  "object": {
+    "type": "ChainExpression",
+    "expression": {
+      "type": "MemberExpression",
+      "optional": true,
+      "object": { "type": "Identifier", "name": "obj" },
+      "property": { "type": "Identifier", "name": "aaa" }
+    }
+  },
+  "property": { "type": "Identifier", "name": "bbb" }
+}
+```
+
+```jsonc
+// (obj?.aaa)?.bbb
+{
+  "type": "ChainExpression",
+  "expression": {
+    "type": "MemberExpression",
+    "optional": true,
+    "object": {
+      "type": "ChainExpression",
+      "expression": {
+        "type": "MemberExpression",
+        "optional": true,
+        "object": { "type": "Identifier", "name": "obj" },
+        "property": { "type": "Identifier", "name": "aaa" }
+      }
+    },
+    "property": { "type": "Identifier", "name": "bbb" }
+  }
+}
+```
+
+</details>
+
+
 ## ThisExpression
 
 ```js
@@ -555,7 +722,7 @@ interface ArrayExpression <: Expression {
 }
 ```
 
-An array expression.
+An array expression. An element might be `null` if it represents a hole in a sparse array. E.g. `[1,,2]`.
 
 ## ObjectExpression
 
@@ -728,11 +895,13 @@ A logical operator expression.
 
 ```js
 enum LogicalOperator {
-    "||" | "&&"
+    "||" | "&&" | "??"
 }
 ```
 
-A logical operator token.
+A logical operator token. The `operator` property of the `LogicalExpression` node can be `"??"` to represent [Nullish Coalescing] syntax.
+
+[Nullish Coalescing]: https://github.com/tc39/proposal-nullish-coalescing
 
 ### MemberExpression
 
@@ -967,6 +1136,9 @@ interface MetaProperty <: Expression {
 }
 ```
 
+- In ES2015+, `MetaProperty` represents the `new.target` meta property.
+- In ES2020+, `MetaProperty` also represents `import.meta`.
+
 # Modules
 
 ## ModuleDeclaration
@@ -1087,7 +1259,10 @@ An export default declaration, e.g., `export default function () {};` or `export
 interface ExportAllDeclaration <: ModuleDeclaration {
     type: "ExportAllDeclaration";
     source: Literal;
+    exported: Identifier | null;
 }
 ```
+
+The `exported` property contains an `Identifier` when a different exported name is specified using `as`, e.g., `export * as foo from "mod";`.
 
 An export batch declaration, e.g., `export * from "mod";`.
