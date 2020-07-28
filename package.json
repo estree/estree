@@ -1,0 +1,43 @@
+{
+  "name": "estree-formal",
+  "version": "1.1.5",
+  "description": "ESTree formal data generator.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npm run build-code && npm run build-grammar",
+    "build-code": "babel src --out-dir dist --source-maps",
+    "build-grammar": "pegjs -o dist/grammar.js src/grammar.pegjs",
+    "watch": "npm run watch-code",
+    "watch-code": "babel src --out-dir dist --source-maps --watch",
+    "prepublish": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/estree/formal"
+  },
+  "keywords": [
+    "estree",
+    "ast",
+    "spec",
+    "formal",
+    "data",
+    "generator"
+  ],
+  "author": "Ingvar Stepanyan <me@rreverser.com> (http://rreverser.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/estree/formal/issues"
+  },
+  "homepage": "https://github.com/estree/formal",
+  "devDependencies": {
+    "babel": "^5.0.9",
+    "jisons": "^1.0.0",
+    "source-map-support": "^0.3.2"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.24",
+    "marked": "^0.3.3",
+    "object-assign": "^2.0.0",
+    "pegjs": "^0.10.0"
+  }
+}
