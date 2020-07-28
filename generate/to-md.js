@@ -42,7 +42,7 @@ const entryProcessors = {
       }
 
       return (
-        '```js\ninterface ' +
+        '```ts\ninterface ' +
         def.name +
         bases +
         ' ' +
@@ -52,7 +52,7 @@ const entryProcessors = {
       );
     } else if (def.kind === 'enum') {
       return (
-        '```js\nenum ' +
+        '```ts\nenum ' +
         def.name +
         ' {\n    ' +
         def.values

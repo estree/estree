@@ -61,7 +61,7 @@
 
 # Node
 
-```js
+```ts
 interface Node {
     type: string;
     loc: SourceLocation | null;
@@ -77,7 +77,7 @@ You can use this field to determine which interface a node implements.
 Docs for `loc`: The source location information of the node.
 If the node contains no information about the source location, the field is `null`.
 
-```js
+```ts
 interface SourceLocation {
     source: string | null;
     start: Position;
@@ -89,7 +89,7 @@ Docs for `start`: The position of the first character of the parsed source regio
 
 Docs for `end`: The position of the first character after the parsed source region
 
-```js
+```ts
 interface Position {
     line: number;
     column: number;
@@ -102,7 +102,7 @@ Docs for `column`: Column number (0-indexed)
 
 # Identifier
 
-```js
+```ts
 interface Identifier <: Expression, Pattern {
     type: "Identifier";
     name: string;
@@ -113,7 +113,7 @@ An identifier. Note that an identifier may be an expression or a destructuring p
 
 # Literal
 
-```js
+```ts
 interface Literal <: Expression {
     type: "Literal";
     value: string | boolean | null | number | RegExp;
@@ -124,7 +124,7 @@ A literal token. Note that a literal can be an expression.
 
 ## RegExpLiteral
 
-```js
+```ts
 interface RegExpLiteral <: Literal {
     regex: {
         pattern: string;
@@ -139,7 +139,7 @@ these flags `value` will be `null` as the regex can't be represented natively.
 
 # Program
 
-```js
+```ts
 interface Program <: Node {
     type: "Program";
     body: [ Directive | Statement ];
@@ -150,7 +150,7 @@ A complete program source tree.
 
 # Function
 
-```js
+```ts
 interface Function <: Node {
     id: Identifier | null;
     params: [ Pattern ];
@@ -162,7 +162,7 @@ A function [declaration](#functiondeclaration) or [expression](#functionexpressi
 
 # Statement
 
-```js
+```ts
 interface Statement <: Node { }
 ```
 
@@ -170,7 +170,7 @@ Any statement.
 
 ## ExpressionStatement
 
-```js
+```ts
 interface ExpressionStatement <: Statement {
     type: "ExpressionStatement";
     expression: Expression;
@@ -181,7 +181,7 @@ An expression statement, i.e., a statement consisting of a single expression.
 
 ## Directive
 
-```js
+```ts
 interface Directive <: Node {
     type: "ExpressionStatement";
     expression: Literal;
@@ -194,7 +194,7 @@ The `directive` property is the raw string source of the directive without quote
 
 ## BlockStatement
 
-```js
+```ts
 interface BlockStatement <: Statement {
     type: "BlockStatement";
     body: [ Statement ];
@@ -205,7 +205,7 @@ A block statement, i.e., a sequence of statements surrounded by braces.
 
 ## FunctionBody
 
-```js
+```ts
 interface FunctionBody <: BlockStatement {
     body: [ Directive | Statement ];
 }
@@ -215,7 +215,7 @@ The body of a function, which is a block statement that may begin with directive
 
 ## EmptyStatement
 
-```js
+```ts
 interface EmptyStatement <: Statement {
     type: "EmptyStatement";
 }
@@ -225,7 +225,7 @@ An empty statement, i.e., a solitary semicolon.
 
 ## DebuggerStatement
 
-```js
+```ts
 interface DebuggerStatement <: Statement {
     type: "DebuggerStatement";
 }
@@ -235,7 +235,7 @@ A `debugger` statement.
 
 ## WithStatement
 
-```js
+```ts
 interface WithStatement <: Statement {
     type: "WithStatement";
     object: Expression;
@@ -249,7 +249,7 @@ A `with` statement.
 
 ### ReturnStatement
 
-```js
+```ts
 interface ReturnStatement <: Statement {
     type: "ReturnStatement";
     argument: Expression | null;
@@ -260,7 +260,7 @@ A `return` statement.
 
 ### LabeledStatement
 
-```js
+```ts
 interface LabeledStatement <: Statement {
     type: "LabeledStatement";
     label: Identifier;
@@ -272,7 +272,7 @@ A labeled statement, i.e., a statement prefixed by a `break`/`continue` label.
 
 ### BreakStatement
 
-```js
+```ts
 interface BreakStatement <: Statement {
     type: "BreakStatement";
     label: Identifier | null;
@@ -283,7 +283,7 @@ A `break` statement.
 
 ### ContinueStatement
 
-```js
+```ts
 interface ContinueStatement <: Statement {
     type: "ContinueStatement";
     label: Identifier | null;
@@ -296,7 +296,7 @@ A `continue` statement.
 
 ### IfStatement
 
-```js
+```ts
 interface IfStatement <: Statement {
     type: "IfStatement";
     test: Expression;
@@ -309,7 +309,7 @@ An `if` statement.
 
 ### SwitchStatement
 
-```js
+```ts
 interface SwitchStatement <: Statement {
     type: "SwitchStatement";
     discriminant: Expression;
@@ -321,7 +321,7 @@ A `switch` statement.
 
 #### SwitchCase
 
-```js
+```ts
 interface SwitchCase <: Node {
     type: "SwitchCase";
     test: Expression | null;
@@ -335,7 +335,7 @@ A `case` (if `test` is an `Expression`) or `default` (if `test === null`) clause
 
 ### ThrowStatement
 
-```js
+```ts
 interface ThrowStatement <: Statement {
     type: "ThrowStatement";
     argument: Expression;
@@ -346,7 +346,7 @@ A `throw` statement.
 
 ### TryStatement
 
-```js
+```ts
 interface TryStatement <: Statement {
     type: "TryStatement";
     block: BlockStatement;
@@ -359,7 +359,7 @@ A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockState
 
 #### CatchClause
 
-```js
+```ts
 interface CatchClause <: Node {
     type: "CatchClause";
     param: Pattern;
@@ -375,7 +375,7 @@ Docs for `param`:  `null` if the `catch` binding is omitted. E.g., `try { foo() 
 
 ### WhileStatement
 
-```js
+```ts
 interface WhileStatement <: Statement {
     type: "WhileStatement";
     test: Expression;
@@ -387,7 +387,7 @@ A `while` statement.
 
 ### DoWhileStatement
 
-```js
+```ts
 interface DoWhileStatement <: Statement {
     type: "DoWhileStatement";
     body: Statement;
@@ -399,7 +399,7 @@ A `do`/`while` statement.
 
 ### ForStatement
 
-```js
+```ts
 interface ForStatement <: Statement {
     type: "ForStatement";
     init: VariableDeclaration | Expression | null;
@@ -413,7 +413,7 @@ A `for` statement.
 
 ### ForInStatement
 
-```js
+```ts
 interface ForInStatement <: Statement {
     type: "ForInStatement";
     left: VariableDeclaration | Pattern;
@@ -426,7 +426,7 @@ A `for`/`in` statement.
 
 # Declaration
 
-```js
+```ts
 interface Declaration <: Statement { }
 ```
 
@@ -434,7 +434,7 @@ Any declaration node. Note that declarations are considered statements; this is 
 
 ## FunctionDeclaration
 
-```js
+```ts
 interface FunctionDeclaration <: Declaration, Function {
     type: "FunctionDeclaration";
     id: Identifier;
@@ -445,7 +445,7 @@ A function declaration. Note that unlike in the parent interface `Function`, the
 
 ## VariableDeclaration
 
-```js
+```ts
 interface VariableDeclaration <: Declaration {
     type: "VariableDeclaration";
     declarations: [ VariableDeclarator ];
@@ -457,7 +457,7 @@ A variable declaration.
 
 ### VariableDeclarator
 
-```js
+```ts
 interface VariableDeclarator <: Node {
     type: "VariableDeclarator";
     id: Pattern;
@@ -469,7 +469,7 @@ A variable declarator.
 
 # Expression
 
-```js
+```ts
 interface Expression <: Node { }
 ```
 
@@ -477,7 +477,7 @@ Any expression node. Since the left-hand side of an assignment may be any expres
 
 ## ThisExpression
 
-```js
+```ts
 interface ThisExpression <: Expression {
     type: "ThisExpression";
 }
@@ -487,7 +487,7 @@ A `this` expression.
 
 ## ArrayExpression
 
-```js
+```ts
 interface ArrayExpression <: Expression {
     type: "ArrayExpression";
     elements: [ Expression | null ];
@@ -498,7 +498,7 @@ An array expression. An element might be `null` if it represents a hole in a spa
 
 ## ObjectExpression
 
-```js
+```ts
 interface ObjectExpression <: Expression {
     type: "ObjectExpression";
     properties: [ Property ];
@@ -509,7 +509,7 @@ An object expression.
 
 ### Property
 
-```js
+```ts
 interface Property <: Node {
     type: "Property";
     key: Literal | Identifier;
@@ -522,7 +522,7 @@ A literal property in an object expression can have either a string or number as
 
 ## FunctionExpression
 
-```js
+```ts
 interface FunctionExpression <: Expression, Function {
     type: "FunctionExpression";
 }
@@ -534,7 +534,7 @@ A `function` expression.
 
 ### UnaryExpression
 
-```js
+```ts
 interface UnaryExpression <: Expression {
     type: "UnaryExpression";
     operator: UnaryOperator;
@@ -547,7 +547,7 @@ A unary operator expression.
 
 #### UnaryOperator
 
-```js
+```ts
 enum UnaryOperator {
     "-" | "+" | "!" | "~" | "typeof" | "void" | "delete"
 }
@@ -557,7 +557,7 @@ A unary operator token.
 
 ### UpdateExpression
 
-```js
+```ts
 interface UpdateExpression <: Expression {
     type: "UpdateExpression";
     operator: UpdateOperator;
@@ -570,7 +570,7 @@ An update (increment or decrement) operator expression.
 
 #### UpdateOperator
 
-```js
+```ts
 enum UpdateOperator {
     "++" | "--"
 }
@@ -582,7 +582,7 @@ An update (increment or decrement) operator token.
 
 ### BinaryExpression
 
-```js
+```ts
 interface BinaryExpression <: Expression {
     type: "BinaryExpression";
     operator: BinaryOperator;
@@ -595,7 +595,7 @@ A binary operator expression.
 
 #### BinaryOperator
 
-```js
+```ts
 enum BinaryOperator {
     "==" | "!=" | "===" | "!==" | "<" | "<=" | ">" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%" | "|" | "^" | "&" | "in" | "instanceof"
 }
@@ -605,7 +605,7 @@ A binary operator token.
 
 ### AssignmentExpression
 
-```js
+```ts
 interface AssignmentExpression <: Expression {
     type: "AssignmentExpression";
     operator: AssignmentOperator;
@@ -618,7 +618,7 @@ An assignment operator expression.
 
 #### AssignmentOperator
 
-```js
+```ts
 enum AssignmentOperator {
     "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "<<=" | ">>=" | ">>>=" | "|=" | "^=" | "&="
 }
@@ -628,7 +628,7 @@ An assignment operator token.
 
 ### LogicalExpression
 
-```js
+```ts
 interface LogicalExpression <: Expression {
     type: "LogicalExpression";
     operator: LogicalOperator;
@@ -641,7 +641,7 @@ A logical operator expression.
 
 #### LogicalOperator
 
-```js
+```ts
 enum LogicalOperator {
     "||" | "&&"
 }
@@ -651,7 +651,7 @@ A logical operator token.
 
 ### MemberExpression
 
-```js
+```ts
 interface MemberExpression <: Expression, Pattern {
     type: "MemberExpression";
     object: Expression;
@@ -664,7 +664,7 @@ A member expression. If `computed` is `true`, the node corresponds to a computed
 
 ## ConditionalExpression
 
-```js
+```ts
 interface ConditionalExpression <: Expression {
     type: "ConditionalExpression";
     test: Expression;
@@ -677,7 +677,7 @@ A conditional expression, i.e., a ternary `?`/`:` expression.
 
 ## CallExpression
 
-```js
+```ts
 interface CallExpression <: Expression {
     type: "CallExpression";
     callee: Expression;
@@ -689,7 +689,7 @@ A function or method call expression.
 
 ## NewExpression
 
-```js
+```ts
 interface NewExpression <: Expression {
     type: "NewExpression";
     callee: Expression;
@@ -701,7 +701,7 @@ A `new` expression.
 
 ## SequenceExpression
 
-```js
+```ts
 interface SequenceExpression <: Expression {
     type: "SequenceExpression";
     expressions: [ Expression ];
@@ -712,7 +712,7 @@ A sequence expression, i.e., a comma-separated sequence of expressions.
 
 # Pattern
 
-```js
+```ts
 interface Pattern <: Node { }
 ```
 
