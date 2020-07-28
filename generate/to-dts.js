@@ -1,4 +1,4 @@
-import { indentation, indent } from './indent';
+import { indentation, indent } from './indent.js';
 
 function unique(value, index, self) {
 	return self.indexOf(value) === index;
@@ -14,7 +14,7 @@ function printDoc(doc) {
 }
 
 // Processors for top-level definitons.
-var topProcessors = {
+const topProcessors = {
 	enum({name, values}, maxVersion) {
 		// TypeScript doesn't allow enums of literals, so we need to create type union instead.
 		const types = values
@@ -35,7 +35,8 @@ var topProcessors = {
 		if (legalBases.length) {
 			result += `extends ${legalBases.join(', ')} `;
 		}
-		var items = Object.create(null), hasItems = false;
+		const items = Object.create(null)
+		let hasItems = false;
 		for (let prop in props) {
 			if (props[prop].added && props[prop].added > maxVersion) continue;
 			// Filter out useless "type: string" from desdendant types.
@@ -49,7 +50,7 @@ var topProcessors = {
 };
 
 // Processors (code generators) for specific types.
-var typeProcessors = {
+const typeProcessors = {
 	literal: ({value}) => value === null ? 'any' : typeof value,
 
 	reference: ({name}) => name,
@@ -66,7 +67,7 @@ var typeProcessors = {
 	) || 'any',
 
 	object: ({items}, maxVersion) => {
-		var result = '{\n';
+		let result = '{\n';
 		indent(() => {
 			for (let propName in items) {
 				let prop = items[propName];
@@ -84,7 +85,7 @@ var typeProcessors = {
 };
 
 function processType(type, maxVersion) {
-	var processor = typeProcessors[type.kind];
+	const processor = typeProcessors[type.kind];
 	if (!processor) {
 		throw new ReferenceError(`Processor for ${type.kind} types doesn't exist. ${JSON.stringify(type)}`);
 	}
@@ -92,7 +93,7 @@ function processType(type, maxVersion) {
 }
 
 export default function toTypeScriptDef(spec, maxVersion = Infinity) {
-	var result = [];
+	const result = [];
 	indent(() => {
 		for (let def of spec) {
 			if (def.added > maxVersion) continue;

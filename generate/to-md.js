@@ -1,4 +1,4 @@
-import { indentation, indent } from './indent';
+import { indentation, indent } from './indent.js';
 
 function makeToc(section) {
 	let result = indentation + `- [${section.name}](#${section.name.toLowerCase().replace(/[^\w]/g, '-')})\n`
@@ -46,7 +46,7 @@ const entryProcessors = {
 	}
 }
 
-var typeProcessors = {
+const typeProcessors = {
 	literal: ({value}) => value === null ? 'null' : typeof value === 'string' ? `"${value}"` : String(value),
 
 	reference: ({name}) => name,
@@ -63,7 +63,7 @@ var typeProcessors = {
 	object: ({items}, maxVersion) => {
 		const allowed = Object.values(items).filter(v => !v.added || v.added <= maxVersion)
 		if (allowed.length === 0) return '{ }'
-		var result = '{\n';
+		let result = '{\n';
 		indent(() => {
 			for (const prop of allowed) {
 				// result += prop.doc ? indentation + printDoc(prop.doc) : '';
@@ -82,7 +82,7 @@ function print(entry, maxVersion, depth) {
 }
 
 function processType(type, maxVersion) {
-	var processor = typeProcessors[type.kind];
+	const processor = typeProcessors[type.kind];
 	if (!processor) {
 		throw new ReferenceError(`Processor for ${type.kind} types doesn't exist. ${JSON.stringify(type)}`);
 	}

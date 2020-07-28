@@ -1,8 +1,7 @@
-import Promise from 'bluebird';
-
 import {readFile, writeFile} from 'fs';
+import {promisify} from 'util';
 
-var readFileAsync = Promise.promisify(readFile);
-var writeFileAsync = Promise.promisify(writeFile);
+var readFileAsync = promisify(readFile);
+var writeFileAsync = promisify(writeFile);
 
 export {readFileAsync as readFile, writeFileAsync as writeFile};

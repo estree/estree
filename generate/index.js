@@ -1,54 +1,31 @@
-import extend from 'object-assign';
-import Promise from 'bluebird';
-import {install as installSourceMaps} from 'source-map-support';
-import {readFile, writeFile} from './fs';
-import {parse as parseSpec} from './grammar';
-import toTypeScriptDef from './to-dts';
-import toMarkdown from './to-md';
+import {readFile, writeFile} from './fs.js';
+import parser from './grammar.cjs';
+// import toTypeScriptDef from './to-dts.js';
+import toMarkdown from './to-md.js';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-installSourceMaps();
+const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
 
-var rootDir = `${__dirname}/..`;
-
-function merge(...objects) {
-	return extend(Object.create(null), ...objects);
-}
-
-function resolveExtends(extension, base) {
-	var result = merge(base);
-	for (let name in extension) {
-		let item = extension[name];
-		if (item.kind === 'interface' && !item.base) {
-			let baseItem = base[name];
-			result[name] = merge(baseItem, {
-				props: merge(baseItem.props, item.props)
-			});
-		} else {
-			result[name] = item;
-		}
-	}
-	return result;
-}
-
-function writeSpec(name, spec) {
+function writeSpec(name, spec, maxVersion = parseInt(name.slice(2))) {
 	return spec.then(spec => Promise.all([
+		// writeFile(
+		// 	`${rootDir}/formal-data/typescript/${name}.d.ts`,
+		// 	toTypeScriptDef(spec, maxVersion)
+		// ),
 		writeFile(
-			`${rootDir}/formal-data/typescript/${name}.d.ts`,
-			toTypeScriptDef(spec, 5)
+			`${rootDir}/${name}.md`,
+			toMarkdown(spec, maxVersion)
 		),
-		writeFile(
-			`${rootDir}/estree/${name}.md`,
-			toMarkdown(spec, 5)
-		),
-		writeFile(
-			`${rootDir}/formal-data/${name}.json`,
-			JSON.stringify(spec, null, 2)
-		)
+		// writeFile(
+		// 	`${rootDir}/formal-data/${name}.json`,
+		// 	JSON.stringify(spec, null, 2)
+		// )
 	]));
 };
 
-
-writeSpec('es5',
-	readFile(`${rootDir}/estree/spec.estree`, 'utf8')
-		.then(parseSpec)
-)
+(async () => {
+	const spec = parser.parse(await readFile(`${rootDir}/spec.estree`, 'utf8'))
+	writeFile(join(rootDir, 'es5.md'), toMarkdown(spec, 5))
+	writeFile(join(rootDir, 'latest.md'), toMarkdown(spec))
+})()
