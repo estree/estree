@@ -6,7 +6,7 @@
 interface AwaitExpression <: Expression {
     type: "AwaitExpression";
     argument: Expression;
-    operation: "all" | "any" | "race" | "allSettled" | undefined
+    operation: Identifier | null
 }
 ```
 
