@@ -3,10 +3,8 @@
 ## AwaitExpression
 
 ```js
-interface AwaitExpression <: Expression {
-    type: "AwaitExpression";
-    argument: Expression;
-    operation: Identifier | null
+extend interface AwaitExpression {
+    operation: Identifier | null // operation.name should be one of the following : 'all', 'race', 'allSettled' and 'any'
 }
 ```
 
