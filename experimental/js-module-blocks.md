@@ -11,4 +11,6 @@ interface ModuleExpression <: Expression {
 }
 ```
 
+The `sourceType` of the `body` must be `"module"`.
+
 [proposal-js-module-blocks]: https://github.com/tc39/proposal-js-module-blocks
