@@ -1,7 +1,6 @@
+# Classes
 
-# Class Features
-
-This experimental extension covers three class features proposals: 
+These language extensions cover three class features proposals:
 [Class Fields], [Static Class Features] and [Private Methods].
 
 ## ClassBody
