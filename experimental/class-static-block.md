@@ -7,7 +7,6 @@ extend interface ClassBody {
     body: [ MethodDefinition | PropertyDefinition | StaticBlock ];
 }
 ```
-- `body` has at most one `StaticBlock`.
 
 ## StaticBlock
 
