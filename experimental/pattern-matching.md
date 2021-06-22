@@ -13,7 +13,8 @@ interface MatchExpression <: Expression {
 }
 ```
 
-## WhenClause
+## MatchClause
+
 ```js
 interface MatchClause <: Node {
     type: "MatchClause";
@@ -27,11 +28,20 @@ interface MatchClause <: Node {
 If `test` is `null`, `id` must be `null`.
 
 ## MatchPattern
+
 ```js
 interface MatchPattern <: Node {}
 ```
 
+While a Match Pattern shares similar structures with a Pattern, it is different from a Pattern:
+
+- Literals or negative numbers are match patterns, but they are not patterns
+- Any expression can be converted to an expression match pattern
+- Multiple match patterns can be joined with `and`, `or` and `with` operators, but patterns can not
+- Unlike array and object patterns, assignment patterns have no corresponding syntax in match patterns
+
 ## ArrayMatchPattern
+
 ```js
 interface ArrayMatchPattern <: MatchPattern {
     type: "ArrayMatchPattern";
@@ -40,6 +50,7 @@ interface ArrayMatchPattern <: MatchPattern {
 ```
 
 ## ObjectMatchPattern
+
 ```js
 interface AssignmentMatchProperty <: Property {
     type: "Property"; // inherited
@@ -55,6 +66,7 @@ interface ObjectMatchPattern <: MatchPattern {
 ```
 
 ## RestMatchElement
+
 ```js
 interface RestMatchElement <: MatchPattern {
     type: "RestMatchElement";
@@ -63,9 +75,10 @@ interface RestMatchElement <: MatchPattern {
 ```
 
 ## BinaryMatchPattern
+
 ```js
 interface BinaryMatchPattern <: MatchPattern {
-    type: "BinaryPattern";
+    type: "BinaryMatchPattern";
     operator: "and" | "or" | "with";
     left: MatchPattern;
     right: MatchPattern;
@@ -73,6 +86,7 @@ interface BinaryMatchPattern <: MatchPattern {
 ```
 
 ## AsMatchPattern
+
 ```js
 interface AsMatchPattern <: MatchPattern {
     type: "AsMatchPattern";
@@ -82,6 +96,7 @@ interface AsMatchPattern <: MatchPattern {
 ```
 
 ## ExpressionMatchPattern
+
 ```js
 interface ExpressionMatchPattern <: MatchPattern {
     type: "ExpressionMatchPattern";
@@ -90,6 +105,7 @@ interface ExpressionMatchPattern <: MatchPattern {
 ```
 
 ## NullMatchPattern
+
 ```js
 interface NullMatchPattern <: MatchPattern {
     type: "NullMatchPattern";
@@ -103,6 +119,7 @@ extend interface Literal <: Expression, MatchPattern {}
 ```
 
 # Identifier
+
 ```js
 extend interface Identifier <: Expression, Pattern, MatchPattern {}
 ```
