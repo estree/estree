@@ -9,7 +9,7 @@ interface MatchExpression <: Expression {
     type: "MatchExpression";
     discriminant: Expression;
     id: Pattern | null;
-    clause: [ MatchClause ]
+    clauses: [ MatchClause ]
 }
 ```
 
