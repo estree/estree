@@ -405,7 +405,11 @@ declare module ESTree {
    */
   interface BinaryExpression extends Expression {
     operator: BinaryOperator;
-    left: Expression;
+    /**
+     * `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
+     * See [Ergonomic brand checks for Private Fields](https://github.com/tc39/proposal-private-fields-in-in) for details.
+     */
+    left: Expression | PrivateIdentifier;
     right: Expression;
   }
 
@@ -434,11 +438,17 @@ declare module ESTree {
   type LogicalOperator = "||" | "&&" | "??";
 
   /**
-   * A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier`.
+   * A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier` or a `PrivateIdentifier`.
    */
   interface MemberExpression extends Expression, Pattern, ChainElement {
     object: Expression | Super;
-    property: Expression;
+    /**
+     * When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
+     */
+    property: Expression | PrivateIdentifier;
+    /**
+     * When `property` is a `PrivateIdentifier`, `computed` must be `false`.
+     */
     computed: boolean;
   }
 
@@ -701,13 +711,40 @@ declare module ESTree {
   }
 
   interface ClassBody extends Node {
-    body: Array<MethodDefinition>;
+    body: Array<MethodDefinition | PropertyDefinition | StaticBlock>;
   }
 
   interface MethodDefinition extends Node {
-    key: Expression;
+    /**
+     * When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`.
+     */
+    key: Expression | PrivateIdentifier;
     value: FunctionExpression;
     kind: string;
+    computed: boolean;
+    static: boolean;
+  }
+
+  /**
+   * A static block `static { }` is a block statement serving as an additional static initializer.
+   * Original proposal: https://github.com/tc39/proposal-class-static-block
+   */
+  interface StaticBlock extends BlockStatement {}
+
+  /**
+   * A private identifier refers to private class elements. For a private name `#a`, its `name` is `a`.
+   * Original proposal: https://github.com/tc39/proposal-private-methods
+   */
+  interface PrivateIdentifier extends Node {
+    name: string;
+  }
+
+  /**
+   * Original proposals: https://github.com/tc39/proposal-class-fields and https://github.com/tc39/proposal-static-class-features/
+   */
+  interface PropertyDefinition extends Node {
+    key: Expression | PrivateIdentifier;
+    value?: Expression;
     computed: boolean;
     static: boolean;
   }

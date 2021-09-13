@@ -593,6 +593,9 @@ interface BinaryExpression <: Expression {
 
 A binary operator expression.
 
+Docs for `left`: `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
+See [Ergonomic brand checks for Private Fields](https://github.com/tc39/proposal-private-fields-in-in) for details.
+
 #### BinaryOperator
 
 ```js
@@ -660,7 +663,11 @@ interface MemberExpression <: Expression, Pattern {
 }
 ```
 
-A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier`.
+A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier` or a `PrivateIdentifier`.
+
+Docs for `property`: When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
+
+Docs for `computed`: When `property` is a `PrivateIdentifier`, `computed` must be `false`.
 
 ## ConditionalExpression
 

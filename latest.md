@@ -1,4 +1,5 @@
 - [Node](#node)
+  - [PrivateIdentifier](#privateidentifier)
 - [Identifier](#identifier)
 - [Literal](#literal)
   - [RegExpLiteral](#regexpliteral)
@@ -78,9 +79,12 @@
 - [Class](#class)
   - [ClassBody](#classbody)
   - [MethodDefinition](#methoddefinition)
+  - [PropertyDefinition](#propertydefinition)
   - [ClassDeclaration](#classdeclaration)
   - [ClassExpression](#classexpression)
   - [MetaProperty](#metaproperty)
+- [BlockStatement](#blockstatement)
+  - [StaticBlock](#staticblock)
 - [Modules](#modules)
   - [ModuleDeclaration](#moduledeclaration)
   - [ModuleSpecifier](#modulespecifier)
@@ -135,6 +139,18 @@ interface Position {
 Docs for `line`: Line number (1-indexed)
 
 Docs for `column`: Column number (0-indexed)
+
+## PrivateIdentifier
+
+```js
+interface PrivateIdentifier <: Node {
+    type: "PrivateIdentifier";
+    name: string;
+}
+```
+
+A private identifier refers to private class elements. For a private name `#a`, its `name` is `a`.
+Original proposal: https://github.com/tc39/proposal-private-methods
 
 # Identifier
 
@@ -711,12 +727,15 @@ An update (increment or decrement) operator token.
 interface BinaryExpression <: Expression {
     type: "BinaryExpression";
     operator: BinaryOperator;
-    left: Expression;
+    left: Expression | PrivateIdentifier;
     right: Expression;
 }
 ```
 
 A binary operator expression.
+
+Docs for `left`: `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
+See [Ergonomic brand checks for Private Fields](https://github.com/tc39/proposal-private-fields-in-in) for details.
 
 #### BinaryOperator
 
@@ -780,12 +799,16 @@ A logical operator token.
 interface MemberExpression <: Expression, Pattern, ChainElement {
     type: "MemberExpression";
     object: Expression | Super;
-    property: Expression;
+    property: Expression | PrivateIdentifier;
     computed: boolean;
 }
 ```
 
-A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier`.
+A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier` or a `PrivateIdentifier`.
+
+Docs for `property`: When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
+
+Docs for `computed`: When `property` is a `PrivateIdentifier`, `computed` must be `false`.
 
 ## ChainExpression
 
@@ -1121,7 +1144,7 @@ interface Class <: Node {
 ```js
 interface ClassBody <: Node {
     type: "ClassBody";
-    body: [ MethodDefinition ];
+    body: [ MethodDefinition | PropertyDefinition | StaticBlock ];
 }
 ```
 
@@ -1130,13 +1153,29 @@ interface ClassBody <: Node {
 ```js
 interface MethodDefinition <: Node {
     type: "MethodDefinition";
-    key: Expression;
+    key: Expression | PrivateIdentifier;
     value: FunctionExpression;
     kind: "constructor" | "method" | "get" | "set";
     computed: boolean;
     static: boolean;
 }
 ```
+
+Docs for `key`: When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`.
+
+## PropertyDefinition
+
+```js
+interface PropertyDefinition <: Node {
+    type: "PropertyDefinition";
+    key: Expression | PrivateIdentifier;
+    value: Expression | null;
+    computed: boolean;
+    static: boolean;
+}
+```
+
+Original proposals: https://github.com/tc39/proposal-class-fields and https://github.com/tc39/proposal-static-class-features/
 
 ## ClassDeclaration
 
@@ -1166,6 +1205,19 @@ interface MetaProperty <: Expression {
 ```
 
 `MetaProperty` node represents `new.target` meta property in ES2015+ and `import.meta` in ES2020+
+
+# BlockStatement
+
+## StaticBlock
+
+```js
+interface StaticBlock <: BlockStatement {
+    type: "StaticBlock";
+}
+```
+
+A static block `static { }` is a block statement serving as an additional static initializer.
+Original proposal: https://github.com/tc39/proposal-class-static-block
 
 # Modules
 

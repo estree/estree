@@ -379,7 +379,9 @@ enum UpdateOperator {
 interface BinaryExpression <: Expression {
     type: "BinaryExpression";
     operator: BinaryOperator;
-    left: Expression;
+    // `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
+    // See [Ergonomic brand checks for Private Fields](https://github.com/tc39/proposal-private-fields-in-in) for details.
+    left: Expression | @es2022 PrivateIdentifier;
     right: Expression;
 }
 
@@ -427,12 +429,14 @@ enum LogicalOperator {
     "||" | "&&" | @es2020 "??"
 }
 
-// A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier`.
+// A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier` or a `PrivateIdentifier`.
 @section(Expression > Binary operations)
 interface MemberExpression <: Expression, Pattern, @es2020 ChainElement {
     type: "MemberExpression";
     object: Expression | @es2015 Super;
-    property: Expression;
+    // When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
+    property: Expression | @es2022 PrivateIdentifier;
+    // When `property` is a `PrivateIdentifier`, `computed` must be `false`.
     computed: boolean;
 }
 
@@ -702,15 +706,39 @@ interface Pattern <: Node { }
 @section(Class)
 @es2015 interface ClassBody <: Node {
     type: "ClassBody";
-    body: [ MethodDefinition ];
+    body: [ MethodDefinition | @es2022 PropertyDefinition | @es2022 StaticBlock ];
 }
 
 @section(Class)
 @es2015 interface MethodDefinition <: Node {
     type: "MethodDefinition";
-    key: Expression;
+    // When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`.
+    key: Expression | @es2022 PrivateIdentifier;
     value: FunctionExpression;
     kind: "constructor" | "method" | "get" | "set";
+    computed: boolean;
+    static: boolean;
+}
+
+// A static block `static { }` is a block statement serving as an additional static initializer.
+// Original proposal: https://github.com/tc39/proposal-class-static-block
+@es2022 interface StaticBlock <: BlockStatement {
+    type: "StaticBlock";
+}
+
+// A private identifier refers to private class elements. For a private name `#a`, its `name` is `a`.
+// Original proposal: https://github.com/tc39/proposal-private-methods
+@es2022 interface PrivateIdentifier <: Node {
+    type: "PrivateIdentifier";
+    name: string;
+}
+
+// Original proposals: https://github.com/tc39/proposal-class-fields and https://github.com/tc39/proposal-static-class-features/
+@section(Class)
+@es2022 interface PropertyDefinition <: Node {
+    type: "PropertyDefinition";
+    key: Expression | PrivateIdentifier;
+    value: Expression | null;
     computed: boolean;
     static: boolean;
 }
