@@ -7,7 +7,7 @@ function unique(value, index, self) {
 function printDoc(doc) {
   let result = '/**\n';
   for (const line of doc.split('\n')) {
-    result += indentation + ` * ${line}\n`;
+    result += indentation + ` * ${line.replace('*/', '*\u{200b}/')}\n`;
   }
   result += indentation + ' */\n';
   return result;
