@@ -44,12 +44,13 @@ decorators
     }
   }
 added 'availability annotation' = '@es' v: $number { return parseInt(v) }
-section '@section' = '@section(' _  name: sectionName _ ')' { return name }
+section '@section'
+  = '@section(' _  name: sectionName _ ')' { return name }
+  / '@at-root' { return ['<root>'] }
 
 sectionName 'section name'
-  = first: $[^",)]+  rest: (_ "," _ $[^",)]+)*
-  { return [first, ...rest.map(r => r[3])] }
-  / "<root>" { return "root" }
+  = first: $[^>)]+  rest: (_ ">" _ $[^>)]+)*
+  { return [first.trim(), ...rest.map(r => r[3].trim())] }
 
 name 'name' = $([A-Za-z_] [A-Za-z0-9_]*)
 names

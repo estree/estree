@@ -27,14 +27,14 @@ interface Position {
 }
 
 // An identifier. Note that an identifier may be an expression or a destructuring pattern.
-@section(<root>)
+@at-root
 interface Identifier <: Expression, Pattern {
     type: "Identifier";
     name: string;
 }
 
 // A literal token. Note that a literal can be an expression.
-@section(<root>)
+@at-root
 interface Literal <: Expression {
     type: "Literal";
     value: string | boolean | null | number | RegExp | @es2020 bigint;
@@ -59,7 +59,7 @@ interface RegExpLiteral <: Literal {
 }
 
 // A complete program source tree.
-@section(<root>)
+@at-root
 interface Program <: Node {
     type: "Program";
     // Parsers must specify `sourceType` as `"module"` if the source has been parsed as an ES6 module. Otherwise, `sourceType` must be `"script"`.
@@ -68,7 +68,7 @@ interface Program <: Node {
 }
 
 // A function [declaration](#functiondeclaration) or [expression](#functionexpression).
-@section(<root>)
+@at-root
 interface Function <: Node {
     id: Identifier | null;
     params: [ Pattern ];
@@ -78,7 +78,7 @@ interface Function <: Node {
 }
 
 // Any statement.
-@section(<root>)
+@at-root
 interface Statement <: Node { }
 
 // An expression statement, i.e., a statement consisting of a single expression.
@@ -128,14 +128,14 @@ interface WithStatement <: Statement {
 }
 
 // A `return` statement.
-@section(Statement, Control flow)
+@section(Statement > Control flow)
 interface ReturnStatement <: Statement {
     type: "ReturnStatement";
     argument: Expression | null;
 }
 
 // A labeled statement, i.e., a statement prefixed by a `break`/`continue` label.
-@section(Statement, Control flow)
+@section(Statement > Control flow)
 interface LabeledStatement <: Statement {
     type: "LabeledStatement";
     label: Identifier;
@@ -143,20 +143,20 @@ interface LabeledStatement <: Statement {
 }
 
 // A `break` statement.
-@section(Statement, Control flow)
+@section(Statement > Control flow)
 interface BreakStatement <: Statement {
     type: "BreakStatement";
     label: Identifier | null;
 }
 // A `continue` statement.
-@section(Statement, Control flow)
+@section(Statement > Control flow)
 interface ContinueStatement <: Statement {
     type: "ContinueStatement";
     label: Identifier | null;
 }
 
 // An `if` statement.
-@section(Statement, Choice)
+@section(Statement > Choice)
 interface IfStatement <: Statement {
     type: "IfStatement";
     test: Expression;
@@ -165,7 +165,7 @@ interface IfStatement <: Statement {
 }
 
 // A `switch` statement.
-@section(Statement, Choice)
+@section(Statement > Choice)
 interface SwitchStatement <: Statement {
     type: "SwitchStatement";
     discriminant: Expression;
@@ -173,7 +173,7 @@ interface SwitchStatement <: Statement {
 }
 
 // A `case` (if `test` is an `Expression`) or `default` (if `test === null`) clause in the body of a `switch` statement.
-@section(Statement, Choice, SwitchStatement)
+@section(Statement > Choice > SwitchStatement)
 interface SwitchCase <: Node {
     type: "SwitchCase";
     test: Expression | null;
@@ -181,14 +181,14 @@ interface SwitchCase <: Node {
 }
 
 // A `throw` statement.
-@section(Statement, Exceptions)
+@section(Statement > Exceptions)
 interface ThrowStatement <: Statement {
     type: "ThrowStatement";
     argument: Expression;
 }
 
 // A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockStatement`.
-@section(Statement, Exceptions)
+@section(Statement > Exceptions)
 interface TryStatement <: Statement {
     type: "TryStatement";
     block: BlockStatement;
@@ -197,7 +197,7 @@ interface TryStatement <: Statement {
 }
 
 // A `catch` clause following a `try` block.
-@section(Statement, Exceptions, TryStatement)
+@section(Statement > Exceptions > TryStatement)
 interface CatchClause <: Node {
     type: "CatchClause";
     //  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
@@ -206,7 +206,7 @@ interface CatchClause <: Node {
 }
 
 // A `while` statement.
-@section(Statement, Loops)
+@section(Statement > Loops)
 interface WhileStatement <: Statement {
     type: "WhileStatement";
     test: Expression;
@@ -214,7 +214,7 @@ interface WhileStatement <: Statement {
 }
 
 // A `do`/`while` statement.
-@section(Statement, Loops)
+@section(Statement > Loops)
 interface DoWhileStatement <: Statement {
     type: "DoWhileStatement";
     body: Statement;
@@ -222,7 +222,7 @@ interface DoWhileStatement <: Statement {
 }
 
 // A `for` statement.
-@section(Statement, Loops)
+@section(Statement > Loops)
 interface ForStatement <: Statement {
     type: "ForStatement";
     init: VariableDeclaration | Expression | null;
@@ -232,7 +232,7 @@ interface ForStatement <: Statement {
 }
 
 // A `for`/`in` statement.
-@section(Statement, Loops)
+@section(Statement > Loops)
 interface ForInStatement <: Statement {
     type: "ForInStatement";
     left: VariableDeclaration |  Pattern;
@@ -241,7 +241,7 @@ interface ForInStatement <: Statement {
 }
 
 // A `for`/`of` statement.
-@section(Statement, Loops)
+@section(Statement > Loops)
 @es2015 interface ForOfStatement <: ForInStatement {
     type: "ForOfStatement";
     // `for-await-of` statements, e.g., `for await (const x of xs) {`
@@ -249,7 +249,7 @@ interface ForInStatement <: Statement {
 }
 
 // Any declaration node. Note that declarations are considered statements; this is because declarations can appear in any statement context.
-@section(<root>)
+@at-root
 interface Declaration <: Statement { }
 
 // A function declaration. Note that unlike in the parent interface `Function`, the `id` cannot be `null`.
@@ -266,7 +266,7 @@ interface VariableDeclaration <: Declaration {
 }
 
 // A variable declarator.
-@section(Declaration, VariableDeclaration)
+@section(Declaration > VariableDeclaration)
 interface VariableDeclarator <: Node {
     type: "VariableDeclarator";
     id: Pattern;
@@ -274,7 +274,7 @@ interface VariableDeclarator <: Node {
 }
 
 // Any expression node. Since the left-hand side of an assignment may be any expression in general, an expression can also be a pattern.
-@section(<root>)
+@at-root
 interface Expression <: Node { }
 
 // A `this` expression.
@@ -294,7 +294,7 @@ interface ObjectExpression <: Expression {
 }
 
 // A literal property in an object expression can have either a string or number as its `value`. Ordinary property initializers have a `kind` value `"init"`; getters and setters have the kind values `"get"` and `"set"`, respectively.
-@section(Expression, ObjectExpression)
+@section(Expression > ObjectExpression)
 interface Property <: Node {
     type: "Property";
     key: Literal | Identifier | @es2015 Expression;
@@ -345,7 +345,7 @@ interface FunctionExpression <: Expression, Function {
 
 
 // A unary operator expression.
-@section(Expression, Unary operations)
+@section(Expression > Unary operations)
 interface UnaryExpression <: Expression {
     type: "UnaryExpression";
     operator: UnaryOperator;
@@ -354,13 +354,13 @@ interface UnaryExpression <: Expression {
 }
 
 // A unary operator token.
-@section(Expression, Unary operations, UnaryExpression)
+@section(Expression > Unary operations > UnaryExpression)
 enum UnaryOperator {
     "-" | "+" | "!" | "~" | "typeof" | "void" | "delete"
 }
 
 // An update (increment or decrement) operator expression.
-@section(Expression, Unary operations)
+@section(Expression > Unary operations)
 interface UpdateExpression <: Expression {
     type: "UpdateExpression";
     operator: UpdateOperator;
@@ -369,13 +369,13 @@ interface UpdateExpression <: Expression {
 }
 
 // An update (increment or decrement) operator token.
-@section(Expression, Unary operations, UpdateExpression)
+@section(Expression > Unary operations > UpdateExpression)
 enum UpdateOperator {
     "++" | "--"
 }
 
 // A binary operator expression.
-@section(Expression, Binary operations)
+@section(Expression > Binary operations)
 interface BinaryExpression <: Expression {
     type: "BinaryExpression";
     operator: BinaryOperator;
@@ -384,7 +384,7 @@ interface BinaryExpression <: Expression {
 }
 
 // A binary operator token.
-@section(Expression, Binary operations, BinaryExpression)
+@section(Expression > Binary operations > BinaryExpression)
 enum BinaryOperator {
     "==" | "!=" | "===" | "!=="
          | "<" | "<=" | ">" | ">="
@@ -395,7 +395,7 @@ enum BinaryOperator {
 }
 
 // An assignment operator expression.
-@section(Expression, Binary operations)
+@section(Expression > Binary operations)
 interface AssignmentExpression <: Expression {
     type: "AssignmentExpression";
     operator: AssignmentOperator;
@@ -404,7 +404,7 @@ interface AssignmentExpression <: Expression {
 }
 
 // An assignment operator token.
-@section(Expression, Binary operations, AssignmentExpression)
+@section(Expression > Binary operations > AssignmentExpression)
 enum AssignmentOperator {
     "=" | "+=" | "-=" | "*=" | "/=" | "%=" | @es2016 "**="
         | "<<=" | ">>=" | ">>>="
@@ -413,7 +413,7 @@ enum AssignmentOperator {
 }
 
 // A logical operator expression.
-@section(Expression, Binary operations)
+@section(Expression > Binary operations)
 interface LogicalExpression <: Expression {
     type: "LogicalExpression";
     operator: LogicalOperator;
@@ -422,13 +422,13 @@ interface LogicalExpression <: Expression {
 }
 
 // A logical operator token.
-@section(Expression, Binary operations, LogicalExpression)
+@section(Expression > Binary operations > LogicalExpression)
 enum LogicalOperator {
     "||" | "&&" | @es2020 "??"
 }
 
 // A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier`.
-@section(Expression, Binary operations)
+@section(Expression > Binary operations)
 interface MemberExpression <: Expression, Pattern, @es2020 ChainElement {
     type: "MemberExpression";
     object: Expression | @es2015 Super;
@@ -591,7 +591,7 @@ interface MemberExpression <: Expression, Pattern, @es2020 ChainElement {
   expression: ChainElement;
 }
 
-@section(Expression, ChainExpression) @headerless
+@section(Expression > ChainExpression) @headerless
 @es2020 interface ChainElement <: Node {
   optional: boolean;
 }
@@ -633,14 +633,14 @@ interface SequenceExpression <: Expression {
   source: Expression;
 }
 
-@section(Expression, Template literals)
+@section(Expression > Template literals)
 @es2015 interface TemplateLiteral <: Expression {
     type: "TemplateLiteral";
     quasis: [ TemplateElement ];
     expressions: [ Expression ];
 }
 
-@section(Expression, Template literals)
+@section(Expression > Template literals)
 @es2015 interface TaggedTemplateExpression <: Expression {
     type: "TaggedTemplateExpression";
     tag: Expression;
@@ -648,7 +648,7 @@ interface SequenceExpression <: Expression {
 }
 
 // If the template literal is tagged and the text has an invalid escape, `cooked` will be `null`, e.g., ``tag`\unicode and \u{55}` ``
-@section(Expression, Template literals)
+@section(Expression > Template literals)
 @es2015 interface TemplateElement <: Node {
     type: "TemplateElement";
     tail: boolean;
@@ -659,7 +659,7 @@ interface SequenceExpression <: Expression {
 }
 
 // Destructuring binding and assignment are not part of ES5, but all binding positions accept `Pattern` to allow for destructuring in ES6. Nevertheless, for ES5, the only `Pattern` subtype is [`Identifier`](#identifier).
-@section(<root>)
+@at-root
 interface Pattern <: Node { }
 
 @es2015 interface ObjectPattern <: Pattern {
@@ -667,7 +667,7 @@ interface Pattern <: Node { }
     properties: [ AssignmentProperty | @es2018 RestElement ];
 }
 
-@section(Pattern, ObjectPattern)
+@section(Pattern > ObjectPattern)
 @headerless
 @es2015 interface AssignmentProperty <: Property {
     type: "Property"; // inherited
@@ -692,7 +692,7 @@ interface Pattern <: Node { }
     right: Expression;
 }
 
-@section(<root>)
+@at-root
 @es2015 interface Class <: Node {
     id: Identifier | null;
     superClass: Expression | null;
@@ -745,7 +745,7 @@ interface Pattern <: Node { }
 }
 
 // An import declaration, e.g., `import foo from "mod";`.
-@section(Modules, Imports)
+@section(Modules > Imports)
 @es2015 interface ImportDeclaration <: ModuleDeclaration {
     type: "ImportDeclaration";
     specifiers: [ ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier ];
@@ -753,27 +753,27 @@ interface Pattern <: Node { }
 }
 
 // An imported variable binding, e.g., `{foo}` in `import {foo} from "mod"` or `{foo as bar}` in `import {foo as bar} from "mod"`. The `imported` field refers to the name of the export imported from the module. The `local` field refers to the binding imported into the local module scope. If it is a basic named import, such as in `import {foo} from "mod"`, both `imported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased import, such as in `import {foo as bar} from "mod"`, the `imported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
-@section(Modules, Imports)
+@section(Modules > Imports)
 @es2015 interface ImportSpecifier <: ModuleSpecifier {
     type: "ImportSpecifier";
     imported: Identifier;
 }
 
 // A default import specifier, e.g., `foo` in `import foo from "mod.js"`.
-@section(Modules, Imports)
+@section(Modules > Imports)
 @es2015 interface ImportDefaultSpecifier <: ModuleSpecifier {
     type: "ImportDefaultSpecifier";
 }
 
 // A namespace import specifier, e.g., `* as foo` in `import * as foo from "mod.js"`.
-@section(Modules, Imports)
+@section(Modules > Imports)
 @es2015 interface ImportNamespaceSpecifier <: ModuleSpecifier {
     type: "ImportNamespaceSpecifier";
 }
 
 // An export named declaration, e.g., `export {foo, bar};`, `export {foo} from "mod";` or `export var foo = 1;`.
 // _Note: Having `declaration` populated with non-empty `specifiers` or non-null `source` results in an invalid state._
-@section(Modules, Exports)
+@section(Modules > Exports)
 @es2015 interface ExportNamedDeclaration <: ModuleDeclaration {
     type: "ExportNamedDeclaration";
     declaration: Declaration | null;
@@ -782,33 +782,33 @@ interface Pattern <: Node { }
 }
 
 // An exported variable binding, e.g., `{foo}` in `export {foo}` or `{bar as foo}` in `export {bar as foo}`. The `exported` field refers to the name exported in the module. The `local` field refers to the binding into the local module scope. If it is a basic named export, such as in `export {foo}`, both `exported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased export, such as in `export {bar as foo}`, the `exported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
-@section(Modules, Exports)
+@section(Modules > Exports)
 @es2015 interface ExportSpecifier <: ModuleSpecifier {
     type: "ExportSpecifier";
     exported: Identifier;
 }
 
 // An export default declaration, e.g., `export default function () {};` or `export default 1;`.
-@section(Modules, Exports)
+@section(Modules > Exports)
 @es2015 interface ExportDefaultDeclaration <: ModuleDeclaration {
     type: "ExportDefaultDeclaration";
     declaration: AnonymousDefaultExportedFunctionDeclaration | FunctionDeclaration | AnonymousDefaultExportedClassDeclaration | ClassDeclaration | Expression;
 }
 
-@section(Modules, Exports, ExportDefaultDeclaration) @headerless
+@section(Modules > Exports > ExportDefaultDeclaration) @headerless
 @es2015 interface AnonymousDefaultExportedFunctionDeclaration <: Function {
     type: "FunctionDeclaration";
     id: null;
 }
 
-@section(Modules, Exports, ExportDefaultDeclaration) @headerless
+@section(Modules > Exports > ExportDefaultDeclaration) @headerless
 @es2015 interface AnonymousDefaultExportedClassDeclaration <: Class {
     type: "ClassDeclaration";
     id: null;
 }
 
 // An export batch declaration, e.g., `export * from "mod";`.
-@section(Modules, Exports)
+@section(Modules > Exports)
 @es2015 interface ExportAllDeclaration <: ModuleDeclaration {
     type: "ExportAllDeclaration";
     source: Literal;
