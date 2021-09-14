@@ -201,7 +201,7 @@ interface TryStatement <: Statement {
 @section(Statement > Exceptions > TryStatement)
 interface CatchClause <: Node {
     type: "CatchClause";
-    //  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
+    // `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
     param: Pattern | @added(2019, optional-catch-binding) null;
     body: BlockStatement;
 }

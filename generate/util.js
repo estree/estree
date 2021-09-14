@@ -21,6 +21,15 @@ export function docsForDef(def, maxVersion) {
 }
 
 export function printDoc(doc) {
+  let result = '';
+  for (const line of doc.split('\n').filter(Boolean)) {
+    if (result) result += indentation;
+    result += `// ${line}\n`;
+  }
+  return result;
+}
+
+export function printJSDoc(doc) {
   if (!doc.includes('\n')) {
     return `/** ${doc} */\n`;
   }

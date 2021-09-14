@@ -1,4 +1,4 @@
-import { indentation, indent, docsForDef, printDoc } from './util.js';
+import { indentation, indent, docsForDef, printJSDoc } from './util.js';
 
 function unique(value, index, self) {
   return self.indexOf(value) === index;
@@ -20,7 +20,7 @@ const topProcessors = {
     let result = '';
     const doc = docsForDef(node, maxVersion);
     if (doc) {
-      result += printDoc(doc);
+      result += printJSDoc(doc);
       result += indentation;
     }
     result += `interface ${name} `;
@@ -68,7 +68,7 @@ const typeProcessors = {
       for (let propName in items) {
         let prop = items[propName];
         const docs = docsForDef(prop, maxVersion);
-        result += docs ? indentation + printDoc(docs) : '';
+        result += docs ? indentation + printJSDoc(docs) : '';
         if (
           prop.type.kind === 'union' &&
           prop.type.types.some(

@@ -173,7 +173,7 @@ declare module ESTree {
 
   /** A `catch` clause following a `try` block. */
   interface CatchClause extends Node {
-    /**  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }` */
+    /** `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }` */
     param?: Pattern;
     body: BlockStatement;
   }

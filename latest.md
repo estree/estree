@@ -103,16 +103,12 @@
 
 ```js
 interface Node {
-    /**
-     * A string representing the AST variant type.
-     * Each subtype of `Node` is documented below with the specific string of its `type` field.
-     * You can use this field to determine which interface a node implements.
-     */
+    // A string representing the AST variant type.
+    // Each subtype of `Node` is documented below with the specific string of its `type` field.
+    // You can use this field to determine which interface a node implements.
     type: string;
-    /**
-     * The source location information of the node.
-     * If the node contains no information about the source location, the field is `null`.
-     */
+    // The source location information of the node.
+    // If the node contains no information about the source location, the field is `null`.
     loc: SourceLocation | null;
 }
 ```
@@ -122,18 +118,18 @@ ESTree AST nodes are represented as `Node` objects, which may have any prototype
 ```js
 interface SourceLocation {
     source: string | null;
-    /** The position of the first character of the parsed source region */
+    // The position of the first character of the parsed source region
     start: Position;
-    /** The position of the first character after the parsed source region */
+    // The position of the first character after the parsed source region
     end: Position;
 }
 ```
 
 ```js
 interface Position {
-    /** Line number (1-indexed) */
+    // Line number (1-indexed)
     line: number;
-    /** Column number (0-indexed) */
+    // Column number (0-indexed)
     column: number;
 }
 ```
@@ -177,11 +173,9 @@ A literal token. Note that a literal can be an expression.
 
 ```js
 interface RegExpLiteral <: Literal {
-    /**
-     * The `regex` property allows regexes to be represented in environments that don’t
-     * support certain flags such as `y` or `u`. In environments that don't support
-     * these flags `value` will be `null` as the regex can't be represented natively.
-     */
+    // The `regex` property allows regexes to be represented in environments that don’t
+    // support certain flags such as `y` or `u`. In environments that don't support
+    // these flags `value` will be `null` as the regex can't be represented natively.
     regex: {
         pattern: string;
         flags: string;
@@ -209,7 +203,7 @@ Original proposal: https://github.com/tc39/proposal-bigint
 ```js
 interface Program <: Node {
     type: "Program";
-    /** Parsers must specify `sourceType` as `"module"` if the source has been parsed as an ES6 module. Otherwise, `sourceType` must be `"script"`. */
+    // Parsers must specify `sourceType` as `"module"` if the source has been parsed as an ES6 module. Otherwise, `sourceType` must be `"script"`.
     sourceType: "script" | "module";
     body: [ Directive | Statement | ModuleDeclaration ];
 }
@@ -225,7 +219,7 @@ interface Function <: Node {
     params: [ Pattern ];
     body: FunctionBody;
     generator: boolean;
-    /** Original proposal: https://github.com/tc39/proposal-async-await */
+    // Original proposal: https://github.com/tc39/proposal-async-await
     async: boolean;
 }
 ```
@@ -446,7 +440,7 @@ A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockState
 ```js
 interface CatchClause <: Node {
     type: "CatchClause";
-    /**  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }` */
+    // `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
     param: Pattern | null;
     body: BlockStatement;
 }
@@ -512,11 +506,8 @@ A `for`/`in` statement.
 ```js
 interface ForOfStatement <: ForInStatement {
     type: "ForOfStatement";
-    /**
-     * `for-await-of` statements, e.g., `for await (const x of xs) {`
-     * 
-     * Original proposal: https://github.com/tc39/proposal-async-iteration
-     */
+    // `for-await-of` statements, e.g., `for await (const x of xs) {`
+    // Original proposal: https://github.com/tc39/proposal-async-iteration
     await: boolean;
 }
 ```
@@ -733,10 +724,8 @@ An update (increment or decrement) operator token.
 interface BinaryExpression <: Expression {
     type: "BinaryExpression";
     operator: BinaryOperator;
-    /**
-     * `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
-     * See [Ergonomic brand checks for Private Fields](https://github.com/tc39/proposal-private-fields-in-in) for details.
-     */
+    // `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
+    // See [Ergonomic brand checks for Private Fields](https://github.com/tc39/proposal-private-fields-in-in) for details.
     left: Expression | PrivateIdentifier;
     right: Expression;
 }
@@ -806,9 +795,9 @@ A logical operator token.
 interface MemberExpression <: Expression, Pattern, ChainElement {
     type: "MemberExpression";
     object: Expression | Super;
-    /** When `object` is a `Super`, `property` can not be a `PrivateIdentifier` */
+    // When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
     property: Expression | PrivateIdentifier;
-    /** When `property` is a `PrivateIdentifier`, `computed` must be `false`. */
+    // When `property` is a `PrivateIdentifier`, `computed` must be `false`.
     computed: boolean;
 }
 ```
@@ -1104,7 +1093,7 @@ interface ObjectPattern <: Pattern {
 ```js
 interface AssignmentProperty <: Property {
     type: "Property";
-    /** inherited */
+    // inherited
     value: Pattern;
     kind: "init";
     method: false;
@@ -1163,7 +1152,7 @@ interface ClassBody <: Node {
 ```js
 interface MethodDefinition <: Node {
     type: "MethodDefinition";
-    /** When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`. */
+    // When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`.
     key: Expression | PrivateIdentifier;
     value: FunctionExpression;
     kind: "constructor" | "method" | "get" | "set";
@@ -1180,7 +1169,7 @@ interface PropertyDefinition <: Node {
     key: Expression | PrivateIdentifier;
     value: Expression | null;
     computed: boolean;
-    /** Original proposal: https://github.com/tc39/proposal-static-class-features */
+    // Original proposal: https://github.com/tc39/proposal-static-class-features
     static: boolean;
 }
 ```
@@ -1353,11 +1342,8 @@ interface AnonymousDefaultExportedClassDeclaration <: Class {
 interface ExportAllDeclaration <: ModuleDeclaration {
     type: "ExportAllDeclaration";
     source: Literal;
-    /**
-     * Contains an `Identifier` when a different exported name is specified using `as`, e.g., `export * as foo from "mod";`.
-     * 
-     * Original proposal: https://github.com/tc39/proposal-export-ns-from
-     */
+    // Contains an `Identifier` when a different exported name is specified using `as`, e.g., `export * as foo from "mod";`.
+    // Original proposal: https://github.com/tc39/proposal-export-ns-from
     exported: Identifier | null;
 }
 ```
