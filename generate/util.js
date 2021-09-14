@@ -20,9 +20,10 @@ export function docsForDef(def) {
   return docs.filter(Boolean).join('\n\n');
 }
 
-export function printDoc(doc) {
+export function printDoc(doc, collapse = true) {
+  if (!doc) return '';
   let result = '';
-  for (const line of doc.split('\n').filter(Boolean)) {
+  for (const line of doc.split('\n').filter(collapse ? Boolean : () => true)) {
     if (result) result += indentation;
     result += `// ${line}\n`;
   }

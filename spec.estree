@@ -41,13 +41,13 @@ interface Literal <: Expression {
 }
 
 interface RegExpLiteral <: Literal {
-  // The `regex` property allows regexes to be represented in environments that don’t
-  // support certain flags such as `y` or `u`. In environments that don't support
-  // these flags `value` will be `null` as the regex can't be represented natively.
-  regex: {
-    pattern: string;
-    flags: string;
-  };
+    // The `regex` property allows regexes to be represented in environments that don’t
+    // support certain flags such as `y` or `u`. In environments that don't support
+    // these flags `value` will be `null` as the regex can't be represented natively.
+    regex: {
+        pattern: string;
+        flags: string;
+    };
 }
 
 // - `bigint` property is a string representation of the `BigInt` value.
@@ -56,7 +56,7 @@ interface RegExpLiteral <: Literal {
 //   `null` as the `BigInt` value can't be represented natively.
 @added(2020, bigint)
 interface BigIntLiteral <: Literal {
-  bigint: string;
+    bigint: string;
 }
 
 // A complete program source tree.
@@ -149,6 +149,7 @@ interface BreakStatement <: Statement {
     type: "BreakStatement";
     label: Identifier | null;
 }
+
 // A `continue` statement.
 @section(Statement > Control flow)
 interface ContinueStatement <: Statement {
@@ -236,7 +237,7 @@ interface ForStatement <: Statement {
 @section(Statement > Loops)
 interface ForInStatement <: Statement {
     type: "ForInStatement";
-    left: VariableDeclaration |  Pattern;
+    left: VariableDeclaration | Pattern;
     right: Expression;
     body: Statement;
 }
@@ -282,6 +283,7 @@ interface Expression <: Node { }
 interface ThisExpression <: Expression {
     type: "ThisExpression";
 }
+
 // An array expression. An element might be `null` if it represents a hole in a sparse array. E.g. `[1,,2]`.
 interface ArrayExpression <: Expression {
     type: "ArrayExpression";
@@ -326,7 +328,7 @@ interface FunctionExpression <: Expression, Function {
 }
 
 @added(2017, async-await)
-interface AwaitExpression<: Expression {
+interface AwaitExpression <: Expression {
     type: "AwaitExpression";
     argument: Expression;
 }
@@ -344,7 +346,6 @@ interface AwaitExpression<: Expression {
     type: "SpreadElement";
     argument: Expression;
 }
-
 
 // A unary operator expression.
 @section(Expression > Unary operations)
@@ -390,12 +391,7 @@ interface BinaryExpression <: Expression {
 // A binary operator token.
 @section(Expression > Binary operations > BinaryExpression)
 enum BinaryOperator {
-    "==" | "!=" | "===" | "!=="
-         | "<" | "<=" | ">" | ">="
-         | "<<" | ">>" | ">>>"
-         | "+" | "-" | "*" | "/" | "%" | @added(2016, exponentiation-operator) "**"
-         | "|" | "^" | "&" | "in"
-         | "instanceof"
+    "==" | "!=" | "===" | "!==" | "<" | "<=" | ">" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%" | @added(2016, exponentiation-operator) "**" | "|" | "^" | "&" | "in" | "instanceof"
 }
 
 // An assignment operator expression.
@@ -410,10 +406,7 @@ interface AssignmentExpression <: Expression {
 // An assignment operator token.
 @section(Expression > Binary operations > AssignmentExpression)
 enum AssignmentOperator {
-    "=" | "+=" | "-=" | "*=" | "/=" | "%=" | @added(2016, exponentiation-operator) "**="
-        | "<<=" | ">>=" | ">>>="
-        | "|=" | "^=" | "&="
-        | @added(2021, logical-assignment) "||=" | @added(2021, logical-assignment) "&&=" | @added(2021, logical-assignment) "??="
+    "=" | "+=" | "-=" | "*=" | "/=" | "%=" | @added(2016, exponentiation-operator) "**=" | "<<=" | ">>=" | ">>>=" | "|=" | "^=" | "&=" | @added(2021, logical-assignment) "||=" | @added(2021, logical-assignment) "&&=" | @added(2021, logical-assignment) "??="
 }
 
 // A logical operator expression.
@@ -591,19 +584,17 @@ interface MemberExpression <: Expression, Pattern, @added(2020, optional-chainin
 // ```
 //
 // </details>
-
 @added(2020, optional-chaining)
-interface ChainExpression<: Expression {
-  type: "ChainExpression";
-  expression: ChainElement;
+interface ChainExpression <: Expression {
+    type: "ChainExpression";
+    expression: ChainElement;
 }
 
 @section(Expression > ChainExpression) @headerless
 @added(2020, optional-chaining)
-interface ChainElement<: Node {
-  optional: boolean;
+interface ChainElement <: Node {
+    optional: boolean;
 }
-
 
 // A conditional expression, i.e., a ternary `?`/`:` expression.
 interface ConditionalExpression <: Expression {
@@ -634,12 +625,12 @@ interface SequenceExpression <: Expression {
 }
 
 // `ImportExpression` node represents Dynamic Imports such as `import(source)`.
-  // The `source` property is the importing source as similar to [ImportDeclaration](#importdeclaration)
-  // node, but it can be an arbitrary expression node.
+// The `source` property is the importing source as similar to [ImportDeclaration](#importdeclaration)
+// node, but it can be an arbitrary expression node.
 @added(2020, dynamic-import)
-interface ImportExpression<: Expression {
-  type: "ImportExpression";
-  source: Expression;
+interface ImportExpression <: Expression {
+    type: "ImportExpression";
+    source: Expression;
 }
 
 @section(Expression > Template literals)
@@ -676,10 +667,10 @@ interface Pattern <: Node { }
     properties: [ AssignmentProperty | @added(2018, object-rest-spread) RestElement ];
 }
 
-@section(Pattern > ObjectPattern)
-@headerless
+@section(Pattern > ObjectPattern) @headerless
 @es6 interface AssignmentProperty <: Property {
-    type: "Property"; // inherited
+    // inherited
+    type: "Property";
     value: Pattern;
     kind: "init";
     method: false;
@@ -742,7 +733,7 @@ interface PrivateIdentifier <: Node {
 
 @section(Class)
 @added(2022, class-fields)
-interface PropertyDefinition<: Node {
+interface PropertyDefinition <: Node {
     type: "PropertyDefinition";
     key: Expression | PrivateIdentifier;
     value: Expression | null;
