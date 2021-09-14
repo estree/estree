@@ -82,26 +82,18 @@ ESTree AST nodes are represented as `Node` objects, which may have any prototype
 ```js
 interface SourceLocation {
     source: string | null;
-    /**
-     * The position of the first character of the parsed source region
-     */
+    /** The position of the first character of the parsed source region */
     start: Position;
-    /**
-     * The position of the first character after the parsed source region
-     */
+    /** The position of the first character after the parsed source region */
     end: Position;
 }
 ```
 
 ```js
 interface Position {
-    /**
-     * Line number (1-indexed)
-     */
+    /** Line number (1-indexed) */
     line: number;
-    /**
-     * Column number (0-indexed)
-     */
+    /** Column number (0-indexed) */
     column: number;
 }
 ```
@@ -369,9 +361,7 @@ A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockState
 ```js
 interface CatchClause <: Node {
     type: "CatchClause";
-    /**
-     *  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
-     */
+    /**  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }` */
     param: Pattern;
     body: BlockStatement;
 }
@@ -667,13 +657,9 @@ A logical operator token.
 interface MemberExpression <: Expression, Pattern {
     type: "MemberExpression";
     object: Expression;
-    /**
-     * When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
-     */
+    /** When `object` is a `Super`, `property` can not be a `PrivateIdentifier` */
     property: Expression;
-    /**
-     * When `property` is a `PrivateIdentifier`, `computed` must be `false`.
-     */
+    /** When `property` is a `PrivateIdentifier`, `computed` must be `false`. */
     computed: boolean;
 }
 ```

@@ -1,7 +1,5 @@
 declare module ESTree {
-  /**
-   * ESTree AST nodes are represented as `Node` objects, which may have any prototype inheritance but which implement this interface.
-   */
+  /** ESTree AST nodes are represented as `Node` objects, which may have any prototype inheritance but which implement this interface. */
   interface Node {
     /**
      * A string representing the AST variant type.
@@ -18,37 +16,25 @@ declare module ESTree {
 
   interface SourceLocation {
     source?: string;
-    /**
-     * The position of the first character of the parsed source region
-     */
+    /** The position of the first character of the parsed source region */
     start: Position;
-    /**
-     * The position of the first character after the parsed source region
-     */
+    /** The position of the first character after the parsed source region */
     end: Position;
   }
 
   interface Position {
-    /**
-     * Line number (1-indexed)
-     */
+    /** Line number (1-indexed) */
     line: number;
-    /**
-     * Column number (0-indexed)
-     */
+    /** Column number (0-indexed) */
     column: number;
   }
 
-  /**
-   * An identifier. Note that an identifier may be an expression or a destructuring pattern.
-   */
+  /** An identifier. Note that an identifier may be an expression or a destructuring pattern. */
   interface Identifier extends Expression, Pattern {
     name: string;
   }
 
-  /**
-   * A literal token. Note that a literal can be an expression.
-   */
+  /** A literal token. Note that a literal can be an expression. */
   interface Literal extends Expression {
     value?: string | boolean | number | RegExp | bigint;
   }
@@ -77,39 +63,27 @@ declare module ESTree {
     bigint: string;
   }
 
-  /**
-   * A complete program source tree.
-   */
+  /** A complete program source tree. */
   interface Program extends Node {
-    /**
-     * Parsers must specify `sourceType` as `"module"` if the source has been parsed as an ES6 module. Otherwise, `sourceType` must be `"script"`.
-     */
+    /** Parsers must specify `sourceType` as `"module"` if the source has been parsed as an ES6 module. Otherwise, `sourceType` must be `"script"`. */
     sourceType: string;
     body: Array<Directive | Statement | ModuleDeclaration>;
   }
 
-  /**
-   * A function [declaration](#functiondeclaration) or [expression](#functionexpression).
-   */
+  /** A function [declaration](#functiondeclaration) or [expression](#functionexpression). */
   interface Function extends Node {
     id?: Identifier;
     params: Array<Pattern>;
     body: FunctionBody;
     generator: boolean;
-    /**
-     * Original proposal: https://github.com/tc39/proposal-async-await
-     */
+    /** Original proposal: https://github.com/tc39/proposal-async-await */
     async: boolean;
   }
 
-  /**
-   * Any statement.
-   */
+  /** Any statement. */
   interface Statement extends Node {}
 
-  /**
-   * An expression statement, i.e., a statement consisting of a single expression.
-   */
+  /** An expression statement, i.e., a statement consisting of a single expression. */
   interface ExpressionStatement extends Statement {
     expression: Expression;
   }
@@ -123,138 +97,100 @@ declare module ESTree {
     directive: string;
   }
 
-  /**
-   * A block statement, i.e., a sequence of statements surrounded by braces.
-   */
+  /** A block statement, i.e., a sequence of statements surrounded by braces. */
   interface BlockStatement extends Statement {
     body: Array<Statement>;
   }
 
-  /**
-   * The body of a function, which is a block statement that may begin with directives.
-   */
+  /** The body of a function, which is a block statement that may begin with directives. */
   interface FunctionBody extends BlockStatement {
     body: Array<Directive | Statement>;
   }
 
-  /**
-   * An empty statement, i.e., a solitary semicolon.
-   */
+  /** An empty statement, i.e., a solitary semicolon. */
   interface EmptyStatement extends Statement {}
 
-  /**
-   * A `debugger` statement.
-   */
+  /** A `debugger` statement. */
   interface DebuggerStatement extends Statement {}
 
-  /**
-   * A `with` statement.
-   */
+  /** A `with` statement. */
   interface WithStatement extends Statement {
     object: Expression;
     body: Statement;
   }
 
-  /**
-   * A `return` statement.
-   */
+  /** A `return` statement. */
   interface ReturnStatement extends Statement {
     argument?: Expression;
   }
 
-  /**
-   * A labeled statement, i.e., a statement prefixed by a `break`/`continue` label.
-   */
+  /** A labeled statement, i.e., a statement prefixed by a `break`/`continue` label. */
   interface LabeledStatement extends Statement {
     label: Identifier;
     body: Statement;
   }
 
-  /**
-   * A `break` statement.
-   */
+  /** A `break` statement. */
   interface BreakStatement extends Statement {
     label?: Identifier;
   }
 
-  /**
-   * A `continue` statement.
-   */
+  /** A `continue` statement. */
   interface ContinueStatement extends Statement {
     label?: Identifier;
   }
 
-  /**
-   * An `if` statement.
-   */
+  /** An `if` statement. */
   interface IfStatement extends Statement {
     test: Expression;
     consequent: Statement;
     alternate?: Statement;
   }
 
-  /**
-   * A `switch` statement.
-   */
+  /** A `switch` statement. */
   interface SwitchStatement extends Statement {
     discriminant: Expression;
     cases: Array<SwitchCase>;
   }
 
-  /**
-   * A `case` (if `test` is an `Expression`) or `default` (if `test === null`) clause in the body of a `switch` statement.
-   */
+  /** A `case` (if `test` is an `Expression`) or `default` (if `test === null`) clause in the body of a `switch` statement. */
   interface SwitchCase extends Node {
     test?: Expression;
     consequent: Array<Statement>;
   }
 
-  /**
-   * A `throw` statement.
-   */
+  /** A `throw` statement. */
   interface ThrowStatement extends Statement {
     argument: Expression;
   }
 
-  /**
-   * A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockStatement`.
-   */
+  /** A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockStatement`. */
   interface TryStatement extends Statement {
     block: BlockStatement;
     handler?: CatchClause;
     finalizer?: BlockStatement;
   }
 
-  /**
-   * A `catch` clause following a `try` block.
-   */
+  /** A `catch` clause following a `try` block. */
   interface CatchClause extends Node {
-    /**
-     *  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
-     */
+    /**  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }` */
     param?: Pattern;
     body: BlockStatement;
   }
 
-  /**
-   * A `while` statement.
-   */
+  /** A `while` statement. */
   interface WhileStatement extends Statement {
     test: Expression;
     body: Statement;
   }
 
-  /**
-   * A `do`/`while` statement.
-   */
+  /** A `do`/`while` statement. */
   interface DoWhileStatement extends Statement {
     body: Statement;
     test: Expression;
   }
 
-  /**
-   * A `for` statement.
-   */
+  /** A `for` statement. */
   interface ForStatement extends Statement {
     init?: VariableDeclaration | Expression;
     test?: Expression;
@@ -262,18 +198,14 @@ declare module ESTree {
     body: Statement;
   }
 
-  /**
-   * A `for`/`in` statement.
-   */
+  /** A `for`/`in` statement. */
   interface ForInStatement extends Statement {
     left: VariableDeclaration | Pattern;
     right: Expression;
     body: Statement;
   }
 
-  /**
-   * A `for`/`of` statement.
-   */
+  /** A `for`/`of` statement. */
   interface ForOfStatement extends ForInStatement {
     /**
      * `for-await-of` statements, e.g., `for await (const x of xs) {`
@@ -283,61 +215,43 @@ declare module ESTree {
     await: boolean;
   }
 
-  /**
-   * Any declaration node. Note that declarations are considered statements; this is because declarations can appear in any statement context.
-   */
+  /** Any declaration node. Note that declarations are considered statements; this is because declarations can appear in any statement context. */
   interface Declaration extends Statement {}
 
-  /**
-   * A function declaration. Note that unlike in the parent interface `Function`, the `id` cannot be `null`.
-   */
+  /** A function declaration. Note that unlike in the parent interface `Function`, the `id` cannot be `null`. */
   interface FunctionDeclaration extends Declaration, Function {
     id: Identifier;
   }
 
-  /**
-   * A variable declaration.
-   */
+  /** A variable declaration. */
   interface VariableDeclaration extends Declaration {
     declarations: Array<VariableDeclarator>;
     kind: string;
   }
 
-  /**
-   * A variable declarator.
-   */
+  /** A variable declarator. */
   interface VariableDeclarator extends Node {
     id: Pattern;
     init?: Expression;
   }
 
-  /**
-   * Any expression node. Since the left-hand side of an assignment may be any expression in general, an expression can also be a pattern.
-   */
+  /** Any expression node. Since the left-hand side of an assignment may be any expression in general, an expression can also be a pattern. */
   interface Expression extends Node {}
 
-  /**
-   * A `this` expression.
-   */
+  /** A `this` expression. */
   interface ThisExpression extends Expression {}
 
-  /**
-   * An array expression. An element might be `null` if it represents a hole in a sparse array. E.g. `[1,,2]`.
-   */
+  /** An array expression. An element might be `null` if it represents a hole in a sparse array. E.g. `[1,,2]`. */
   interface ArrayExpression extends Expression {
     elements: Array<Expression | SpreadElement>;
   }
 
-  /**
-   * An object expression.
-   */
+  /** An object expression. */
   interface ObjectExpression extends Expression {
     properties: Array<Property | SpreadElement>;
   }
 
-  /**
-   * A literal property in an object expression can have either a string or number as its `value`. Ordinary property initializers have a `kind` value `"init"`; getters and setters have the kind values `"get"` and `"set"`, respectively.
-   */
+  /** A literal property in an object expression can have either a string or number as its `value`. Ordinary property initializers have a `kind` value `"init"`; getters and setters have the kind values `"get"` and `"set"`, respectively. */
   interface Property extends Node {
     key: Literal | Identifier | Expression;
     value: Expression;
@@ -347,37 +261,27 @@ declare module ESTree {
     computed: boolean;
   }
 
-  /**
-   * A `function` expression.
-   */
+  /** A `function` expression. */
   interface FunctionExpression extends Expression, Function {}
 
-  /**
-   * A fat arrow function expression, e.g., `let foo = (bar) => { /* body *​/ }`.
-   */
+  /** A fat arrow function expression, e.g., `let foo = (bar) => { /* body */ }`. */
   interface ArrowFunctionExpression extends Function, Expression {
     body: FunctionBody | Expression;
     expression: boolean;
   }
 
-  /**
-   * A `yield` expression.
-   */
+  /** A `yield` expression. */
   interface YieldExpression extends Expression {
     argument?: Expression;
     delegate: boolean;
   }
 
-  /**
-   * Original proposal: https://github.com/tc39/proposal-async-await
-   */
+  /** Original proposal: https://github.com/tc39/proposal-async-await */
   interface AwaitExpression extends Expression {
     argument: Expression;
   }
 
-  /**
-   * A `super` pseudo-expression.
-   */
+  /** A `super` pseudo-expression. */
   interface Super extends Node {}
 
   /**
@@ -388,9 +292,7 @@ declare module ESTree {
     argument: Expression;
   }
 
-  /**
-   * A unary operator expression.
-   */
+  /** A unary operator expression. */
   interface UnaryExpression extends Expression {
     operator: UnaryOperator;
     prefix: boolean;
@@ -399,9 +301,7 @@ declare module ESTree {
 
   type UnaryOperator = "-" | "+" | "!" | "~" | "typeof" | "void" | "delete";
 
-  /**
-   * An update (increment or decrement) operator expression.
-   */
+  /** An update (increment or decrement) operator expression. */
   interface UpdateExpression extends Expression {
     operator: UpdateOperator;
     argument: Expression;
@@ -410,9 +310,7 @@ declare module ESTree {
 
   type UpdateOperator = "++" | "--";
 
-  /**
-   * A binary operator expression.
-   */
+  /** A binary operator expression. */
   interface BinaryExpression extends Expression {
     operator: BinaryOperator;
     /**
@@ -425,9 +323,7 @@ declare module ESTree {
 
   type BinaryOperator = "==" | "!=" | "===" | "!==" | "<" | "<=" | ">" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%" | "**" | "|" | "^" | "&" | "in" | "instanceof";
 
-  /**
-   * An assignment operator expression.
-   */
+  /** An assignment operator expression. */
   interface AssignmentExpression extends Expression {
     operator: AssignmentOperator;
     left: Pattern | Expression;
@@ -436,9 +332,7 @@ declare module ESTree {
 
   type AssignmentOperator = "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "**=" | "<<=" | ">>=" | ">>>=" | "|=" | "^=" | "&=" | "||=" | "&&=" | "??=";
 
-  /**
-   * A logical operator expression.
-   */
+  /** A logical operator expression. */
   interface LogicalExpression extends Expression {
     operator: LogicalOperator;
     left: Expression;
@@ -447,18 +341,12 @@ declare module ESTree {
 
   type LogicalOperator = "||" | "&&" | "??";
 
-  /**
-   * A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier` or a `PrivateIdentifier`.
-   */
+  /** A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier` or a `PrivateIdentifier`. */
   interface MemberExpression extends Expression, Pattern, ChainElement {
     object: Expression | Super;
-    /**
-     * When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
-     */
+    /** When `object` is a `Super`, `property` can not be a `PrivateIdentifier` */
     property: Expression | PrivateIdentifier;
-    /**
-     * When `property` is a `PrivateIdentifier`, `computed` must be `false`.
-     */
+    /** When `property` is a `PrivateIdentifier`, `computed` must be `false`. */
     computed: boolean;
   }
 
@@ -619,41 +507,31 @@ declare module ESTree {
     expression: ChainElement;
   }
 
-  /**
-   * Original proposal: https://github.com/tc39/proposal-optional-chaining
-   */
+  /** Original proposal: https://github.com/tc39/proposal-optional-chaining */
   interface ChainElement extends Node {
     optional: boolean;
   }
 
-  /**
-   * A conditional expression, i.e., a ternary `?`/`:` expression.
-   */
+  /** A conditional expression, i.e., a ternary `?`/`:` expression. */
   interface ConditionalExpression extends Expression {
     test: Expression;
     alternate: Expression;
     consequent: Expression;
   }
 
-  /**
-   * A function or method call expression.
-   */
+  /** A function or method call expression. */
   interface CallExpression extends Expression, ChainElement {
     callee: Expression | Super;
     arguments: Array<Expression | SpreadElement>;
   }
 
-  /**
-   * A `new` expression.
-   */
+  /** A `new` expression. */
   interface NewExpression extends Expression {
     callee: Expression;
     arguments: Array<Expression | SpreadElement>;
   }
 
-  /**
-   * A sequence expression, i.e., a comma-separated sequence of expressions.
-   */
+  /** A sequence expression, i.e., a comma-separated sequence of expressions. */
   interface SequenceExpression extends Expression {
     expressions: Array<Expression>;
   }
@@ -679,9 +557,7 @@ declare module ESTree {
     quasi: TemplateLiteral;
   }
 
-  /**
-   * If the template literal is tagged and the text has an invalid escape, `cooked` will be `null`, e.g., ``tag`\unicode and \u{55}` ``
-   */
+  /** If the template literal is tagged and the text has an invalid escape, `cooked` will be `null`, e.g., ``tag`\unicode and \u{55}` `` */
   interface TemplateElement extends Node {
     tail: boolean;
     value: {
@@ -690,9 +566,7 @@ declare module ESTree {
     };
   }
 
-  /**
-   * Destructuring binding and assignment are not part of ES5, but all binding positions accept `Pattern` to allow for destructuring in ES6. Nevertheless, for ES5, the only `Pattern` subtype is [`Identifier`](#identifier).
-   */
+  /** Destructuring binding and assignment are not part of ES5, but all binding positions accept `Pattern` to allow for destructuring in ES6. Nevertheless, for ES5, the only `Pattern` subtype is [`Identifier`](#identifier). */
   interface Pattern extends Node {}
 
   interface ObjectPattern extends Pattern {
@@ -700,9 +574,7 @@ declare module ESTree {
   }
 
   interface AssignmentProperty extends Property {
-    /**
-     * inherited
-     */
+    /** inherited */
     value: Pattern;
     kind: string;
     method: boolean;
@@ -732,9 +604,7 @@ declare module ESTree {
   }
 
   interface MethodDefinition extends Node {
-    /**
-     * When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`.
-     */
+    /** When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`. */
     key: Expression | PrivateIdentifier;
     value: FunctionExpression;
     kind: string;
@@ -758,16 +628,12 @@ declare module ESTree {
     name: string;
   }
 
-  /**
-   * Original proposal: https://github.com/tc39/proposal-class-fields
-   */
+  /** Original proposal: https://github.com/tc39/proposal-class-fields */
   interface PropertyDefinition extends Node {
     key: Expression | PrivateIdentifier;
     value?: Expression;
     computed: boolean;
-    /**
-     * Original proposal: https://github.com/tc39/proposal-static-class-features
-     */
+    /** Original proposal: https://github.com/tc39/proposal-static-class-features */
     static: boolean;
   }
 
@@ -777,49 +643,35 @@ declare module ESTree {
 
   interface ClassExpression extends Class, Expression {}
 
-  /**
-   * `MetaProperty` node represents `new.target` meta property in ES2015+ and `import.meta` in ES2020+
-   */
+  /** `MetaProperty` node represents `new.target` meta property in ES2015+ and `import.meta` in ES2020+ */
   interface MetaProperty extends Expression {
     meta: Identifier;
     property: Identifier;
   }
 
-  /**
-   * A module `import` or `export` declaration.
-   */
+  /** A module `import` or `export` declaration. */
   interface ModuleDeclaration extends Node {}
 
-  /**
-   * A specifier in an import or export declaration.
-   */
+  /** A specifier in an import or export declaration. */
   interface ModuleSpecifier extends Node {
     local: Identifier;
   }
 
-  /**
-   * An import declaration, e.g., `import foo from "mod";`.
-   */
+  /** An import declaration, e.g., `import foo from "mod";`. */
   interface ImportDeclaration extends ModuleDeclaration {
     specifiers: Array<ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier>;
     source: Literal;
   }
 
-  /**
-   * An imported variable binding, e.g., `{foo}` in `import {foo} from "mod"` or `{foo as bar}` in `import {foo as bar} from "mod"`. The `imported` field refers to the name of the export imported from the module. The `local` field refers to the binding imported into the local module scope. If it is a basic named import, such as in `import {foo} from "mod"`, both `imported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased import, such as in `import {foo as bar} from "mod"`, the `imported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
-   */
+  /** An imported variable binding, e.g., `{foo}` in `import {foo} from "mod"` or `{foo as bar}` in `import {foo as bar} from "mod"`. The `imported` field refers to the name of the export imported from the module. The `local` field refers to the binding imported into the local module scope. If it is a basic named import, such as in `import {foo} from "mod"`, both `imported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased import, such as in `import {foo as bar} from "mod"`, the `imported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`. */
   interface ImportSpecifier extends ModuleSpecifier {
     imported: Identifier;
   }
 
-  /**
-   * A default import specifier, e.g., `foo` in `import foo from "mod.js"`.
-   */
+  /** A default import specifier, e.g., `foo` in `import foo from "mod.js"`. */
   interface ImportDefaultSpecifier extends ModuleSpecifier {}
 
-  /**
-   * A namespace import specifier, e.g., `* as foo` in `import * as foo from "mod.js"`.
-   */
+  /** A namespace import specifier, e.g., `* as foo` in `import * as foo from "mod.js"`. */
   interface ImportNamespaceSpecifier extends ModuleSpecifier {}
 
   /**
@@ -832,16 +684,12 @@ declare module ESTree {
     source?: Literal;
   }
 
-  /**
-   * An exported variable binding, e.g., `{foo}` in `export {foo}` or `{bar as foo}` in `export {bar as foo}`. The `exported` field refers to the name exported in the module. The `local` field refers to the binding into the local module scope. If it is a basic named export, such as in `export {foo}`, both `exported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased export, such as in `export {bar as foo}`, the `exported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
-   */
+  /** An exported variable binding, e.g., `{foo}` in `export {foo}` or `{bar as foo}` in `export {bar as foo}`. The `exported` field refers to the name exported in the module. The `local` field refers to the binding into the local module scope. If it is a basic named export, such as in `export {foo}`, both `exported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased export, such as in `export {bar as foo}`, the `exported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`. */
   interface ExportSpecifier extends ModuleSpecifier {
     exported: Identifier;
   }
 
-  /**
-   * An export default declaration, e.g., `export default function () {};` or `export default 1;`.
-   */
+  /** An export default declaration, e.g., `export default function () {};` or `export default 1;`. */
   interface ExportDefaultDeclaration extends ModuleDeclaration {
     declaration: AnonymousDefaultExportedFunctionDeclaration | FunctionDeclaration | AnonymousDefaultExportedClassDeclaration | ClassDeclaration | Expression;
   }
@@ -854,9 +702,7 @@ declare module ESTree {
     id: any;
   }
 
-  /**
-   * An export batch declaration, e.g., `export * from "mod";`.
-   */
+  /** An export batch declaration, e.g., `export * from "mod";`. */
   interface ExportAllDeclaration extends ModuleDeclaration {
     source: Literal;
     /**

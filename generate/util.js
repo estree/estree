@@ -21,6 +21,9 @@ export function docsForDef(def, maxVersion) {
 }
 
 export function printDoc(doc) {
+  if (!doc.includes('\n')) {
+    return `/** ${doc} */\n`;
+  }
   let result = '/**\n';
   for (const line of doc.split('\n')) {
     result += indentation + ` * ${line.replace('*/', '*\u{200b}/')}\n`;

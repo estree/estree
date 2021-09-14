@@ -122,26 +122,18 @@ ESTree AST nodes are represented as `Node` objects, which may have any prototype
 ```js
 interface SourceLocation {
     source: string | null;
-    /**
-     * The position of the first character of the parsed source region
-     */
+    /** The position of the first character of the parsed source region */
     start: Position;
-    /**
-     * The position of the first character after the parsed source region
-     */
+    /** The position of the first character after the parsed source region */
     end: Position;
 }
 ```
 
 ```js
 interface Position {
-    /**
-     * Line number (1-indexed)
-     */
+    /** Line number (1-indexed) */
     line: number;
-    /**
-     * Column number (0-indexed)
-     */
+    /** Column number (0-indexed) */
     column: number;
 }
 ```
@@ -217,9 +209,7 @@ Original proposal: https://github.com/tc39/proposal-bigint
 ```js
 interface Program <: Node {
     type: "Program";
-    /**
-     * Parsers must specify `sourceType` as `"module"` if the source has been parsed as an ES6 module. Otherwise, `sourceType` must be `"script"`.
-     */
+    /** Parsers must specify `sourceType` as `"module"` if the source has been parsed as an ES6 module. Otherwise, `sourceType` must be `"script"`. */
     sourceType: "script" | "module";
     body: [ Directive | Statement | ModuleDeclaration ];
 }
@@ -235,9 +225,7 @@ interface Function <: Node {
     params: [ Pattern ];
     body: FunctionBody;
     generator: boolean;
-    /**
-     * Original proposal: https://github.com/tc39/proposal-async-await
-     */
+    /** Original proposal: https://github.com/tc39/proposal-async-await */
     async: boolean;
 }
 ```
@@ -458,9 +446,7 @@ A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockState
 ```js
 interface CatchClause <: Node {
     type: "CatchClause";
-    /**
-     *  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
-     */
+    /**  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }` */
     param: Pattern | null;
     body: BlockStatement;
 }
@@ -820,13 +806,9 @@ A logical operator token.
 interface MemberExpression <: Expression, Pattern, ChainElement {
     type: "MemberExpression";
     object: Expression | Super;
-    /**
-     * When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
-     */
+    /** When `object` is a `Super`, `property` can not be a `PrivateIdentifier` */
     property: Expression | PrivateIdentifier;
-    /**
-     * When `property` is a `PrivateIdentifier`, `computed` must be `false`.
-     */
+    /** When `property` is a `PrivateIdentifier`, `computed` must be `false`. */
     computed: boolean;
 }
 ```
@@ -1122,9 +1104,7 @@ interface ObjectPattern <: Pattern {
 ```js
 interface AssignmentProperty <: Property {
     type: "Property";
-    /**
-     * inherited
-     */
+    /** inherited */
     value: Pattern;
     kind: "init";
     method: false;
@@ -1183,9 +1163,7 @@ interface ClassBody <: Node {
 ```js
 interface MethodDefinition <: Node {
     type: "MethodDefinition";
-    /**
-     * When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`.
-     */
+    /** When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`. */
     key: Expression | PrivateIdentifier;
     value: FunctionExpression;
     kind: "constructor" | "method" | "get" | "set";
@@ -1202,9 +1180,7 @@ interface PropertyDefinition <: Node {
     key: Expression | PrivateIdentifier;
     value: Expression | null;
     computed: boolean;
-    /**
-     * Original proposal: https://github.com/tc39/proposal-static-class-features
-     */
+    /** Original proposal: https://github.com/tc39/proposal-static-class-features */
     static: boolean;
 }
 ```
