@@ -43,13 +43,17 @@ decorators
       added: added ? added[0] : null
     }
   }
-added 'availability annotation' = '@es' v: $number { return parseInt(v) }
+
+added '@added'
+  = '@added(' _ year: $number _ ',' _  proposal: $[a-z\d-]+ _ ')' { return { year: parseInt(year), proposal } }
+  / '@es6' { return { year: 2015 }}
+
 section '@section'
   = '@section(' _  name: sectionName _ ')' { return name }
   / '@at-root' { return ['<root>'] }
 
 sectionName 'section name'
-  = first: $[^>)]+  rest: (_ ">" _ $[^>)]+)*
+  = first: $[^>)]+ rest: (_ ">" _ $[^>)]+)*
   { return [first.trim(), ...rest.map(r => r[3].trim())] }
 
 name 'name' = $([A-Za-z_] [A-Za-z0-9_]*)

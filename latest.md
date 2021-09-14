@@ -150,6 +150,7 @@ interface PrivateIdentifier <: Node {
 ```
 
 A private identifier refers to private class elements. For a private name `#a`, its `name` is `a`.
+
 Original proposal: https://github.com/tc39/proposal-private-methods
 
 # Identifier
@@ -201,6 +202,8 @@ interface BigIntLiteral <: Literal {
   It doesn't include the suffix `n`.
 - In environments that don't support `BigInt` values, the `value` property will be
   `null` as the `BigInt` value can't be represented natively.
+
+Original proposal: https://github.com/tc39/proposal-bigint
 
 # Program
 
@@ -649,6 +652,8 @@ interface AwaitExpression <: Expression {
 }
 ```
 
+Original proposal: https://github.com/tc39/proposal-async-await
+
 ## Super
 
 ```js
@@ -969,11 +974,15 @@ interface ChainExpression <: Expression {
 
 </details>
 
+Original proposal: https://github.com/tc39/proposal-optional-chaining
+
 ```js
 interface ChainElement <: Node {
     optional: boolean;
 }
 ```
+
+Original proposal: https://github.com/tc39/proposal-optional-chaining
 
 ## ConditionalExpression
 
@@ -1035,6 +1044,8 @@ interface ImportExpression <: Expression {
 `ImportExpression` node represents Dynamic Imports such as `import(source)`.
 The `source` property is the importing source as similar to [ImportDeclaration](#importdeclaration)
 node, but it can be an arbitrary expression node.
+
+Original proposal: https://github.com/tc39/proposal-dynamic-import
 
 ## Template literals
 
@@ -1175,7 +1186,7 @@ interface PropertyDefinition <: Node {
 }
 ```
 
-Original proposals: https://github.com/tc39/proposal-class-fields and https://github.com/tc39/proposal-static-class-features/
+Original proposal: https://github.com/tc39/proposal-class-fields
 
 ## ClassDeclaration
 
@@ -1217,6 +1228,7 @@ interface StaticBlock <: BlockStatement {
 ```
 
 A static block `static { }` is a block statement serving as an additional static initializer.
+
 Original proposal: https://github.com/tc39/proposal-class-static-block
 
 # Modules

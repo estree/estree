@@ -1,4 +1,4 @@
-import { indentation, indent } from './indent.js';
+import { indentation, indent, docsForDef } from './util.js';
 
 function makeToc(section) {
   let result =
@@ -23,23 +23,14 @@ const entryProcessors = {
       .join('\n\n'),
   content(entry, maxVersion) {
     const def = entry.value;
+    let doc = docsForDef(def, maxVersion);
+    doc = doc ? '\n\n' + doc : doc;
     if (def.kind === 'interface') {
       const legalBases = def.bases
-        .filter((base) => !base.added || base.added <= maxVersion)
+        .filter((base) => !base.added || base.added.year <= maxVersion)
         .map((base) => (base.added ? base.name : base));
 
       const bases = def.bases.length ? ' <: ' + legalBases.join(', ') : '';
-
-      let { doc } = def;
-      const propDocs = Object.values(def.props)
-        .filter((p) => p.doc && (!p.added || p.added <= maxVersion))
-        .map((p) => `Docs for \`${p.name}\`: ${p.doc}`)
-        .join('\n\n');
-
-      if (propDocs) {
-        if (doc) doc += '\n\n' + propDocs;
-        else doc = propDocs;
-      }
 
       return (
         '```js\ninterface ' +
@@ -48,7 +39,7 @@ const entryProcessors = {
         ' ' +
         typeProcessors.object({ items: def.props }, maxVersion) +
         '\n```' +
-        (doc ? '\n\n' + doc : '')
+        doc
       );
     } else if (def.kind === 'enum') {
       return (
@@ -56,11 +47,11 @@ const entryProcessors = {
         def.name +
         ' {\n    ' +
         def.values
-          .filter((v) => !v.added || v.added <= maxVersion)
+          .filter((v) => !v.added || v.added.year <= maxVersion)
           .map(typeProcessors.literal)
           .join(' | ') +
         '\n}\n```' +
-        (def.doc ? '\n\n' + def.doc : '')
+        doc
       );
     } else {
       throw new TypeError('Unknown declaration type ' + def.kind);
@@ -82,13 +73,13 @@ const typeProcessors = {
 
   union: ({ types }, maxVersion) =>
     types
-      .filter((type) => type.added == null || type.added <= maxVersion)
+      .filter((type) => type.added == null || type.added.year <= maxVersion)
       .map((type) => processType(type, maxVersion))
       .join(' | ') || 'any',
 
   object: ({ items }, maxVersion) => {
     const allowed = Object.values(items).filter(
-      (v) => !v.added || v.added <= maxVersion
+      (v) => !v.added || v.added.year <= maxVersion
     );
     if (allowed.length === 0) return '{ }';
     let result = '{\n';
@@ -144,7 +135,7 @@ export default function toMarkdown(spec, maxVersion = Infinity) {
   }
 
   for (const def of spec) {
-    if (def.added && def.added > maxVersion) continue;
+    if (def.added && def.added.year > maxVersion) continue;
     const sectionName = def.section
       ? def.section
       : def.bases[0]

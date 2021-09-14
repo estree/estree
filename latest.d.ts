@@ -1,6 +1,13 @@
 declare module ESTree {
   /**
    * ESTree AST nodes are represented as `Node` objects, which may have any prototype inheritance but which implement this interface.
+   * 
+   * Docs for `type`: A string representing the AST variant type.
+   * Each subtype of `Node` is documented below with the specific string of its `type` field.
+   * You can use this field to determine which interface a node implements.
+   * 
+   * Docs for `loc`: The source location information of the node.
+   * If the node contains no information about the source location, the field is `null`.
    */
   interface Node {
     /**
@@ -16,6 +23,11 @@ declare module ESTree {
     loc?: SourceLocation;
   }
 
+  /**
+   * Docs for `start`: The position of the first character of the parsed source region
+   * 
+   * Docs for `end`: The position of the first character after the parsed source region
+   */
   interface SourceLocation {
     source?: string;
     /**
@@ -28,6 +40,11 @@ declare module ESTree {
     end: Position;
   }
 
+  /**
+   * Docs for `line`: Line number (1-indexed)
+   * 
+   * Docs for `column`: Column number (0-indexed)
+   */
   interface Position {
     /**
      * Line number (1-indexed)
@@ -53,6 +70,11 @@ declare module ESTree {
     value?: string | boolean | number | RegExp | bigint;
   }
 
+  /**
+   * Docs for `regex`: The `regex` property allows regexes to be represented in environments that don’t
+   * support certain flags such as `y` or `u`. In environments that don't support
+   * these flags `value` will be `null` as the regex can't be represented natively.
+   */
   interface RegExpLiteral extends Literal {
     /**
      * The `regex` property allows regexes to be represented in environments that don’t
@@ -70,6 +92,8 @@ declare module ESTree {
    *   It doesn't include the suffix `n`.
    * - In environments that don't support `BigInt` values, the `value` property will be
    *   `null` as the `BigInt` value can't be represented natively.
+   * 
+   * Original proposal: https://github.com/tc39/proposal-bigint
    */
   interface BigIntLiteral extends Literal {
     bigint: string;
@@ -77,6 +101,8 @@ declare module ESTree {
 
   /**
    * A complete program source tree.
+   * 
+   * Docs for `sourceType`: Parsers must specify `sourceType` as `"module"` if the source has been parsed as an ES6 module. Otherwise, `sourceType` must be `"script"`.
    */
   interface Program extends Node {
     /**
@@ -94,6 +120,9 @@ declare module ESTree {
     params: Array<Pattern>;
     body: FunctionBody;
     generator: boolean;
+    /**
+     * Original proposal: https://github.com/tc39/proposal-async-await
+     */
     async: boolean;
   }
 
@@ -222,6 +251,8 @@ declare module ESTree {
 
   /**
    * A `catch` clause following a `try` block.
+   * 
+   * Docs for `param`:  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
    */
   interface CatchClause extends Node {
     /**
@@ -268,10 +299,14 @@ declare module ESTree {
 
   /**
    * A `for`/`of` statement.
+   * 
+   * Docs for `await`: `for-await-of` statements, e.g., `for await (const x of xs) {`
    */
   interface ForOfStatement extends ForInStatement {
     /**
      * `for-await-of` statements, e.g., `for await (const x of xs) {`
+     * 
+     * Original proposal: https://github.com/tc39/proposal-async-iteration
      */
     await: boolean;
   }
@@ -361,6 +396,9 @@ declare module ESTree {
     delegate: boolean;
   }
 
+  /**
+   * Original proposal: https://github.com/tc39/proposal-async-await
+   */
   interface AwaitExpression extends Expression {
     argument: Expression;
   }
@@ -402,6 +440,9 @@ declare module ESTree {
 
   /**
    * A binary operator expression.
+   * 
+   * Docs for `left`: `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
+   * See [Ergonomic brand checks for Private Fields](https://github.com/tc39/proposal-private-fields-in-in) for details.
    */
   interface BinaryExpression extends Expression {
     operator: BinaryOperator;
@@ -439,6 +480,10 @@ declare module ESTree {
 
   /**
    * A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier` or a `PrivateIdentifier`.
+   * 
+   * Docs for `property`: When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
+   * 
+   * Docs for `computed`: When `property` is a `PrivateIdentifier`, `computed` must be `false`.
    */
   interface MemberExpression extends Expression, Pattern, ChainElement {
     object: Expression | Super;
@@ -602,11 +647,16 @@ declare module ESTree {
    * ```
    * 
    * </details>
+   * 
+   * Original proposal: https://github.com/tc39/proposal-optional-chaining
    */
   interface ChainExpression extends Expression {
     expression: ChainElement;
   }
 
+  /**
+   * Original proposal: https://github.com/tc39/proposal-optional-chaining
+   */
   interface ChainElement extends Node {
     optional: boolean;
   }
@@ -647,6 +697,8 @@ declare module ESTree {
    * `ImportExpression` node represents Dynamic Imports such as `import(source)`.
    * The `source` property is the importing source as similar to [ImportDeclaration](#importdeclaration)
    * node, but it can be an arbitrary expression node.
+   * 
+   * Original proposal: https://github.com/tc39/proposal-dynamic-import
    */
   interface ImportExpression extends Expression {
     source: Expression;
@@ -682,6 +734,9 @@ declare module ESTree {
     properties: Array<AssignmentProperty | RestElement>;
   }
 
+  /**
+   * Docs for `value`: inherited
+   */
   interface AssignmentProperty extends Property {
     /**
      * inherited
@@ -714,6 +769,9 @@ declare module ESTree {
     body: Array<MethodDefinition | PropertyDefinition | StaticBlock>;
   }
 
+  /**
+   * Docs for `key`: When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`.
+   */
   interface MethodDefinition extends Node {
     /**
      * When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`.
@@ -727,12 +785,14 @@ declare module ESTree {
 
   /**
    * A static block `static { }` is a block statement serving as an additional static initializer.
+   * 
    * Original proposal: https://github.com/tc39/proposal-class-static-block
    */
   interface StaticBlock extends BlockStatement {}
 
   /**
    * A private identifier refers to private class elements. For a private name `#a`, its `name` is `a`.
+   * 
    * Original proposal: https://github.com/tc39/proposal-private-methods
    */
   interface PrivateIdentifier extends Node {
@@ -740,12 +800,15 @@ declare module ESTree {
   }
 
   /**
-   * Original proposals: https://github.com/tc39/proposal-class-fields and https://github.com/tc39/proposal-static-class-features/
+   * Original proposal: https://github.com/tc39/proposal-class-fields
    */
   interface PropertyDefinition extends Node {
     key: Expression | PrivateIdentifier;
     value?: Expression;
     computed: boolean;
+    /**
+     * Original proposal: https://github.com/tc39/proposal-static-class-features
+     */
     static: boolean;
   }
 
@@ -834,11 +897,15 @@ declare module ESTree {
 
   /**
    * An export batch declaration, e.g., `export * from "mod";`.
+   * 
+   * Docs for `exported`: Contains an `Identifier` when a different exported name is specified using `as`, e.g., `export * as foo from "mod";`.
    */
   interface ExportAllDeclaration extends ModuleDeclaration {
     source: Literal;
     /**
      * Contains an `Identifier` when a different exported name is specified using `as`, e.g., `export * as foo from "mod";`.
+     * 
+     * Original proposal: https://github.com/tc39/proposal-export-ns-from
      */
     exported?: Identifier;
   }

@@ -1,4 +1,4 @@
-import { indentation, indent } from './indent.js';
+import { indentation, indent, docsForDef } from './util.js';
 
 function unique(value, index, self) {
   return self.indexOf(value) === index;
@@ -18,21 +18,23 @@ const topProcessors = {
   enum({ name, values }, maxVersion) {
     // TypeScript doesn't allow enums of literals, so we need to create type union instead.
     const types = values
-      .filter(({ added }) => added == null || added <= maxVersion)
+      .filter(({ added }) => added == null || added.year <= maxVersion)
       .map(({ value }) => (typeof value === 'string' ? `"${value}"` : value))
       .join(' | ');
     return `type ${name} = ${types};`;
   },
 
-  interface({ name, doc, bases, props }, maxVersion) {
+  interface(node, maxVersion) {
+    const { name, bases, props } = node;
     let result = '';
+    const doc = docsForDef(node, maxVersion);
     if (doc) {
       result += printDoc(doc);
       result += indentation;
     }
     result += `interface ${name} `;
     const legalBases = bases
-      .filter((base) => !base.added || base.added <= maxVersion)
+      .filter((base) => !base.added || base.added.year <= maxVersion)
       .map((base) => (base.added ? base.name : base));
     if (legalBases.length) {
       result += `extends ${legalBases.join(', ')} `;
@@ -40,7 +42,7 @@ const topProcessors = {
     const items = Object.create(null);
     let hasItems = false;
     for (let prop in props) {
-      if (props[prop].added && props[prop].added > maxVersion) continue;
+      if (props[prop].added && props[prop].added.year > maxVersion) continue;
       // Filter out useless "type: string" from desdendant types.
       if (name === 'Node' || prop !== 'type') {
         items[prop] = props[prop];
@@ -63,7 +65,7 @@ const typeProcessors = {
 
   union: ({ types }, maxVersion) =>
     types
-      .filter((type) => type.added == null || type.added <= maxVersion)
+      .filter((type) => type.added == null || type.added.year <= maxVersion)
       .map((type) => processType(type, maxVersion))
       .filter(unique)
       .filter((type) => type !== 'any')
@@ -74,12 +76,13 @@ const typeProcessors = {
     indent(() => {
       for (let propName in items) {
         let prop = items[propName];
-        result += prop.doc ? indentation + printDoc(prop.doc) : '';
+        const docs = docsForDef(prop, maxVersion);
+        result += docs ? indentation + printDoc(docs) : '';
         if (
           prop.type.kind === 'union' &&
           prop.type.types.some(
             ({ kind, value, added }) =>
-              (added == null || added <= maxVersion) &&
+              (added == null || added.year <= maxVersion) &&
               kind === 'literal' &&
               value === null
           )
@@ -109,7 +112,7 @@ export default function toTypeScriptDef(spec, maxVersion = Infinity) {
   const result = [];
   indent(() => {
     for (let def of spec) {
-      if (def.added > maxVersion) continue;
+      if (def.added && def.added.year > maxVersion) continue;
       result.push(indentation + topProcessors[def.kind](def, maxVersion));
     }
   });
