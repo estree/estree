@@ -1,16 +1,7 @@
-import { indentation, indent, docsForDef } from './util.js';
+import { indentation, indent, docsForDef, printDoc } from './util.js';
 
 function unique(value, index, self) {
   return self.indexOf(value) === index;
-}
-
-function printDoc(doc) {
-  let result = '/**\n';
-  for (const line of doc.split('\n')) {
-    result += indentation + ` * ${line.replace('*/', '*\u{200b}/')}\n`;
-  }
-  result += indentation + ' */\n';
-  return result;
 }
 
 // Processors for top-level definitons.

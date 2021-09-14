@@ -63,42 +63,48 @@
 
 ```js
 interface Node {
+    /**
+     * A string representing the AST variant type.
+     * Each subtype of `Node` is documented below with the specific string of its `type` field.
+     * You can use this field to determine which interface a node implements.
+     */
     type: string;
+    /**
+     * The source location information of the node.
+     * If the node contains no information about the source location, the field is `null`.
+     */
     loc: SourceLocation | null;
 }
 ```
 
 ESTree AST nodes are represented as `Node` objects, which may have any prototype inheritance but which implement this interface.
 
-Docs for `type`: A string representing the AST variant type.
-Each subtype of `Node` is documented below with the specific string of its `type` field.
-You can use this field to determine which interface a node implements.
-
-Docs for `loc`: The source location information of the node.
-If the node contains no information about the source location, the field is `null`.
-
 ```js
 interface SourceLocation {
     source: string | null;
+    /**
+     * The position of the first character of the parsed source region
+     */
     start: Position;
+    /**
+     * The position of the first character after the parsed source region
+     */
     end: Position;
 }
 ```
 
-Docs for `start`: The position of the first character of the parsed source region
-
-Docs for `end`: The position of the first character after the parsed source region
-
 ```js
 interface Position {
+    /**
+     * Line number (1-indexed)
+     */
     line: number;
+    /**
+     * Column number (0-indexed)
+     */
     column: number;
 }
 ```
-
-Docs for `line`: Line number (1-indexed)
-
-Docs for `column`: Column number (0-indexed)
 
 # Identifier
 
@@ -126,16 +132,17 @@ A literal token. Note that a literal can be an expression.
 
 ```js
 interface RegExpLiteral <: Literal {
+    /**
+     * The `regex` property allows regexes to be represented in environments that don’t
+     * support certain flags such as `y` or `u`. In environments that don't support
+     * these flags `value` will be `null` as the regex can't be represented natively.
+     */
     regex: {
         pattern: string;
         flags: string;
     };
 }
 ```
-
-Docs for `regex`: The `regex` property allows regexes to be represented in environments that don’t
-support certain flags such as `y` or `u`. In environments that don't support
-these flags `value` will be `null` as the regex can't be represented natively.
 
 # Program
 
@@ -362,14 +369,15 @@ A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockState
 ```js
 interface CatchClause <: Node {
     type: "CatchClause";
+    /**
+     *  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
+     */
     param: Pattern;
     body: BlockStatement;
 }
 ```
 
 A `catch` clause following a `try` block.
-
-Docs for `param`:  `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
 
 ## Loops
 
@@ -586,15 +594,16 @@ An update (increment or decrement) operator token.
 interface BinaryExpression <: Expression {
     type: "BinaryExpression";
     operator: BinaryOperator;
+    /**
+     * `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
+     * See [Ergonomic brand checks for Private Fields](https://github.com/tc39/proposal-private-fields-in-in) for details.
+     */
     left: Expression;
     right: Expression;
 }
 ```
 
 A binary operator expression.
-
-Docs for `left`: `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
-See [Ergonomic brand checks for Private Fields](https://github.com/tc39/proposal-private-fields-in-in) for details.
 
 #### BinaryOperator
 
@@ -658,16 +667,18 @@ A logical operator token.
 interface MemberExpression <: Expression, Pattern {
     type: "MemberExpression";
     object: Expression;
+    /**
+     * When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
+     */
     property: Expression;
+    /**
+     * When `property` is a `PrivateIdentifier`, `computed` must be `false`.
+     */
     computed: boolean;
 }
 ```
 
 A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier` or a `PrivateIdentifier`.
-
-Docs for `property`: When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
-
-Docs for `computed`: When `property` is a `PrivateIdentifier`, `computed` must be `false`.
 
 ## ConditionalExpression
 

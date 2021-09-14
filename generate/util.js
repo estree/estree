@@ -11,19 +11,20 @@ export function indent(callback, amount = '  ') {
 export function docsForDef(def, maxVersion) {
   let docs = [def.doc];
 
-  if (def.kind === 'interface') {
-    const propDocs = Object.values(def.props)
-      .filter((p) => p.doc && (!p.added || p.added.year <= maxVersion))
-      .map((p) => `Docs for \`${p.name}\`: ${p.doc}`)
-      .join('\n\n');
-
-    docs.push(propDocs);
-  }
-
   if (def.added && def.added.year !== 2015) {
     docs.push(
       `Original proposal: https://github.com/tc39/proposal-${def.added.proposal}`
     );
   }
+
   return docs.filter(Boolean).join('\n\n');
+}
+
+export function printDoc(doc) {
+  let result = '/**\n';
+  for (const line of doc.split('\n')) {
+    result += indentation + ` * ${line.replace('*/', '*\u{200b}/')}\n`;
+  }
+  result += indentation + ' */\n';
+  return result;
 }

@@ -1,4 +1,4 @@
-import { indentation, indent, docsForDef } from './util.js';
+import { indentation, indent, docsForDef, printDoc } from './util.js';
 
 function makeToc(section) {
   let result =
@@ -85,7 +85,8 @@ const typeProcessors = {
     let result = '{\n';
     indent(() => {
       for (const prop of allowed) {
-        // result += prop.doc ? indentation + printDoc(prop.doc) : '';
+        const docs = docsForDef(prop, maxVersion);
+        result += docs ? indentation + printDoc(docs) : '';
         result +=
           indentation +
           `${prop.name}: ${processType(prop.type, maxVersion)};\n`;
