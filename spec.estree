@@ -391,7 +391,12 @@ interface BinaryExpression <: Expression {
 // A binary operator token.
 @section(Expression > Binary operations > BinaryExpression)
 enum BinaryOperator {
-    "==" | "!=" | "===" | "!==" | "<" | "<=" | ">" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%" | @added(2016, exponentiation-operator) "**" | "|" | "^" | "&" | "in" | "instanceof"
+    "==" | "!=" | "===" | "!=="
+    | "<" | "<=" | ">" | ">="
+    | "<<" | ">>" | ">>>"
+    | "+" | "-" | "*" | "/" | "%" | @added(2016, exponentiation-operator) "**"
+    | "|" | "^" | "&" | "in"
+    | "instanceof"
 }
 
 // An assignment operator expression.
@@ -406,7 +411,10 @@ interface AssignmentExpression <: Expression {
 // An assignment operator token.
 @section(Expression > Binary operations > AssignmentExpression)
 enum AssignmentOperator {
-    "=" | "+=" | "-=" | "*=" | "/=" | "%=" | @added(2016, exponentiation-operator) "**=" | "<<=" | ">>=" | ">>>=" | "|=" | "^=" | "&=" | @added(2021, logical-assignment) "||=" | @added(2021, logical-assignment) "&&=" | @added(2021, logical-assignment) "??="
+    "=" | "+=" | "-=" | "*=" | "/=" | "%=" | @added(2016, exponentiation-operator) "**="
+    | "<<=" | ">>=" | ">>>="
+    | "|=" | "^=" | "&="
+    | @added(2021, logical-assignment) "||=" | @added(2021, logical-assignment) "&&=" | @added(2021, logical-assignment) "??="
 }
 
 // A logical operator expression.

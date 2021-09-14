@@ -46,10 +46,15 @@ const entryProcessors = {
         '```js\nenum ' +
         def.name +
         ' {\n    ' +
-        def.values
-          .filter((v) => !v.added || v.added.year <= maxVersion)
-          .map(typeProcessors.literal)
-          .join(' | ') +
+        def.lines
+          .map((line) =>
+            line
+              .filter((v) => !v.added || v.added.year <= maxVersion)
+              .map(typeProcessors.literal)
+              .join(' | ')
+          )
+          .filter(Boolean)
+          .join('\n    | ') +
         '\n}\n```' +
         doc
       );

@@ -4,11 +4,12 @@ program
 def
   = doc: docstring _ attrs: decorators? "interface" __ name: name  _ bases: ('<:' _ names)? _ props: object _
     { return { kind: 'interface', name, ...attrs, doc, props, bases: bases ? bases[2] : [] } }
-  / doc: docstring _ attrs: decorators? "enum" __ name: name _ '{' _ values: enumBody _ '}' _
-    { return { kind: 'enum', name, ...attrs, doc, values } }
+  / doc: docstring _ attrs: decorators? "enum" __ name: name _ '{' _ lines: enumBody _ '}' _
+    { return { kind: 'enum', name, ...attrs, doc, lines } }
 
 enumValue = added: (added __)? value: literal { return { value, added: added ? added[0] : null } }
-enumBody = first: enumValue rest: (_ "|" _ enumValue)* { return [first, ...rest.map(r => r[3])] }
+enumBody = first: enumLine rest: ('\n' ' '* '|' ' '* enumLine)* { return [first, ...rest.map(r => r[4])] }
+enumLine = first: enumValue rest: (' '* '|' ' '* enumValue)* { return [first, ...rest.map(r => r[3])] }
 
 object = '{' props: prop* _ '}' { return Object.fromEntries(props.map(prop => [prop.name, prop])) }
 prop 'property'
@@ -69,8 +70,8 @@ literal 'literal' =
     / 'false' {return false }
     / 'null' { return null }
 
-__ "whitespace"
+__ 'whitespace'
   = [ \t\n\r]+ _
 
-_ "whitespace"
+_ 'whitespace'
   = [ \t\n\r]*

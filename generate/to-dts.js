@@ -6,9 +6,10 @@ function unique(value, index, self) {
 
 // Processors for top-level definitons.
 const topProcessors = {
-  enum({ name, values }, maxVersion) {
+  enum({ name, lines }, maxVersion) {
     // TypeScript doesn't allow enums of literals, so we need to create type union instead.
-    const types = values
+    const types = lines
+      .flatMap((line) => line)
       .filter(({ added }) => added == null || added.year <= maxVersion)
       .map(({ value }) => (typeof value === 'string' ? `"${value}"` : value))
       .join(' | ');

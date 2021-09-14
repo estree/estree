@@ -723,7 +723,12 @@ A binary operator expression.
 
 ```js
 enum BinaryOperator {
-    "==" | "!=" | "===" | "!==" | "<" | "<=" | ">" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%" | "**" | "|" | "^" | "&" | "in" | "instanceof"
+    "==" | "!=" | "===" | "!=="
+    | "<" | "<=" | ">" | ">="
+    | "<<" | ">>" | ">>>"
+    | "+" | "-" | "*" | "/" | "%" | "**"
+    | "|" | "^" | "&" | "in"
+    | "instanceof"
 }
 ```
 
@@ -746,7 +751,10 @@ An assignment operator expression.
 
 ```js
 enum AssignmentOperator {
-    "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "**=" | "<<=" | ">>=" | ">>>=" | "|=" | "^=" | "&=" | "||=" | "&&=" | "??="
+    "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "**="
+    | "<<=" | ">>=" | ">>>="
+    | "|=" | "^=" | "&="
+    | "||=" | "&&=" | "??="
 }
 ```
 
@@ -1078,8 +1086,8 @@ interface ObjectPattern <: Pattern {
 
 ```js
 interface AssignmentProperty <: Property {
-    type: "Property";
     // inherited
+    type: "Property";
     value: Pattern;
     kind: "init";
     method: false;

@@ -1,5 +1,4 @@
-import { timeStamp } from 'console';
-import { indentation, indent, docsForDef, printDoc } from './util.js';
+import { indentation, indent, printDoc } from './util.js';
 
 function printAdded(added, isDeclaration = false) {
   if (!added) return '';
@@ -34,12 +33,16 @@ const entryProcessors = {
       'enum ' +
       def.name +
       ' {\n    ' +
-      def.values
-        .map(
-          (value) =>
-            printAdded(value.added, false) + typeProcessors.literal(value)
+      def.lines
+        .map((values) =>
+          values
+            .map(
+              (value) =>
+                printAdded(value.added, false) + typeProcessors.literal(value)
+            )
+            .join(' | ')
         )
-        .join(' | ') +
+        .join('\n' + '    | ') +
       '\n}'
     );
   },

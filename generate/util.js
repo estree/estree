@@ -25,7 +25,7 @@ export function printDoc(doc, collapse = true) {
   let result = '';
   for (const line of doc.split('\n').filter(collapse ? Boolean : () => true)) {
     if (result) result += indentation;
-    result += `// ${line}\n`;
+    result += line ? `// ${line}\n` : '//\n';
   }
   return result;
 }

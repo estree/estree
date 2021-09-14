@@ -574,7 +574,6 @@ declare module ESTree {
   }
 
   interface AssignmentProperty extends Property {
-    /** inherited */
     value: Pattern;
     kind: string;
     method: boolean;
