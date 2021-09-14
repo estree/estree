@@ -26,7 +26,7 @@ interface ClassAccessor <: PropertyDefinition {
 }
 ```
 
-If `set.private` is `true`, `key` must be an `Identifier` and `computed` must be `false`.
+If `set.private` is `true`, `ClassAccessor#key` must be an `Identifier` and `ClassAccessor#computed` must be `false`.
 
 ## ObjectAccessor
 
