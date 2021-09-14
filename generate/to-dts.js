@@ -18,7 +18,7 @@ const topProcessors = {
   interface(node, maxVersion) {
     const { name, bases, props } = node;
     let result = '';
-    const doc = docsForDef(node, maxVersion);
+    const doc = docsForDef(node);
     if (doc) {
       result += printJSDoc(doc);
       result += indentation;
@@ -67,7 +67,7 @@ const typeProcessors = {
     indent(() => {
       for (let propName in items) {
         let prop = items[propName];
-        const docs = docsForDef(prop, maxVersion);
+        const docs = docsForDef(prop);
         result += docs ? indentation + printJSDoc(docs) : '';
         if (
           prop.type.kind === 'union' &&

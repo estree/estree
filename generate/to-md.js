@@ -23,7 +23,7 @@ const entryProcessors = {
       .join('\n\n'),
   content(entry, maxVersion) {
     const def = entry.value;
-    let doc = docsForDef(def, maxVersion);
+    let doc = docsForDef(def);
     doc = doc ? '\n\n' + doc : doc;
     if (def.kind === 'interface') {
       const legalBases = def.bases
@@ -85,7 +85,7 @@ const typeProcessors = {
     let result = '{\n';
     indent(() => {
       for (const prop of allowed) {
-        const docs = docsForDef(prop, maxVersion);
+        const docs = docsForDef(prop);
         result += docs ? indentation + printDoc(docs) : '';
         result +=
           indentation +

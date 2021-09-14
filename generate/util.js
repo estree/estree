@@ -8,7 +8,7 @@ export function indent(callback, amount = '  ') {
   return result;
 }
 
-export function docsForDef(def, maxVersion) {
+export function docsForDef(def) {
   let docs = [def.doc];
 
   if (def.added && def.added.year !== 2015) {
