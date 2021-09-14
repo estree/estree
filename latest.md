@@ -1,5 +1,4 @@
 - [Node](#node)
-  - [PrivateIdentifier](#privateidentifier)
 - [Identifier](#identifier)
 - [Literal](#literal)
   - [RegExpLiteral](#regexpliteral)
@@ -79,12 +78,12 @@
 - [Class](#class)
   - [ClassBody](#classbody)
   - [MethodDefinition](#methoddefinition)
+  - [StaticBlock](#staticblock)
+  - [PrivateIdentifier](#privateidentifier)
   - [PropertyDefinition](#propertydefinition)
   - [ClassDeclaration](#classdeclaration)
   - [ClassExpression](#classexpression)
   - [MetaProperty](#metaproperty)
-- [BlockStatement](#blockstatement)
-  - [StaticBlock](#staticblock)
 - [Modules](#modules)
   - [ModuleDeclaration](#moduledeclaration)
   - [ModuleSpecifier](#modulespecifier)
@@ -133,19 +132,6 @@ interface Position {
     column: number;
 }
 ```
-
-## PrivateIdentifier
-
-```js
-interface PrivateIdentifier <: Node {
-    type: "PrivateIdentifier";
-    name: string;
-}
-```
-
-A private identifier refers to private class elements. For a private name `#a`, its `name` is `a`.
-
-Original proposal: https://github.com/tc39/proposal-private-methods
 
 # Identifier
 
@@ -1161,6 +1147,31 @@ interface MethodDefinition <: Node {
 }
 ```
 
+## StaticBlock
+
+```js
+interface StaticBlock <: BlockStatement {
+    type: "StaticBlock";
+}
+```
+
+A static block `static { }` is a block statement serving as an additional static initializer.
+
+Original proposal: https://github.com/tc39/proposal-class-static-block
+
+## PrivateIdentifier
+
+```js
+interface PrivateIdentifier <: Node {
+    type: "PrivateIdentifier";
+    name: string;
+}
+```
+
+A private identifier refers to private class elements. For a private name `#a`, its `name` is `a`.
+
+Original proposal: https://github.com/tc39/proposal-private-methods
+
 ## PropertyDefinition
 
 ```js
@@ -1204,20 +1215,6 @@ interface MetaProperty <: Expression {
 ```
 
 `MetaProperty` node represents `new.target` meta property in ES2015+ and `import.meta` in ES2020+
-
-# BlockStatement
-
-## StaticBlock
-
-```js
-interface StaticBlock <: BlockStatement {
-    type: "StaticBlock";
-}
-```
-
-A static block `static { }` is a block statement serving as an additional static initializer.
-
-Original proposal: https://github.com/tc39/proposal-class-static-block
 
 # Modules
 

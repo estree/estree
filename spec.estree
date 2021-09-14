@@ -726,12 +726,14 @@ interface Pattern <: Node { }
 }
 
 // A static block `static { }` is a block statement serving as an additional static initializer.
+@section(Class)
 @added(2022, class-static-block)
 interface StaticBlock <: BlockStatement {
     type: "StaticBlock";
 }
 
 // A private identifier refers to private class elements. For a private name `#a`, its `name` is `a`.
+@section(Class)
 @added(2022, private-methods)
 interface PrivateIdentifier <: Node {
     type: "PrivateIdentifier";
