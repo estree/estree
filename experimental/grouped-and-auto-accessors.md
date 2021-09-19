@@ -31,8 +31,10 @@ If `set.private` is `true`, `ClassAccessor#key` must be an `Identifier` and `Cla
 ## ObjectAccessor
 
 ```js
-interface ObjectAccessor <: Property {
+interface ObjectAccessor <: Node {
     type: "ObjectAccessor";
+    key: Expression;
+    computed: boolean;
     get: GetAccessorStub | GetAccessorMethod | null;
     set: SetAccessorStub | SetAccessorMethod | null;
 }
