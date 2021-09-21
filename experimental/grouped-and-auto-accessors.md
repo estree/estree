@@ -48,7 +48,7 @@ interface GetAccessorStub <: Node {
 }
 ```
 
-A get accessor stub is a simplified version of grouped accessor. E.g. `class C { accessor c { get; } }`.
+A get accessor stub is used in auto-accessor. E.g. `class C { accessor c { get; } }`.
 
 ### GetAccessorMethod
 
@@ -69,7 +69,7 @@ interface SetAccessorStub <: Node {
 }
 ```
 
-A set accessor stub is a simplified version of grouped accessor. E.g. `class C { accessor c { set; } }`.
+A set accessor stub is used in auto-accessor. E.g. `class C { accessor c { set; } }`.
 
 ### SetAccessorMethod
 
