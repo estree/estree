@@ -7,10 +7,11 @@ interface Class <: Node {
     type: "Class"
 }
 ```
+A class pseudo-expression.
 
 ```js
 extend interface CallExpression {
-    callee: Class // currently only class
+    callee: Class // currently only "class"
     arguments: [ Expression ]
 }
 ```
