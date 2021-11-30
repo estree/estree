@@ -3,8 +3,15 @@
 ## ClassExpression
 
 ```js
-extend interface ClassExpression {
-    operation: Identifier | null // operation.name currently only has : 'hasInstance'
+interface Class <: Node {
+    type: "Class"
+}
+```
+
+```js
+extend interface CallExpression {
+    callee: Class // currently only class
+    arguments: [ Expression ]
 }
 ```
 
@@ -17,3 +24,4 @@ class Foo {
     }
 }
 ```
+- 
