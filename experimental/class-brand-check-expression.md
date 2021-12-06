@@ -5,7 +5,7 @@
 ```js
 extend interface CallExpression {
     callee: ClassObject; 
-    optional: false;
+    optional: true;
     arguments: [ Expression ];
 }
 ```
