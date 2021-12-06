@@ -5,8 +5,8 @@
 ```js
 extend interface CallExpression {
     callee: ClassObject; 
-    optional: true;
-    arguments: [ Expression ];
+    optional: false;
+    arguments: [ AssignmentExpression ];
 }
 ```
 
