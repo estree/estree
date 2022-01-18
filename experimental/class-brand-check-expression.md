@@ -3,11 +3,10 @@
 ## ClassExpression
 
 ```js
-extend interface CallExpression {
-    callee: ClassObject; 
-    optional: false;
-    arguments: [ AssignmentExpression ];
-}
+extend interface classHasInstanceExpression <: Expression {
+    type: "classHasInstanceExpression",
+    source: Expression
+}    
 ```
 
 eg :
