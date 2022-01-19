@@ -3,9 +3,9 @@
 ## ClassExpression
 
 ```js
-extend interface classHasInstanceExpression <: Expression {
-    type: "classHasInstanceExpression",
-    source: Expression
+extend interface ClassHasInstanceExpression <: Expression {
+    type: "ClassHasInstanceExpression",
+    instance: Expression
 }    
 ```
 
