@@ -9,7 +9,7 @@ extend interface ClassHasInstanceExpression <: Expression {
 }    
 ```
 
-eg :
+Example:
 
 ```js
 class Foo {
