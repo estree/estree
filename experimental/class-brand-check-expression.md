@@ -1,6 +1,6 @@
 # [class.hasInstance](https://github.com/tc39/proposal-class-brand-check)
 
-## ClassExpression
+## ClassHasInstanceExpression
 
 ```js
 extend interface ClassHasInstanceExpression <: Expression {
