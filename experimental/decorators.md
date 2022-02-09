@@ -28,6 +28,14 @@ extend interface Class {
 }
 ```
 
+## ClassBody
+
+```js
+extend interface ClassBody {
+    body: [ MethodDefinition | PropertyDefinition | StaticBlock | AccessorProperty ];
+}
+```
+
 ## MethodDefinition
 ```js
 extend interface MethodDefinition {
