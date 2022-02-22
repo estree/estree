@@ -4,7 +4,7 @@
 
 ### RecordExpression
 
-```js
+```ts
 interface RecordExpression <: Expression {
     type: "RecordExpression";
     properties: [ RecordProperty | SpreadElement ];
@@ -14,7 +14,7 @@ interface RecordExpression <: Expression {
 A record expression defines an immutable object, e.g. `#{a: 1}`.
 
 #### RecordProperty
-```js
+```ts
 interface RecordProperty <: Node {
     type: "RecordProperty";
     key: Expression;
@@ -25,7 +25,7 @@ interface RecordProperty <: Node {
 ```
 
 ### TupleExpression
-```js
+```ts
 interface TupleExpression <: Expression {
     type: "TupleExpression";
     elements: [ Expression | SpreadElement ];

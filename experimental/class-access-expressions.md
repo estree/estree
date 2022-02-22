@@ -2,7 +2,7 @@
 
 ## ClassObject
 
-```js
+```ts
 interface ClassObject <: Node {
     type: "ClassObject";
 }
@@ -12,7 +12,7 @@ A `class` pseudo-expression, e.g. `class.foo`.
 
 ## MemberExpression
 
-```js
+```ts
 extend interface MemberExpression {
     object: Expression | Super | ClassObject;
 }

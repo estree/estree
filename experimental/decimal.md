@@ -2,7 +2,7 @@
 
 # Literal
 
-```js
+```ts
 extend interface Literal <: Expression {
   type: "Literal";
   value: string | boolean | null | number | RegExp | bigint | bigdecimal
@@ -13,7 +13,7 @@ extend interface Literal <: Expression {
 
 ## DecimalLiteral
 
-```js
+```ts
 interface DecimalLiteral <: Literal {
   decimal: string;
 }

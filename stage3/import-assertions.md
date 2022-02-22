@@ -4,7 +4,7 @@
 
 ### ImportDeclaration
 
-```js
+```ts
 extend interface ImportDeclaration {
     assertions: [ ImportAttribute ];
 }
@@ -14,7 +14,7 @@ The `assertions` is non-empty when import assertions present, e.g., `import foo 
 
 ### ImportAttribute
 
-```js
+```ts
 interface ImportAttribute <: Node {
     type: "ImportAttribute";
     key: Identifier | Literal;
@@ -28,7 +28,7 @@ An import attribute is an object-like key value pair, e.g. `type: "json"` in `im
 
 ### ExportNamedDeclaration
 
-```js
+```ts
 extend interface ExportNamedDeclaration {
     assertions: [ ImportAttribute ];
 }
@@ -37,7 +37,7 @@ extend interface ExportNamedDeclaration {
 
 ### ExportAllDeclaration
 
-```js
+```ts
 extend interface ExportAllDeclaration {
     assertions: [ ImportAttribute ];
 }
@@ -48,7 +48,7 @@ extend interface ExportAllDeclaration {
 
 ### ImportExpression
 
-```js
+```ts
 extend interface ImportExpression {
     attributes: Expression | null;
 }

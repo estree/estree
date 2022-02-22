@@ -6,7 +6,7 @@ This feature depends on [Do expressions].
 
 ### DoExpression
 
-```js
+```ts
 extend interface DoExpression {
     async: boolean
 }

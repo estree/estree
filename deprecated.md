@@ -46,7 +46,7 @@ This document specifies deprecated extensions to the ESTree API that were at one
 
 # Functions
 
-```js
+```ts
 extend interface Function {
     body: BlockStatement | Expression;
     expression: boolean;
@@ -59,7 +59,7 @@ If the `expression` flag is true, the function is an [expression closure](https:
 
 ## ForInStatement
 
-```js
+```ts
 extend interface ForInStatement {
    each: boolean;
 }
@@ -69,7 +69,7 @@ If `each` is true, a `for each`/`in` statement.
 
 ## LetStatement
 
-```js
+```ts
 interface LetStatement <: Statement {
     type: "LetStatement";
     head: [ VariableDeclarator ];
@@ -81,7 +81,7 @@ A `let` statement.
 
 ## SwitchStatement
 
-```js
+```ts
 extend interface SwitchStatement {
     lexical: boolean;
 }
@@ -91,7 +91,7 @@ The `lexical` flag is metadata indicating whether the `switch` statement contain
 
 ## TryStatement
 
-```js
+```ts
 extend interface TryStatement {
     handlers: [ CatchClause ];
     guardedHandlers: [ CatchClause ];
@@ -104,7 +104,7 @@ The `length` of `handlers` may be any non-negative integer.
 
 ## ComprehensionExpression
 
-```js
+```ts
 interface ComprehensionExpression <: Expression {
     type: "ComprehensionExpression";
     body: Expression;
@@ -117,7 +117,7 @@ An array comprehension. The `blocks` array corresponds to the sequence of `for` 
 
 ## GeneratorExpression
 
-```js
+```ts
 interface GeneratorExpression <: Expression {
     type: "GeneratorExpression";
     body: Expression;
@@ -130,7 +130,7 @@ A generator expression. As with array comprehensions, the `blocks` array corresp
 
 ## GraphExpression
 
-```js
+```ts
 interface GraphExpression <: Expression {
     type: "GraphExpression";
     index: uint32;
@@ -142,7 +142,7 @@ A graph expression, aka "sharp literal," such as `#1={ self: #1# }`.
 
 ## GraphIndexExpression
 
-```js
+```ts
 interface GraphIndexExpression <: Expression {
     type: "GraphIndexExpression";
     index: uint32;
@@ -153,7 +153,7 @@ A graph index expression, aka "sharp variable," such as `#1#`.
 
 ## LetExpression
 
-```js
+```ts
 interface LetExpression <: Expression {
     type: "LetExpression";
     head: [ VariableDeclarator ];
@@ -167,7 +167,7 @@ A `let` expression.
 
 ## CatchClause
 
-```js
+```ts
 extend interface CatchClause {
     guard: Expression | null;
 }
@@ -177,7 +177,7 @@ The optional `guard` property corresponds to the optional expression guard on th
 
 ## ComprehensionBlock
 
-```js
+```ts
 interface ComprehensionBlock <: Node {
     type: "ComprehensionBlock";
     left: Pattern;
@@ -192,7 +192,7 @@ A `for` or `for each` block in an array comprehension or generator expression.
 
 ## BinaryOperator
 
-```js
+```ts
 extend enum BinaryOperator {
     ".."
 }
@@ -208,7 +208,7 @@ E4X was specified by [ECMA-357](http://www.ecma-international.org/publications/s
 
 ### XMLDefaultDeclaration
 
-```js
+```ts
 interface XMLDefaultDeclaration <: Declaration {
     type: "XMLDefaultDeclaration";
     namespace: Expression;
@@ -221,7 +221,7 @@ A `default xml namespace` declaration.
 
 ### XMLAnyName
 
-```js
+```ts
 interface XMLAnyName <: Expression {
     type: "XMLAnyName";
 }
@@ -231,7 +231,7 @@ The special E4X wildcard pseudo-identifier `*`.
 
 ### XMLQualifiedIdentifier
 
-```js
+```ts
 interface XMLQualifiedIdentifier <: Expression {
     type: "XMLQualifiedIdentifier";
     left: Identifier | XMLAnyName;
@@ -244,7 +244,7 @@ An E4X qualified identifier, i.e., a pseudo-identifier using the namespace separ
 
 ### XMLFunctionQualifiedIdentifier
 
-```js
+```ts
 interface XMLFunctionQualifiedIdentifier <: Expression {
     type: "XMLFunctionQualifiedIdentifier";
     right: Identifier | Expression;
@@ -256,7 +256,7 @@ An E4X identifier qualified by the `function` keyword, e.g., `function::id`. (Th
 
 ### XMLAttributeSelector
 
-```js
+```ts
 interface XMLAttributeSelector <: Expression {
     type: "XMLAttributeSelector";
     attribute: Expression;
@@ -267,7 +267,7 @@ An E4X attribute selector expression, i.e., an `@` expression.
 
 ### XMLFilterExpression
 
-```js
+```ts
 interface XMLFilterExpression <: Expression {
     type: "XMLFilterExpression";
     left: Expression;
@@ -279,7 +279,7 @@ An E4X list filter expression, i.e., an expression of the form `expr.(expr)`.
 
 ### XMLElement
 
-```js
+```ts
 interface XMLElement <: XML, Expression {
     type: "XMLElement";
     contents: [ XML ];
@@ -290,7 +290,7 @@ An E4X literal representing a single XML element.
 
 ### XMLList
 
-```js
+```ts
 interface XMLList <: XML, Expression {
     type: "XMLList";
     contents: [ XML ];
@@ -301,7 +301,7 @@ An E4X literal representing a list of XML elements.
 
 ## XML
 
-```js
+```ts
 interface XML <: Node { }
 ```
 
@@ -309,7 +309,7 @@ XML data.
 
 ### XMLEscape
 
-```js
+```ts
 interface XMLEscape <: XML {
     type: "XMLEscape";
     expression: Expression;
@@ -320,7 +320,7 @@ XML data with an escaped JavaScript expression.
 
 ### XMLText
 
-```js
+```ts
 interface XMLText <: XML {
     type: "XMLText";
     text: string;
@@ -331,7 +331,7 @@ Literal XML text.
 
 ### XMLStartTag
 
-```js
+```ts
 interface XMLStartTag <: XML {
     type: "XMLStartTag";
     contents: [ XML ];
@@ -342,7 +342,7 @@ An XML start tag.
 
 ### XMLEndTag
 
-```js
+```ts
 interface XMLEndTag <: XML {
     type: "XMLEndTag";
     contents: [ XML ];
@@ -353,7 +353,7 @@ An XML end tag.
 
 ### XMLPointTag
 
-```js
+```ts
 interface XMLPointTag <: XML {
     type: "XMLPointTag";
     contents: [ XML ];
@@ -364,7 +364,7 @@ An XML point tag.
 
 ### XMLName
 
-```js
+```ts
 interface XMLName <: XML {
     type: "XMLName";
     contents: string | [ XML ];
@@ -375,7 +375,7 @@ An XML name.
 
 ### XMLAttribute
 
-```js
+```ts
 interface XMLAttribute <: XML {
     type: "XMLAttribute";
     value: string;
@@ -386,7 +386,7 @@ An XML attribute value.
 
 ### XMLCdata
 
-```js
+```ts
 interface XMLCdata <: XML {
     type: "XMLCdata";
     contents: string;
@@ -397,7 +397,7 @@ An XML CDATA node.
 
 ### XMLComment
 
-```js
+```ts
 interface XMLComment <: XML {
     type: "XMLComment";
     contents: string;
@@ -408,7 +408,7 @@ An XML comment.
 
 ### XMLProcessingInstruction
 
-```js
+```ts
 interface XMLProcessingInstruction <: XML {
     type: "XMLProcessingInstruction";
     target: string;

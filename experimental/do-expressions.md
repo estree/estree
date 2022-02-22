@@ -4,7 +4,7 @@
 
 ### DoExpression
 
-```js
+```ts
 interface DoExpression <: Expression {
     type: "DoExpression";
     body: BlockStatement;

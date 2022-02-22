@@ -2,7 +2,7 @@
 
 ## Decorator
 
-```js
+```ts
 interface Decorator <: Node {
     type: "Decorator";
     expression: Expression;
@@ -11,7 +11,7 @@ interface Decorator <: Node {
 
 ## Used
 
-```js
+```ts
 extend interface MethodDefinition {
     decorators: [ Decorator ];
 }

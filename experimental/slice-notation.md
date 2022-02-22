@@ -2,7 +2,7 @@
 
 ## SliceExpression
 
-```js
+```ts
 interface SliceExpression <: ChainElement, Expression {
     type: "SliceExpression";
     object: Expression;

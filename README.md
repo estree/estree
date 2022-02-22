@@ -6,10 +6,9 @@ Meanwhile JavaScript is evolving. This site will serve as a community standard f
 
 # AST Descriptor Syntax
 
-The spec uses a custom syntax to describe its structures.  For example, at the
-time of writing, 'es2015.md' contained a description of `Program` as seen below
+The spec uses a custom syntax to describe its structures.  For example, at the time of writing, 'es2015.md' contained a description of `Program` as seen below
 
-```js
+```ts
 extend interface Program {
     sourceType: "script" | "module";
     body: [ Statement | ModuleDeclaration ];

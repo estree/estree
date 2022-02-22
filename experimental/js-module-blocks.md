@@ -4,7 +4,7 @@
 
 ### ModuleExpression
 
-```js
+```ts
 interface ModuleExpression <: Expression {
     type: "ModuleExpression";
     body: Program;

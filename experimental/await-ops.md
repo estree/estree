@@ -2,7 +2,7 @@
 
 ## AwaitExpression
 
-```js
+```ts
 extend interface AwaitExpression {
     operation: Identifier | null // operation.name should be one of the following : 'all', 'race', 'allSettled' and 'any'
 }
@@ -10,7 +10,7 @@ extend interface AwaitExpression {
 
 eg :
 
-```js
+```ts
 async function fn() {
     await [];
     await.all [];

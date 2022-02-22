@@ -14,7 +14,7 @@ This document specifies the extensions to the [core ESTree AST types](es5.md) to
 
 # Type Annotations
 
-```js
+```ts
 interface TypeAnnotation <: Node { }
 ```
 
@@ -22,7 +22,7 @@ Any type annotation.
 
 # Identifier
 
-```js
+```ts
 extend interface Identifier {
     typeAnnotation: TypeAnnotation | null;
 }
@@ -32,7 +32,7 @@ The `typeAnnotation` property is used only in the case of variable declarations 
 
 # Functions
 
-```js
+```ts
 extend interface Function {
     returnType: TypeAnnotation | null;
 }
@@ -44,7 +44,7 @@ The `returnType` property is used to specify the type annotation for the return 
 
 ## ObjectPattern
 
-```js
+```ts
 extend interface ObjectPattern {
     typeAnnotation: TypeAnnotation | null;
 }
@@ -52,7 +52,7 @@ extend interface ObjectPattern {
 
 ## ArrayPattern
 
-```js
+```ts
 extend interface ArrayPattern {
     typeAnnotation: TypeAnnotation | null;
 }
@@ -60,7 +60,7 @@ extend interface ArrayPattern {
 
 ## RestElement
 
-```js
+```ts
 extend interface RestElement {
     typeAnnotation: TypeAnnotation | null;
 }
