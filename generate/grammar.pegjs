@@ -46,7 +46,7 @@ decorators
   }
 
 added '@added'
-  = '@added(' _ year: $number _ ',' _  proposal: $[a-z\d-]+ _ ')' { return { year: parseInt(year), proposal } }
+  = '@added(' _ year: $number _ ',' _  proposal: $[^)]+ _ ')' { return { year: parseInt(year), proposal } }
   / '@es6' { return { year: 2015 }}
 
 section '@section'

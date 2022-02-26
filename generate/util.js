@@ -13,7 +13,11 @@ export function docsForDef(def) {
 
   if (def.added && def.added.year !== 2015) {
     docs.push(
-      `Original proposal: https://github.com/tc39/proposal-${def.added.proposal}`
+      `Original proposal: ${
+        def.added.proposal.includes('/')
+          ? `https://${def.added.proposal}`
+          : `https://github.com/tc39/proposal-${def.added.proposal}`
+      }`
     );
   }
 
