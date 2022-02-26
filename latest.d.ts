@@ -268,6 +268,7 @@ declare module ESTree {
   interface ArrowFunctionExpression extends Function, Expression {
     body: FunctionBody | Expression;
     expression: boolean;
+    generator: boolean;
   }
 
   /** A `yield` expression. */
@@ -664,7 +665,8 @@ declare module ESTree {
 
   /** An imported variable binding, e.g., `{foo}` in `import {foo} from "mod"` or `{foo as bar}` in `import {foo as bar} from "mod"`. The `imported` field refers to the name of the export imported from the module. The `local` field refers to the binding imported into the local module scope. If it is a basic named import, such as in `import {foo} from "mod"`, both `imported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased import, such as in `import {foo as bar} from "mod"`, the `imported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`. */
   interface ImportSpecifier extends ModuleSpecifier {
-    imported: Identifier;
+    /** If `imported` is a `Literal`, `imported.value` must be a string without lone surrogate. */
+    imported: Identifier | Literal;
   }
 
   /** A default import specifier, e.g., `foo` in `import foo from "mod.js"`. */
@@ -685,7 +687,12 @@ declare module ESTree {
 
   /** An exported variable binding, e.g., `{foo}` in `export {foo}` or `{bar as foo}` in `export {bar as foo}`. The `exported` field refers to the name exported in the module. The `local` field refers to the binding into the local module scope. If it is a basic named export, such as in `export {foo}`, both `exported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased export, such as in `export {bar as foo}`, the `exported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`. */
   interface ExportSpecifier extends ModuleSpecifier {
-    exported: Identifier;
+    /**
+     * `local` can be `Literal` only if the `source` of the `ExportNamedDeclaration` of the parent of this node is not `null`. e.g. `export { "foo" as "foo" } from "mod"` is valid, `export { "foo" as "foo" }` is invalid.
+     * If `exported`/`local` is `Literal`, `exported.value`/`local.value` must be a string without lone surrogate.
+     */
+    local: Identifier | Literal;
+    exported: Identifier | Literal;
   }
 
   /** An export default declaration, e.g., `export default function () {};` or `export default 1;`. */
@@ -706,9 +713,10 @@ declare module ESTree {
     source: Literal;
     /**
      * Contains an `Identifier` when a different exported name is specified using `as`, e.g., `export * as foo from "mod";`.
+     * If `exported` is a `Literal`, `exported.value` must be a string without lone surrogate.
      * 
      * Original proposal: https://github.com/tc39/proposal-export-ns-from
      */
-    exported?: Identifier;
+    exported?: Identifier | Literal;
   }
 }

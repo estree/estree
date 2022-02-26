@@ -318,6 +318,7 @@ interface FunctionExpression <: Expression, Function {
     type: "ArrowFunctionExpression";
     body: FunctionBody | Expression;
     expression: boolean;
+    generator: false;
 }
 
 // A `yield` expression.
@@ -790,7 +791,8 @@ interface PropertyDefinition <: Node {
 @section(Modules > Imports)
 @es6 interface ImportSpecifier <: ModuleSpecifier {
     type: "ImportSpecifier";
-    imported: Identifier;
+    // If `imported` is a `Literal`, `imported.value` must be a string without lone surrogate.
+    imported: Identifier | @added(2022, github.com/tc39/ecma262/pull/2154) Literal;
 }
 
 // A default import specifier, e.g., `foo` in `import foo from "mod.js"`.
@@ -819,7 +821,10 @@ interface PropertyDefinition <: Node {
 @section(Modules > Exports)
 @es6 interface ExportSpecifier <: ModuleSpecifier {
     type: "ExportSpecifier";
-    exported: Identifier;
+    // `local` can be `Literal` only if the `source` of the `ExportNamedDeclaration` of the parent of this node is not `null`. e.g. `export { "foo" as "foo" } from "mod"` is valid, `export { "foo" as "foo" }` is invalid.
+    // If `exported`/`local` is `Literal`, `exported.value`/`local.value` must be a string without lone surrogate.
+    local: Identifier | @added(2022, github.com/tc39/ecma262/pull/2154) Literal;
+    exported: Identifier | @added(2022, github.com/tc39/ecma262/pull/2154) Literal;
 }
 
 // An export default declaration, e.g., `export default function () {};` or `export default 1;`.
@@ -847,5 +852,6 @@ interface PropertyDefinition <: Node {
     type: "ExportAllDeclaration";
     source: Literal;
     // Contains an `Identifier` when a different exported name is specified using `as`, e.g., `export * as foo from "mod";`.
-    @added(2020, export-ns-from) exported: Identifier | null;
+    // If `exported` is a `Literal`, `exported.value` must be a string without lone surrogate.
+    @added(2020, export-ns-from) exported: Identifier | @added(2022, github.com/tc39/ecma262/pull/2154) Literal | null;
 }

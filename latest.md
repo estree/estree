@@ -219,6 +219,7 @@ interface ArrowFunctionExpression <: Function, Expression {
     type: "ArrowFunctionExpression";
     body: FunctionBody | Expression;
     expression: boolean;
+    generator: false;
 }
 ```
 
@@ -1263,7 +1264,8 @@ An import declaration, e.g., `import foo from "mod";`.
 ```js
 interface ImportSpecifier <: ModuleSpecifier {
     type: "ImportSpecifier";
-    imported: Identifier;
+    // If `imported` is a `Literal`, `imported.value` must be a string without lone surrogate.
+    imported: Identifier | Literal;
 }
 ```
 
@@ -1310,7 +1312,10 @@ _Note: Having `declaration` populated with non-empty `specifiers` or non-null `s
 ```js
 interface ExportSpecifier <: ModuleSpecifier {
     type: "ExportSpecifier";
-    exported: Identifier;
+    // `local` can be `Literal` only if the `source` of the `ExportNamedDeclaration` of the parent of this node is not `null`. e.g. `export { "foo" as "foo" } from "mod"` is valid, `export { "foo" as "foo" }` is invalid.
+    // If `exported`/`local` is `Literal`, `exported.value`/`local.value` must be a string without lone surrogate.
+    local: Identifier | Literal;
+    exported: Identifier | Literal;
 }
 ```
 
@@ -1348,8 +1353,9 @@ interface ExportAllDeclaration <: ModuleDeclaration {
     type: "ExportAllDeclaration";
     source: Literal;
     // Contains an `Identifier` when a different exported name is specified using `as`, e.g., `export * as foo from "mod";`.
+    // If `exported` is a `Literal`, `exported.value` must be a string without lone surrogate.
     // Original proposal: https://github.com/tc39/proposal-export-ns-from
-    exported: Identifier | null;
+    exported: Identifier | Literal | null;
 }
 ```
 
