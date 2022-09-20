@@ -6,10 +6,10 @@
 
 ```js
 extend interface ImportDeclaration {
-    reflection: "module" | null
+    module: boolean;
 }
 ```
-When `reflection` is `module`, the `specifiers` must be a length-1 array including `ImportDefaultSpecifier`, and the `assertions` must be an empty array.
+When `module` is `true`, the `specifiers` must be a length-1 array including `ImportDefaultSpecifier`, and the `assertions` must be an empty array.
 
 ## Expressions
 
