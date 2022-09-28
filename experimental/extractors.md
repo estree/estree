@@ -9,7 +9,6 @@ interface QualifiedName <: Node {
     right: Identifier;
 }
 ```
-An Identifier (`foo`) or dotted-name (`foo.bar`).
 
 ## ObjectPattern
 
