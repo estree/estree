@@ -1,0 +1,58 @@
+# [JavaScript Module Declarations][proposal-module-declarations]
+
+## Expressions
+
+### ModuleExpression
+
+```js
+interface ModuleDeclaration <: Declaration {
+    type: "ModuleDeclaration";
+    id: Identifier;
+    body: Program;
+}
+```
+
+The `sourceType` of the `body` must be `"module"`.
+
+## Imports
+
+### ImportDeclaration
+
+```js
+extend interface ImportDeclaration {
+    source: Literal | Identifier;
+}
+```
+
+## Exports
+
+### ExportDefaultDeclaration
+
+```js
+interface AnonymousDefaultExportedModuleDeclaration <: ModuleDeclaration {
+    type: "ModuleDeclaration";
+    id: null;
+}
+
+extend interface ExportDefaultDeclaration {
+    declaration: AnonymousDefaultExportedModuleDeclaration | ModuleDeclaration | AnonymousDefaultExportedFunctionDeclaration | FunctionDeclaration | AnonymousDefaultExportedClassDeclaration | ClassDeclaration | Expression;
+}
+```
+
+### ExportAllDeclaration
+
+```js
+extend interface ExportAllDeclaration {
+    source: Literal | Identifier;
+}
+```
+
+### ExportNamedDeclaration
+
+```js
+extend interface ExportNamedDeclaration {
+    source: Literal | Identifier | null;
+}
+```
+
+[proposal-module-declarations]: https://github.com/tc39/proposal-module-declarations
