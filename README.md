@@ -12,7 +12,7 @@ time of writing, 'es2015.md' contained a description of `Program` as seen below
 ```js
 extend interface Program {
     sourceType: "script" | "module";
-    body: [ Statement | ModuleDeclaration ];
+    body: [ Statement | ImportOrExportDeclaration ];
 }
 ```
 
