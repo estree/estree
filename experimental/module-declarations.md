@@ -1,8 +1,8 @@
 # [JavaScript Module Declarations][proposal-module-declarations]
 
-## Expressions
+## Declarations
 
-### ModuleExpression
+### ModuleDeclarations
 
 ```js
 interface ModuleDeclaration <: Declaration {
