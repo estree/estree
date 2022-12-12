@@ -1,5 +1,15 @@
 # [JavaScript Module Declarations][proposal-module-declarations]
 
+## Module block
+
+```js
+interface ModuleBlock <: Node {
+    type: "ModuleBlock";
+    sourceType: "module";
+    body: [ Directive | Statement | ImportOrExportDeclaration ];
+}
+```
+
 ## Declarations
 
 ### ModuleDeclarations
@@ -8,7 +18,7 @@
 interface ModuleDeclaration <: Declaration {
     type: "ModuleDeclaration";
     id: Identifier;
-    body: Program;
+    body: ModuleBlock;
 }
 ```
 
