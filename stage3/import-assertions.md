@@ -1,5 +1,8 @@
 # [Import Assertions][proposal-import-assertions]
 
+> **Warning**
+> This proposal has been superseded by [Import Attributes](../experimental/import-attributes.md).
+
 ## Imports
 
 ### ImportDeclaration
@@ -56,5 +59,4 @@ extend interface ImportExpression {
 
 The `attributes` property contains an `Expression` when import attributes presents, e.g., `{ assert: { type: "json" } }` in `import(jsonModuleName, { assert: { type: "json" } })`.
 
-[proposal-import-assertions]: https://github.com/tc39/proposal-import-assertions
-
+[proposal-import-assertions]: https://github.com/tc39/proposal-import-attributes/tree/f5ad402cd3d3f82f28b1d1be2bfd567cd26336af
