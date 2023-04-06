@@ -12,8 +12,7 @@ interface Decorator <: Node {
 ## FunctionExpression
 
 ```js
-interface FunctionExpression <: Function, Expression {
-    type: "FunctionExpression";
+extend interface FunctionExpression {
     params: [ Pattern | Parameter ];
 }
 ```
