@@ -17,7 +17,7 @@ extend interface FunctionExpression {
 }
 ```
 
-If `params` contains a `Parameter` node, its parent must be a `MethodDefinition` under a `ClassBody` node.
+If `params` contains a `Parameter` node, its parent must be a `MethodDefinition`.
 
 ## Parameter
 
