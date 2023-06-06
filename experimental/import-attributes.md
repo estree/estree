@@ -52,11 +52,11 @@ extend interface ExportAllDeclaration {
 
 ```js
 extend interface ImportExpression {
-    attributes: Expression | null;
+    options: Expression | null;
 }
 ```
 
-The `attributes` property contains an `Expression` when import attributes presents, e.g., `{ with: { type: "json" } }` in `import(jsonModuleName, { with: { type: "json" } })`.
+The `options` property contains an `Expression` when import attributes presents, e.g., `{ with: { type: "json" } }` in `import(jsonModuleName, { with: { type: "json" } })`.
 
 [proposal-import-attributes]: https://github.com/tc39/proposal-import-attributes
 
