@@ -510,7 +510,7 @@ interface Property <: Node {
 }
 ```
 
-A literal property in an object expression can have either a string or number as its `value`. Ordinary property initializers have a `kind` value `"init"`; getters and setters have the kind values `"get"` and `"set"`, respectively.
+A literal property in an object expression can have either a string or number as its `key`. Ordinary property initializers have a `kind` value `"init"`; getters and setters have the kind values `"get"` and `"set"`, respectively.
 
 ## FunctionExpression
 
