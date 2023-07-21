@@ -24,7 +24,7 @@ interface ImportAttribute <: Node {
 }
 ```
 
-An import attribute is an object-like key value pair, e.g. `type: "json"` in `import foo from "./foo.json" with { type: "json" }`. The `value` must be a string literal, that said, `value.value` is always `string`-type. If `key` is a `Literal`, it must be a string literal.
+An import attribute is an object-like key value pair, e.g. `type: "json"` in `import foo from "./foo.json" with { type: "json" }`. The `value` must be a string literal, that said, `value.value` is always `string`-type. If `key` is a `Literal`, it must be a string or numeric literal.
 
 ## Exports
 
