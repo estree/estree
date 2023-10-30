@@ -1,7 +1,7 @@
 # [Import Assertions][proposal-import-assertions]
 
 > **Warning**
-> This proposal has been superseded by [Import Attributes](../experimental/import-attributes.md).
+> This proposal has been superseded by [Import Attributes](./import-attributes.md).
 
 ## Imports
 
