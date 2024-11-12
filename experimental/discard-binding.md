@@ -11,5 +11,5 @@ interface Void <: Pattern {
 - The `argument` of a `RestElement` must not be `Void`
 - If the `id` of a `VariableDeclarator` is `Void`, the kind of the encompassing `VariableDeclaration` must be either `using` or `await using` defined in the [Explicit Resource Managemenr Proposal].
 
-[Explicit Resource Managemenr Proposal]: ../stage3/explicit-resource-management.md
+[Explicit Resource Management Proposal]: ../stage3/explicit-resource-management.md
 [proposal-discard-biding]: https://github.com/tc39/proposal-discard-binding
