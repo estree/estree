@@ -1,13 +1,30 @@
 # [JavaScript Structs: Fixed Layout Objects and Some Synchronization Primitives](proposal-structs)
 
-# Declarations
+# Structs
+
+```js
+interface Struct <: Node {
+    shared: boolean;
+    id: Identifier | null;
+    superClass: Expression | null;
+    body: StructBody;
+}
+```
 
 ## StructDeclaration
 ```js
-interface StructDeclaration <: Class, Declaration {
+interface StructDeclaration <: Struct, Declaration {
     type: "StructDeclaration";
     id: Identifier;
-    shared: boolean;
+}
+```
+
+## StructBody
+
+```js
+interface StructBody <: Node {
+    type: "StructBody";
+    body: [ MethodDefinition | PropertyDefinition | StaticBlock ]
 }
 ```
 
@@ -27,7 +44,7 @@ interface UnsafeBlockStatement <: BlockStatement {
 
 ### ExportDefaultDeclaration
 ```js
-interface AnonymousDefaultExportedStructDeclaration <: Class {
+interface AnonymousDefaultExportedStructDeclaration <: Struct {
     type: "StructDeclaration";
     id: null;
 }
