@@ -3,8 +3,10 @@
 # Structs
 
 ```js
-interface Struct <: Class {
+interface Struct <: Node {
     shared: boolean;
+    id: Identifier | null;
+    superClass: Expression | null;
     body: StructBody;
 }
 ```
