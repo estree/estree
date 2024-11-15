@@ -1,12 +1,27 @@
 # [JavaScript Structs: Fixed Layout Objects and Some Synchronization Primitives](proposal-structs)
 
+# Classes
+
+```js
+interface ClassOrStruct <: Node {
+    id: Identifier | null;
+    superClass: Expression | null;
+}
+```
+
+```js
+extend interface Class <: ClassOrStruct {
+    body: ClassBody
+}
+```
+
+Note: The `Class` interface changes are editorial. This proposal does not incur any AST changes to `ClassDeclaration` and `ClassExpression`.
+
 # Structs
 
 ```js
-interface Struct <: Node {
+interface Struct <: ClassOrStruct {
     shared: boolean;
-    id: Identifier | null;
-    superClass: Expression | null;
     body: StructBody;
 }
 ```
