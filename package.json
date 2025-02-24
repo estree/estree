@@ -1,0 +1,12 @@
+{
+  "name": "estree",
+  "private": true,
+  "main": "generate/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "pegjs -o generate/grammar.cjs generate/grammar.pegjs; node ."
+  },
+  "dependencies": {
+    "pegjs": "^0.10.0"
+  }
+}
