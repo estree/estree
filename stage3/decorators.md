@@ -17,14 +17,14 @@ interface AccessorProperty <: Node {
     value: Expression | null;
     computed: boolean;
     static: boolean;
-    decorators: [ Decorator ];
+    decorators: [ Decorator ] | null;
 }
 ```
 
 ## Class
 ```js
 extend interface Class {
-    decorators: [ Decorator ];
+    decorators: [ Decorator ] | null;
 }
 ```
 
@@ -39,7 +39,7 @@ extend interface ClassBody {
 ## MethodDefinition
 ```js
 extend interface MethodDefinition {
-    decorators: [ Decorator ];
+    decorators: [ Decorator ] | null;
 }
 ```
 
@@ -47,6 +47,6 @@ extend interface MethodDefinition {
 
 ```js
 extend interface PropertyDefinition {
-    decorators: [ Decorator ];
+    decorators: [ Decorator ] | null;
 }
 ```
