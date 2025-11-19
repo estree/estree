@@ -43,16 +43,6 @@ interface StructBody <: Node {
 }
 ```
 
-# Statements
-
-## UnsafeBlockStatement
-
-```js
-interface UnsafeBlockStatement <: BlockStatement {
-    type: "UnsafeBlockStatement";
-}
-```
-
 # Modules
 
 ## Exports
