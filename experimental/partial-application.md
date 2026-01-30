@@ -26,7 +26,7 @@ interface PartialCallExpression <: ChainElement {
 ## PartialNewExpression
 
 ```js
-interface PartialNewExpression <: ChainElement {
+interface PartialNewExpression <: Node {
     type: "PartialNewExpression";
     callee: Expression;
     arguments: [ Expression | SpreadElement | ArgumentPlaceholder | RestPlaceholder ];
