@@ -16,14 +16,26 @@ interface ArgumentPlaceholder <: Node {
 interface RestPlaceholder <: Node {
     type: "RestPlaceholder";
 }
-
-extend interface CallExpression <: PartialElement {}
-
-extend interface NewExpression <: PartialElement {}
 ```
 
-When `partial` is `true`, the `callee` must not be a `Super` node.
+## PartialCallExpression
 
-When `partial` is `false`, the `arguments` must be `[ Expression | SpreadElement ]`.
+```js
+interface PartialCallExpression <: ChainElement {
+    type: "PartialCallExpression";
+    callee: Expression;
+    arguments: [ Expression | SpreadElement | ArgumentPlaceholder | RestPlaceholder ];
+}
+```
+
+## PartialNewExpression
+
+```js
+interface PartialNewExpression <: ChainElement {
+    type: "PartialNewExpression";
+    callee: Expression;
+    arguments: [ Expression | SpreadElement | ArgumentPlaceholder | RestPlaceholder ];
+}
+```
 
 [proposal-partial-application]: https://github.com/tc39/proposal-partial-application
