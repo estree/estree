@@ -3,11 +3,6 @@
 # Expressions
 
 ```js
-interface PartialElement <: Node {
-    partial: boolean;
-    arguments: [ Expression | SpreadElement | ArgumentPlaceholder | RestPlaceholder ];
-}
-
 interface ArgumentPlaceholder <: Node {
     type: "ArgumentPlaceholder";
     ordinal: Literal | null;
