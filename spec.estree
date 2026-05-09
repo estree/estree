@@ -1,0 +1,857 @@
+// ESTree AST nodes are represented as `Node` objects, which may have any prototype inheritance but which implement this interface.
+interface Node {
+    // A string representing the AST variant type.
+    // Each subtype of `Node` is documented below with the specific string of its `type` field.
+    // You can use this field to determine which interface a node implements.
+    type: string;
+    // The source location information of the node.
+    // If the node contains no information about the source location, the field is `null`.
+    loc: SourceLocation | null;
+}
+
+@section(Node) @headerless
+interface SourceLocation {
+    source: string | null;
+    // The position of the first character of the parsed source region
+    start: Position;
+    // The position of the first character after the parsed source region
+    end: Position;
+}
+
+@section(Node) @headerless
+interface Position {
+    // Line number (1-indexed)
+    line: number;
+    // Column number (0-indexed)
+    column: number;
+}
+
+// An identifier. Note that an identifier may be an expression or a destructuring pattern.
+@at-root
+interface Identifier <: Expression, Pattern {
+    type: "Identifier";
+    name: string;
+}
+
+// A literal token. Note that a literal can be an expression.
+@at-root
+interface Literal <: Expression {
+    type: "Literal";
+    value: string | boolean | null | number | RegExp | @added(2020, bigint) bigint;
+}
+
+interface RegExpLiteral <: Literal {
+    // The `regex` property allows regexes to be represented in environments that don’t
+    // support certain flags such as `y` or `u`. In environments that don't support
+    // these flags `value` will be `null` as the regex can't be represented natively.
+    regex: {
+        pattern: string;
+        flags: string;
+    };
+}
+
+// - `bigint` property is a string representation of the `BigInt` value.
+//   It doesn't include the suffix `n`.
+// - In environments that don't support `BigInt` values, the `value` property will be
+//   `null` as the `BigInt` value can't be represented natively.
+@added(2020, bigint)
+interface BigIntLiteral <: Literal {
+    bigint: string;
+}
+
+// A complete program source tree.
+@at-root
+interface Program <: Node {
+    type: "Program";
+    // Parsers must specify `sourceType` as `"module"` if the source has been parsed as an ES6 module. Otherwise, `sourceType` must be `"script"`.
+    @es6 sourceType: "script" | "module";
+    body: [ Directive | Statement | @es6 ModuleDeclaration ];
+}
+
+// A function [declaration](#functiondeclaration) or [expression](#functionexpression).
+@at-root
+interface Function <: Node {
+    id: Identifier | null;
+    params: [ Pattern ];
+    body: FunctionBody;
+    @es6 generator: boolean;
+    @added(2017, async-await) async: boolean;
+}
+
+// Any statement.
+@at-root
+interface Statement <: Node { }
+
+// An expression statement, i.e., a statement consisting of a single expression.
+interface ExpressionStatement <: Statement {
+    type: "ExpressionStatement";
+    expression: Expression;
+}
+
+// A directive from the directive prologue of a script or function.
+// The `directive` property is the raw string source of the directive without quotes.
+@section(Statement)
+interface Directive <: Node {
+    type: "ExpressionStatement";
+    expression: Literal;
+    directive: string;
+}
+
+// A block statement, i.e., a sequence of statements surrounded by braces.
+interface BlockStatement <: Statement {
+    type: "BlockStatement";
+    body: [ Statement ];
+}
+
+// The body of a function, which is a block statement that may begin with directives.
+@section(Statement)
+interface FunctionBody <: BlockStatement {
+    body: [ Directive | Statement ];
+}
+
+// An empty statement, i.e., a solitary semicolon.
+interface EmptyStatement <: Statement {
+    type: "EmptyStatement";
+}
+
+// A `debugger` statement.
+@section(Statement)
+interface DebuggerStatement <: Statement {
+    type: "DebuggerStatement";
+}
+
+// A `with` statement.
+@section(Statement)
+interface WithStatement <: Statement {
+    type: "WithStatement";
+    object: Expression;
+    body: Statement;
+}
+
+// A `return` statement.
+@section(Statement > Control flow)
+interface ReturnStatement <: Statement {
+    type: "ReturnStatement";
+    argument: Expression | null;
+}
+
+// A labeled statement, i.e., a statement prefixed by a `break`/`continue` label.
+@section(Statement > Control flow)
+interface LabeledStatement <: Statement {
+    type: "LabeledStatement";
+    label: Identifier;
+    body: Statement;
+}
+
+// A `break` statement.
+@section(Statement > Control flow)
+interface BreakStatement <: Statement {
+    type: "BreakStatement";
+    label: Identifier | null;
+}
+
+// A `continue` statement.
+@section(Statement > Control flow)
+interface ContinueStatement <: Statement {
+    type: "ContinueStatement";
+    label: Identifier | null;
+}
+
+// An `if` statement.
+@section(Statement > Choice)
+interface IfStatement <: Statement {
+    type: "IfStatement";
+    test: Expression;
+    consequent: Statement;
+    alternate: Statement | null;
+}
+
+// A `switch` statement.
+@section(Statement > Choice)
+interface SwitchStatement <: Statement {
+    type: "SwitchStatement";
+    discriminant: Expression;
+    cases: [ SwitchCase ];
+}
+
+// A `case` (if `test` is an `Expression`) or `default` (if `test === null`) clause in the body of a `switch` statement.
+@section(Statement > Choice > SwitchStatement)
+interface SwitchCase <: Node {
+    type: "SwitchCase";
+    test: Expression | null;
+    consequent: [ Statement ];
+}
+
+// A `throw` statement.
+@section(Statement > Exceptions)
+interface ThrowStatement <: Statement {
+    type: "ThrowStatement";
+    argument: Expression;
+}
+
+// A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockStatement`.
+@section(Statement > Exceptions)
+interface TryStatement <: Statement {
+    type: "TryStatement";
+    block: BlockStatement;
+    handler: CatchClause | null;
+    finalizer: BlockStatement | null;
+}
+
+// A `catch` clause following a `try` block.
+@section(Statement > Exceptions > TryStatement)
+interface CatchClause <: Node {
+    type: "CatchClause";
+    // `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
+    param: Pattern | @added(2019, optional-catch-binding) null;
+    body: BlockStatement;
+}
+
+// A `while` statement.
+@section(Statement > Loops)
+interface WhileStatement <: Statement {
+    type: "WhileStatement";
+    test: Expression;
+    body: Statement;
+}
+
+// A `do`/`while` statement.
+@section(Statement > Loops)
+interface DoWhileStatement <: Statement {
+    type: "DoWhileStatement";
+    body: Statement;
+    test: Expression;
+}
+
+// A `for` statement.
+@section(Statement > Loops)
+interface ForStatement <: Statement {
+    type: "ForStatement";
+    init: VariableDeclaration | Expression | null;
+    test: Expression | null;
+    update: Expression | null;
+    body: Statement;
+}
+
+// A `for`/`in` statement.
+@section(Statement > Loops)
+interface ForInStatement <: Statement {
+    type: "ForInStatement";
+    left: VariableDeclaration | Pattern;
+    right: Expression;
+    body: Statement;
+}
+
+// A `for`/`of` statement.
+@section(Statement > Loops)
+@es6 interface ForOfStatement <: ForInStatement {
+    type: "ForOfStatement";
+    // `for-await-of` statements, e.g., `for await (const x of xs) {`
+    @added(2018, async-iteration) await: boolean;
+}
+
+// Any declaration node. Note that declarations are considered statements; this is because declarations can appear in any statement context.
+@at-root
+interface Declaration <: Statement { }
+
+// A function declaration. Note that unlike in the parent interface `Function`, the `id` cannot be `null`.
+interface FunctionDeclaration <: Declaration, Function {
+    type: "FunctionDeclaration";
+    id: Identifier;
+}
+
+// A variable declaration.
+interface VariableDeclaration <: Declaration {
+    type: "VariableDeclaration";
+    declarations: [ VariableDeclarator ];
+    kind: "var" | @es6 "let" | @es6 "const";
+}
+
+// A variable declarator.
+@section(Declaration > VariableDeclaration)
+interface VariableDeclarator <: Node {
+    type: "VariableDeclarator";
+    id: Pattern;
+    init: Expression | null;
+}
+
+// Any expression node. Since the left-hand side of an assignment may be any expression in general, an expression can also be a pattern.
+@at-root
+interface Expression <: Node { }
+
+// A `this` expression.
+interface ThisExpression <: Expression {
+    type: "ThisExpression";
+}
+
+// An array expression. An element might be `null` if it represents a hole in a sparse array. E.g. `[1,,2]`.
+interface ArrayExpression <: Expression {
+    type: "ArrayExpression";
+    elements: [ Expression | @es6 SpreadElement | null ];
+}
+
+// An object expression.
+interface ObjectExpression <: Expression {
+    type: "ObjectExpression";
+    properties: [ Property | @added(2018, object-rest-spread) SpreadElement ];
+}
+
+// A literal property in an object expression can have either a string or number as its `value`. Ordinary property initializers have a `kind` value `"init"`; getters and setters have the kind values `"get"` and `"set"`, respectively.
+@section(Expression > ObjectExpression)
+interface Property <: Node {
+    type: "Property";
+    key: Literal | Identifier | @es6 Expression;
+    value: Expression;
+    kind: "init" | "get" | "set";
+    @es6 method: boolean;
+    @es6 shorthand: boolean;
+    @es6 computed: boolean;
+}
+
+// A `function` expression.
+interface FunctionExpression <: Expression, Function {
+    type: "FunctionExpression";
+}
+
+// A fat arrow function expression, e.g., `let foo = (bar) => { /* body */ }`.
+@es6 interface ArrowFunctionExpression <: Function, Expression {
+    type: "ArrowFunctionExpression";
+    body: FunctionBody | Expression;
+    expression: boolean;
+    generator: false;
+}
+
+// A `yield` expression.
+@es6 interface YieldExpression <: Expression {
+    type: "YieldExpression";
+    argument: Expression | null;
+    delegate: boolean;
+}
+
+@added(2017, async-await)
+interface AwaitExpression <: Expression {
+    type: "AwaitExpression";
+    argument: Expression;
+}
+
+// A `super` pseudo-expression.
+@section(Expression)
+@es6 interface Super <: Node {
+    type: "Super";
+}
+
+// Spread expression, e.g., `[head, ...iter, tail]`, `f(head, ...iter, ...tail)`, `{a: 1, ...obj, b: 2}` (ES2018+).
+// **FIXME:** This describes the Esprima and Acorn behaviors, which is not currently aligned with the SpiderMonkey behavior.
+@section(Expression)
+@es6 interface SpreadElement <: Node {
+    type: "SpreadElement";
+    argument: Expression;
+}
+
+// A unary operator expression.
+@section(Expression > Unary operations)
+interface UnaryExpression <: Expression {
+    type: "UnaryExpression";
+    operator: UnaryOperator;
+    prefix: boolean;
+    argument: Expression;
+}
+
+// A unary operator token.
+@section(Expression > Unary operations > UnaryExpression)
+enum UnaryOperator {
+    "-" | "+" | "!" | "~" | "typeof" | "void" | "delete"
+}
+
+// An update (increment or decrement) operator expression.
+@section(Expression > Unary operations)
+interface UpdateExpression <: Expression {
+    type: "UpdateExpression";
+    operator: UpdateOperator;
+    argument: Expression;
+    prefix: boolean;
+}
+
+// An update (increment or decrement) operator token.
+@section(Expression > Unary operations > UpdateExpression)
+enum UpdateOperator {
+    "++" | "--"
+}
+
+// A binary operator expression.
+@section(Expression > Binary operations)
+interface BinaryExpression <: Expression {
+    type: "BinaryExpression";
+    operator: BinaryOperator;
+    // `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
+    // See [Ergonomic brand checks for Private Fields](https://github.com/tc39/proposal-private-fields-in-in) for details.
+    left: Expression | @added(2022, private-fields-in-in) PrivateIdentifier;
+    right: Expression;
+}
+
+// A binary operator token.
+@section(Expression > Binary operations > BinaryExpression)
+enum BinaryOperator {
+    "==" | "!=" | "===" | "!=="
+    | "<" | "<=" | ">" | ">="
+    | "<<" | ">>" | ">>>"
+    | "+" | "-" | "*" | "/" | "%" | @added(2016, exponentiation-operator) "**"
+    | "|" | "^" | "&" | "in"
+    | "instanceof"
+}
+
+// An assignment operator expression.
+@section(Expression > Binary operations)
+interface AssignmentExpression <: Expression {
+    type: "AssignmentExpression";
+    operator: AssignmentOperator;
+    left: Pattern | Expression;
+    right: Expression;
+}
+
+// An assignment operator token.
+@section(Expression > Binary operations > AssignmentExpression)
+enum AssignmentOperator {
+    "=" | "+=" | "-=" | "*=" | "/=" | "%=" | @added(2016, exponentiation-operator) "**="
+    | "<<=" | ">>=" | ">>>="
+    | "|=" | "^=" | "&="
+    | @added(2021, logical-assignment) "||=" | @added(2021, logical-assignment) "&&=" | @added(2021, logical-assignment) "??="
+}
+
+// A logical operator expression.
+@section(Expression > Binary operations)
+interface LogicalExpression <: Expression {
+    type: "LogicalExpression";
+    operator: LogicalOperator;
+    left: Expression;
+    right: Expression;
+}
+
+// A logical operator token.
+@section(Expression > Binary operations > LogicalExpression)
+enum LogicalOperator {
+    "||" | "&&" | @added(2020, nullish-coalescing) "??"
+}
+
+// A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier` or a `PrivateIdentifier`.
+@section(Expression > Binary operations)
+interface MemberExpression <: Expression, Pattern, @added(2020, optional-chaining) ChainElement {
+    type: "MemberExpression";
+    object: Expression | @es6 Super;
+    // When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
+    property: Expression | @added(2022, class-fields) PrivateIdentifier;
+    // When `property` is a `PrivateIdentifier`, `computed` must be `false`.
+    computed: boolean;
+}
+
+// - The `ChainExpression` node is the root of optional chaining.
+// - The `ChainExpression` node contains one or more `ChainElement` nodes that are `optional:true`. On the other hand, `ChainElement` nodes that are `optional:true` belong to a `ChainExpression` node.
+// - For backward compatibility, if all `ChainElement` nodes of a chain are `optional:false`, the `ChainExpression` node isn't inserted as the root of the chain.
+// - Evaluation:
+//   - The `ChainExpression` node is evaluated to the result of the `expression` property's node.
+//   - If the `callee|object` property is evaluated to nullish and the `optional` property is `true`, then the node and ancestor nodes are skipped until the closest `ChainExpression` node, and the result of the `ChainExpression` node becomes `undefined`.
+// <details><summary>For Examples:</summary>
+// ```jsonc
+// // obj.aaa.bbb
+// {
+//   "type": "MemberExpression",
+//   "optional": false,
+//   "object": {
+//     "type": "MemberExpression",
+//     "optional": false,
+//     "object": { "type": "Identifier", "name": "obj" },
+//     "property": { "type": "Identifier", "name": "aaa" }
+//   },
+//   "property": { "type": "Identifier", "name": "bbb" }
+// }
+// ```
+//
+// ```jsonc
+// // obj.aaa?.bbb
+// {
+//   "type": "ChainExpression",
+//   "expression": {
+//     "type": "MemberExpression",
+//     "optional": true,
+//     "object": {
+//       "type": "MemberExpression",
+//       "optional": false,
+//       "object": { "type": "Identifier", "name": "obj" },
+//       "property": { "type": "Identifier", "name": "aaa" }
+//     },
+//     "property": { "type": "Identifier", "name": "bbb" }
+//   }
+// }
+// ```
+//
+// ```jsonc
+// // obj?.aaa.bbb
+// {
+//   "type": "ChainExpression",
+//   "expression": {
+//     "type": "MemberExpression",
+//     "optional": false,
+//     "object": {
+//       "type": "MemberExpression",
+//       "optional": true,
+//       "object": { "type": "Identifier", "name": "obj" },
+//       "property": { "type": "Identifier", "name": "aaa" }
+//     },
+//     "property": { "type": "Identifier", "name": "bbb" }
+//   }
+// }
+// ```
+//
+// ```jsonc
+// // obj?.aaa?.bbb
+// {
+//   "type": "ChainExpression",
+//   "expression": {
+//     "type": "MemberExpression",
+//     "optional": true,
+//     "object": {
+//       "type": "MemberExpression",
+//       "optional": true,
+//       "object": { "type": "Identifier", "name": "obj" },
+//       "property": { "type": "Identifier", "name": "aaa" }
+//     },
+//     "property": { "type": "Identifier", "name": "bbb" }
+//   }
+// }
+// ```
+//
+// ```jsonc
+// // (obj.aaa).bbb
+// {
+//   "type": "MemberExpression",
+//   "optional": false,
+//   "object": {
+//     "type": "MemberExpression",
+//     "optional": false,
+//     "object": { "type": "Identifier", "name": "obj" },
+//     "property": { "type": "Identifier", "name": "aaa" }
+//   },
+//   "property": { "type": "Identifier", "name": "bbb" }
+// }
+// ```
+//
+// ```jsonc
+// // (obj.aaa)?.bbb
+// {
+//   "type": "ChainExpression",
+//   "expression": {
+//     "type": "MemberExpression",
+//     "optional": true,
+//     "object": {
+//       "type": "MemberExpression",
+//       "optional": false,
+//       "object": { "type": "Identifier", "name": "obj" },
+//       "property": { "type": "Identifier", "name": "aaa" }
+//     },
+//     "property": { "type": "Identifier", "name": "bbb" }
+//   }
+// }
+// ```
+//
+// ```jsonc
+// // (obj?.aaa).bbb
+// {
+//   "type": "MemberExpression",
+//   "optional": false,
+//   "object": {
+//     "type": "ChainExpression",
+//     "expression": {
+//       "type": "MemberExpression",
+//       "optional": true,
+//       "object": { "type": "Identifier", "name": "obj" },
+//       "property": { "type": "Identifier", "name": "aaa" }
+//     }
+//   },
+//   "property": { "type": "Identifier", "name": "bbb" }
+// }
+// ```
+//
+// ```jsonc
+// // (obj?.aaa)?.bbb
+// {
+//   "type": "ChainExpression",
+//   "expression": {
+//     "type": "MemberExpression",
+//     "optional": true,
+//     "object": {
+//       "type": "ChainExpression",
+//       "expression": {
+//         "type": "MemberExpression",
+//         "optional": true,
+//         "object": { "type": "Identifier", "name": "obj" },
+//         "property": { "type": "Identifier", "name": "aaa" }
+//       }
+//     },
+//     "property": { "type": "Identifier", "name": "bbb" }
+//   }
+// }
+// ```
+//
+// </details>
+@added(2020, optional-chaining)
+interface ChainExpression <: Expression {
+    type: "ChainExpression";
+    expression: ChainElement;
+}
+
+@section(Expression > ChainExpression) @headerless
+@added(2020, optional-chaining)
+interface ChainElement <: Node {
+    optional: boolean;
+}
+
+// A conditional expression, i.e., a ternary `?`/`:` expression.
+interface ConditionalExpression <: Expression {
+    type: "ConditionalExpression";
+    test: Expression;
+    alternate: Expression;
+    consequent: Expression;
+}
+
+// A function or method call expression.
+interface CallExpression <: Expression, @added(2020, optional-chaining) ChainElement {
+    type: "CallExpression";
+    callee: Expression | @es6 Super;
+    arguments: [ Expression | @es6 SpreadElement ];
+}
+
+// A `new` expression.
+interface NewExpression <: Expression {
+    type: "NewExpression";
+    callee: Expression;
+    arguments: [ Expression | @es6 SpreadElement ];
+}
+
+// A sequence expression, i.e., a comma-separated sequence of expressions.
+interface SequenceExpression <: Expression {
+    type: "SequenceExpression";
+    expressions: [ Expression ];
+}
+
+// `ImportExpression` node represents Dynamic Imports such as `import(source)`.
+// The `source` property is the importing source as similar to [ImportDeclaration](#importdeclaration)
+// node, but it can be an arbitrary expression node.
+@added(2020, dynamic-import)
+interface ImportExpression <: Expression {
+    type: "ImportExpression";
+    source: Expression;
+}
+
+@section(Expression > Template literals)
+@es6 interface TemplateLiteral <: Expression {
+    type: "TemplateLiteral";
+    quasis: [ TemplateElement ];
+    expressions: [ Expression ];
+}
+
+@section(Expression > Template literals)
+@es6 interface TaggedTemplateExpression <: Expression {
+    type: "TaggedTemplateExpression";
+    tag: Expression;
+    quasi: TemplateLiteral;
+}
+
+// If the template literal is tagged and the text has an invalid escape, `cooked` will be `null`, e.g., ``tag`\unicode and \u{55}` ``
+@section(Expression > Template literals)
+@es6 interface TemplateElement <: Node {
+    type: "TemplateElement";
+    tail: boolean;
+    value: {
+        cooked: string | @added(2018, template-literal-revision) null;
+        raw: string;
+    };
+}
+
+// Destructuring binding and assignment are not part of ES5, but all binding positions accept `Pattern` to allow for destructuring in ES6. Nevertheless, for ES5, the only `Pattern` subtype is [`Identifier`](#identifier).
+@at-root
+interface Pattern <: Node { }
+
+@es6 interface ObjectPattern <: Pattern {
+    type: "ObjectPattern";
+    properties: [ AssignmentProperty | @added(2018, object-rest-spread) RestElement ];
+}
+
+@section(Pattern > ObjectPattern) @headerless
+@es6 interface AssignmentProperty <: Property {
+    // inherited
+    type: "Property";
+    value: Pattern;
+    kind: "init";
+    method: false;
+}
+
+@es6 interface ArrayPattern <: Pattern {
+    type: "ArrayPattern";
+    elements: [ Pattern | null ];
+}
+
+@es6 interface RestElement <: Pattern {
+    type: "RestElement";
+    argument: Pattern;
+}
+
+@es6 interface AssignmentPattern <: Pattern {
+    type: "AssignmentPattern";
+    left: Pattern;
+    right: Expression;
+}
+
+@at-root
+@es6 interface Class <: Node {
+    id: Identifier | null;
+    superClass: Expression | null;
+    body: ClassBody;
+}
+
+@section(Class)
+@es6 interface ClassBody <: Node {
+    type: "ClassBody";
+    body: [ MethodDefinition | @added(2022, class-fields) PropertyDefinition | @added(2022, class-static-block) StaticBlock ];
+}
+
+@section(Class)
+@es6 interface MethodDefinition <: Node {
+    type: "MethodDefinition";
+    // When `key` is a `PrivateIdentifier`, `computed` must be `false` and `kind` can not be `"constructor"`.
+    key: Expression | @added(2022, private-methods) PrivateIdentifier;
+    value: FunctionExpression;
+    kind: "constructor" | "method" | "get" | "set";
+    computed: boolean;
+    static: boolean;
+}
+
+// A static block `static { }` is a block statement serving as an additional static initializer.
+@section(Class)
+@added(2022, class-static-block)
+interface StaticBlock <: BlockStatement {
+    type: "StaticBlock";
+}
+
+// A private identifier refers to private class elements. For a private name `#a`, its `name` is `a`.
+@section(Class)
+@added(2022, private-methods)
+interface PrivateIdentifier <: Node {
+    type: "PrivateIdentifier";
+    name: string;
+}
+
+@section(Class)
+@added(2022, class-fields)
+interface PropertyDefinition <: Node {
+    type: "PropertyDefinition";
+    key: Expression | PrivateIdentifier;
+    value: Expression | null;
+    computed: boolean;
+    @added(2022, static-class-features) static: boolean;
+}
+
+@section(Class)
+@es6 interface ClassDeclaration <: Class, Declaration {
+    type: "ClassDeclaration";
+    id: Identifier;
+}
+
+@section(Class)
+@es6 interface ClassExpression <: Class, Expression {
+    type: "ClassExpression";
+}
+
+// `MetaProperty` node represents `new.target` meta property in ES2015+ and `import.meta` in ES2020+
+@section(Class)
+@es6 interface MetaProperty <: Expression {
+    type: "MetaProperty";
+    meta: Identifier;
+    property: Identifier;
+}
+
+// A module `import` or `export` declaration.
+@section(Modules)
+@es6 interface ModuleDeclaration <: Node { }
+
+// A specifier in an import or export declaration.
+@section(Modules)
+@es6 interface ModuleSpecifier <: Node {
+    local: Identifier;
+}
+
+// An import declaration, e.g., `import foo from "mod";`.
+@section(Modules > Imports)
+@es6 interface ImportDeclaration <: ModuleDeclaration {
+    type: "ImportDeclaration";
+    specifiers: [ ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier ];
+    source: Literal;
+}
+
+// An imported variable binding, e.g., `{foo}` in `import {foo} from "mod"` or `{foo as bar}` in `import {foo as bar} from "mod"`. The `imported` field refers to the name of the export imported from the module. The `local` field refers to the binding imported into the local module scope. If it is a basic named import, such as in `import {foo} from "mod"`, both `imported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased import, such as in `import {foo as bar} from "mod"`, the `imported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
+@section(Modules > Imports)
+@es6 interface ImportSpecifier <: ModuleSpecifier {
+    type: "ImportSpecifier";
+    // If `imported` is a `Literal`, `imported.value` must be a string without lone surrogate.
+    imported: Identifier | @added(2022, github.com/tc39/ecma262/pull/2154) Literal;
+}
+
+// A default import specifier, e.g., `foo` in `import foo from "mod.js"`.
+@section(Modules > Imports)
+@es6 interface ImportDefaultSpecifier <: ModuleSpecifier {
+    type: "ImportDefaultSpecifier";
+}
+
+// A namespace import specifier, e.g., `* as foo` in `import * as foo from "mod.js"`.
+@section(Modules > Imports)
+@es6 interface ImportNamespaceSpecifier <: ModuleSpecifier {
+    type: "ImportNamespaceSpecifier";
+}
+
+// An export named declaration, e.g., `export {foo, bar};`, `export {foo} from "mod";` or `export var foo = 1;`.
+// _Note: Having `declaration` populated with non-empty `specifiers` or non-null `source` results in an invalid state._
+@section(Modules > Exports)
+@es6 interface ExportNamedDeclaration <: ModuleDeclaration {
+    type: "ExportNamedDeclaration";
+    declaration: Declaration | null;
+    specifiers: [ ExportSpecifier ];
+    source: Literal | null;
+}
+
+// An exported variable binding, e.g., `{foo}` in `export {foo}` or `{bar as foo}` in `export {bar as foo}`. The `exported` field refers to the name exported in the module. The `local` field refers to the binding into the local module scope. If it is a basic named export, such as in `export {foo}`, both `exported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased export, such as in `export {bar as foo}`, the `exported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
+@section(Modules > Exports)
+@es6 interface ExportSpecifier <: ModuleSpecifier {
+    type: "ExportSpecifier";
+    // `local` can be `Literal` only if the `source` of the `ExportNamedDeclaration` of the parent of this node is not `null`. e.g. `export { "foo" as "foo" } from "mod"` is valid, `export { "foo" as "foo" }` is invalid.
+    // If `exported`/`local` is `Literal`, `exported.value`/`local.value` must be a string without lone surrogate.
+    local: Identifier | @added(2022, github.com/tc39/ecma262/pull/2154) Literal;
+    exported: Identifier | @added(2022, github.com/tc39/ecma262/pull/2154) Literal;
+}
+
+// An export default declaration, e.g., `export default function () {};` or `export default 1;`.
+@section(Modules > Exports)
+@es6 interface ExportDefaultDeclaration <: ModuleDeclaration {
+    type: "ExportDefaultDeclaration";
+    declaration: AnonymousDefaultExportedFunctionDeclaration | FunctionDeclaration | AnonymousDefaultExportedClassDeclaration | ClassDeclaration | Expression;
+}
+
+@section(Modules > Exports > ExportDefaultDeclaration) @headerless
+@es6 interface AnonymousDefaultExportedFunctionDeclaration <: Function {
+    type: "FunctionDeclaration";
+    id: null;
+}
+
+@section(Modules > Exports > ExportDefaultDeclaration) @headerless
+@es6 interface AnonymousDefaultExportedClassDeclaration <: Class {
+    type: "ClassDeclaration";
+    id: null;
+}
+
+// An export batch declaration, e.g., `export * from "mod";`.
+@section(Modules > Exports)
+@es6 interface ExportAllDeclaration <: ModuleDeclaration {
+    type: "ExportAllDeclaration";
+    source: Literal;
+    // Contains an `Identifier` when a different exported name is specified using `as`, e.g., `export * as foo from "mod";`.
+    // If `exported` is a `Literal`, `exported.value` must be a string without lone surrogate.
+    @added(2020, export-ns-from) exported: Identifier | @added(2022, github.com/tc39/ecma262/pull/2154) Literal | null;
+}

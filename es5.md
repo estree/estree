@@ -1,16 +1,14 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-This document specifies the core ESTree AST node types that support the ES5 grammar.
-
-- [Node objects](#node-objects)
+- [Node](#node)
 - [Identifier](#identifier)
 - [Literal](#literal)
   - [RegExpLiteral](#regexpliteral)
-- [Programs](#programs)
-- [Functions](#functions)
-- [Statements](#statements)
+- [Program](#program)
+- [Function](#function)
+- [Statement](#statement)
   - [ExpressionStatement](#expressionstatement)
+  - [Directive](#directive)
   - [BlockStatement](#blockstatement)
+  - [FunctionBody](#functionbody)
   - [EmptyStatement](#emptystatement)
   - [DebuggerStatement](#debuggerstatement)
   - [WithStatement](#withstatement)
@@ -32,11 +30,11 @@ This document specifies the core ESTree AST node types that support the ES5 gram
     - [DoWhileStatement](#dowhilestatement)
     - [ForStatement](#forstatement)
     - [ForInStatement](#forinstatement)
-- [Declarations](#declarations)
+- [Declaration](#declaration)
   - [FunctionDeclaration](#functiondeclaration)
   - [VariableDeclaration](#variabledeclaration)
     - [VariableDeclarator](#variabledeclarator)
-- [Expressions](#expressions)
+- [Expression](#expression)
   - [ThisExpression](#thisexpression)
   - [ArrayExpression](#arrayexpression)
   - [ObjectExpression](#objectexpression)
@@ -59,39 +57,40 @@ This document specifies the core ESTree AST node types that support the ES5 gram
   - [CallExpression](#callexpression)
   - [NewExpression](#newexpression)
   - [SequenceExpression](#sequenceexpression)
-- [Patterns](#patterns)
+- [Pattern](#pattern)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Node objects
-
-ESTree AST nodes are represented as `Node` objects, which may have any prototype inheritance but which implement the following interface:
+# Node
 
 ```js
 interface Node {
+    // A string representing the AST variant type.
+    // Each subtype of `Node` is documented below with the specific string of its `type` field.
+    // You can use this field to determine which interface a node implements.
     type: string;
+    // The source location information of the node.
+    // If the node contains no information about the source location, the field is `null`.
     loc: SourceLocation | null;
 }
 ```
 
-The `type` field is a string representing the AST variant type. Each subtype of `Node` is documented below with the specific string of its `type` field. You can use this field to determine which interface a node implements.
-
-The `loc` field represents the source location information of the node. If the node contains no information about the source location, the field is `null`; otherwise it is an object consisting of a start position (the position of the first character of the parsed source region) and an end position (the position of the first character after the parsed source region):
+ESTree AST nodes are represented as `Node` objects, which may have any prototype inheritance but which implement this interface.
 
 ```js
 interface SourceLocation {
     source: string | null;
+    // The position of the first character of the parsed source region
     start: Position;
+    // The position of the first character after the parsed source region
     end: Position;
 }
 ```
 
-Each `Position` object consists of a `line` number (1-indexed) and a `column` number (0-indexed):
-
 ```js
 interface Position {
-    line: number; // >= 1
-    column: number; // >= 0
+    // Line number (1-indexed)
+    line: number;
+    // Column number (0-indexed)
+    column: number;
 }
 ```
 
@@ -121,18 +120,17 @@ A literal token. Note that a literal can be an expression.
 
 ```js
 interface RegExpLiteral <: Literal {
-  regex: {
-    pattern: string;
-    flags: string;
-  };
+    // The `regex` property allows regexes to be represented in environments that don’t
+    // support certain flags such as `y` or `u`. In environments that don't support
+    // these flags `value` will be `null` as the regex can't be represented natively.
+    regex: {
+        pattern: string;
+        flags: string;
+    };
 }
 ```
 
-The `regex` property allows regexes to be represented in environments that don’t
-support certain flags such as `y` or `u`. In environments that don't support
-these flags `value` will be `null` as the regex can't be represented natively.
-
-# Programs
+# Program
 
 ```js
 interface Program <: Node {
@@ -143,7 +141,7 @@ interface Program <: Node {
 
 A complete program source tree.
 
-# Functions
+# Function
 
 ```js
 interface Function <: Node {
@@ -155,7 +153,7 @@ interface Function <: Node {
 
 A function [declaration](#functiondeclaration) or [expression](#functionexpression).
 
-# Statements
+# Statement
 
 ```js
 interface Statement <: Node { }
@@ -356,6 +354,7 @@ A `try` statement. If `handler` is `null` then `finalizer` must be a `BlockState
 ```js
 interface CatchClause <: Node {
     type: "CatchClause";
+    // `null` if the `catch` binding is omitted. E.g., `try { foo() } catch { bar() }`
     param: Pattern;
     body: BlockStatement;
 }
@@ -408,7 +407,7 @@ A `for` statement.
 ```js
 interface ForInStatement <: Statement {
     type: "ForInStatement";
-    left: VariableDeclaration |  Pattern;
+    left: VariableDeclaration | Pattern;
     right: Expression;
     body: Statement;
 }
@@ -416,7 +415,7 @@ interface ForInStatement <: Statement {
 
 A `for`/`in` statement.
 
-# Declarations
+# Declaration
 
 ```js
 interface Declaration <: Statement { }
@@ -427,7 +426,7 @@ Any declaration node. Note that declarations are considered statements; this is 
 ## FunctionDeclaration
 
 ```js
-interface FunctionDeclaration <: Function, Declaration {
+interface FunctionDeclaration <: Declaration, Function {
     type: "FunctionDeclaration";
     id: Identifier;
 }
@@ -459,7 +458,7 @@ interface VariableDeclarator <: Node {
 
 A variable declarator.
 
-# Expressions
+# Expression
 
 ```js
 interface Expression <: Node { }
@@ -515,7 +514,7 @@ A literal property in an object expression can have either a string or number as
 ## FunctionExpression
 
 ```js
-interface FunctionExpression <: Function, Expression {
+interface FunctionExpression <: Expression, Function {
     type: "FunctionExpression";
 }
 ```
@@ -578,6 +577,8 @@ An update (increment or decrement) operator token.
 interface BinaryExpression <: Expression {
     type: "BinaryExpression";
     operator: BinaryOperator;
+    // `left` can be a private identifier (e.g. `#foo`) when `operator` is `"in"`.
+    // See [Ergonomic brand checks for Private Fields](https://github.com/tc39/proposal-private-fields-in-in) for details.
     left: Expression;
     right: Expression;
 }
@@ -590,11 +591,11 @@ A binary operator expression.
 ```js
 enum BinaryOperator {
     "==" | "!=" | "===" | "!=="
-         | "<" | "<=" | ">" | ">="
-         | "<<" | ">>" | ">>>"
-         | "+" | "-" | "*" | "/" | "%"
-         | "|" | "^" | "&" | "in"
-         | "instanceof"
+    | "<" | "<=" | ">" | ">="
+    | "<<" | ">>" | ">>>"
+    | "+" | "-" | "*" | "/" | "%"
+    | "|" | "^" | "&" | "in"
+    | "instanceof"
 }
 ```
 
@@ -618,8 +619,8 @@ An assignment operator expression.
 ```js
 enum AssignmentOperator {
     "=" | "+=" | "-=" | "*=" | "/=" | "%="
-        | "<<=" | ">>=" | ">>>="
-        | "|=" | "^=" | "&="
+    | "<<=" | ">>=" | ">>>="
+    | "|=" | "^=" | "&="
 }
 ```
 
@@ -654,12 +655,14 @@ A logical operator token.
 interface MemberExpression <: Expression, Pattern {
     type: "MemberExpression";
     object: Expression;
+    // When `object` is a `Super`, `property` can not be a `PrivateIdentifier`
     property: Expression;
+    // When `property` is a `PrivateIdentifier`, `computed` must be `false`.
     computed: boolean;
 }
 ```
 
-A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier`.
+A member expression. If `computed` is `true`, the node corresponds to a computed (`a[b]`) member expression and `property` is an `Expression`. If `computed` is `false`, the node corresponds to a static (`a.b`) member expression and `property` is an `Identifier` or a `PrivateIdentifier`.
 
 ## ConditionalExpression
 
@@ -709,10 +712,10 @@ interface SequenceExpression <: Expression {
 
 A sequence expression, i.e., a comma-separated sequence of expressions.
 
-# Patterns
-
-Destructuring binding and assignment are not part of ES5, but all binding positions accept `Pattern` to allow for destructuring in ES6. Nevertheless, for ES5, the only `Pattern` subtype is [`Identifier`](#identifier).
+# Pattern
 
 ```js
 interface Pattern <: Node { }
 ```
+
+Destructuring binding and assignment are not part of ES5, but all binding positions accept `Pattern` to allow for destructuring in ES6. Nevertheless, for ES5, the only `Pattern` subtype is [`Identifier`](#identifier).
