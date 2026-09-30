@@ -35,6 +35,6 @@ extend interface ExportAllDeclaration {
 }
 ```
 
-`phase` is `"defer"` when representing an export in the form `export defer * from "X"`.
+`phase` is `"defer"` when representing an export in the form `export defer * as ns from "X"`.
 
 [proposal-deferred-reexports]: https://github.com/tc39/proposal-deferred-reexports
