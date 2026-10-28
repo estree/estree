@@ -5,7 +5,12 @@
 ```js
 interface ArgumentPlaceholder <: Node {
     type: "ArgumentPlaceholder";
-    ordinal: Literal | null;
+    ordinal: PlaceholderOrdinal | null;
+}
+
+interface PlaceholderOrdinal <: Node {
+    type: "PlaceholderOrdinal";
+    value: number;
 }
 
 interface RestPlaceholder <: Node {
