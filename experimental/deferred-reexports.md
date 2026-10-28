@@ -1,5 +1,18 @@
 # [Deferred re-exports][proposal-deferred-reexports]
 
+## Imports
+
+### ImportNamespaceSpecifier
+
+```js
+extend interface ImportNamespaceSpecifier <: ModuleSpecifier {
+    exportsFilter: [ Identifier | Literal ] | null;
+}
+```
+
+When `exportsFilter` is specified, it represents an `import { x, "y" } as ns from "mod.js"` import, where `x` and `"y"` are the  element of `exportsFilter`.
+Note that an empty `exportsFilter` list represents `{} as ns`, while a `null` one represents `* as ns`.
+
 ## Exports
 
 ### ExportNamedDeclaration
@@ -22,6 +35,6 @@ extend interface ExportAllDeclaration {
 }
 ```
 
-`phase` is `"defer"` when representing an export in the form `export defer * from "X"`.
+`phase` is `"defer"` when representing an export in the form `export defer * as ns from "X"`.
 
 [proposal-deferred-reexports]: https://github.com/tc39/proposal-deferred-reexports
